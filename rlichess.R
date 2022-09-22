@@ -15,7 +15,6 @@ access_token <- Sys.getenv("access_token")
 pr <- GET("https://lichess.org/api/account",
   add_headers("Authorization" = str_c("Bearer ", access_token)))
 
-## R ndjson as tibble
 
 h <- new_handle() |> handle_setheaders(
   "Authorization" = str_c("Bearer ", access_token),
@@ -25,16 +24,23 @@ h <- new_handle() |> handle_setheaders(
 url <- "https://lichess.org/api/games/user/h8gi" |>
   param_set(key = "perfType", value = "bullet") |>
   param_set(key = "opening", value = "true") |>
-  param_set(key = "moves", value = "false") |>
-  param_set(key = "max", value = 500)
+  param_set(key = "moves", value = "false")
+## |> param_set(key = "max", value = 500)
 
+## Full JSON IO stream from URL to file connection.
+con_in <- curl(url, handle = h)
+con_out <- file("./data.json", open = "wb")
+stream_in(con = con_in, handler = function(df) {
+  df |>
+    flatten() |>
+    filter(status == "draw" | !is.na(winner)) |>
+    mutate(color =
+             if_else(players.white.user.name == "h8gi", "white", "black", missing = "black")) |>
+    stream_out(con_out, pagesize = 100)
+}, pagesize = 500)
+close(con_out)
 
-con <- curl(url, handle = h)
+## stream it back in
+game_data <- stream_in(file("./data.json")) |> as_tibble()
 
-game_json <- stream_in(con = con)
-
-game_tbl <- flatten(game_json) |> as_tibble()
-
-tibble()
-
-game_tbl |> filter(status %in% finished_with_winner)
+game_data <- game_data |> mutate(win = color == winner)
