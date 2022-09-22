@@ -26,9 +26,15 @@ url <- "https://lichess.org/api/games/user/h8gi" |>
   param_set(key = "perfType", value = "bullet") |>
   param_set(key = "opening", value = "true") |>
   param_set(key = "moves", value = "false") |>
-  param_set(key = "max", value = 10)
+  param_set(key = "max", value = 500)
 
 
 con <- curl(url, handle = h)
 
 game_json <- stream_in(con = con)
+
+game_tbl <- flatten(game_json) |> as_tibble()
+
+tibble()
+
+game_tbl |> filter(status %in% finished_with_winner)
