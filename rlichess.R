@@ -33,9 +33,6 @@ con_out <- file("./data.json", open = "wb")
 stream_in(con = con_in, handler = function(df) {
   df |>
     flatten() |>
-    filter(status == "draw" | !is.na(winner)) |>
-    mutate(color =
-             if_else(players.white.user.name == "h8gi", "white", "black", missing = "black")) |>
     stream_out(con_out, pagesize = 100)
 }, pagesize = 500)
 close(con_out)
@@ -43,4 +40,10 @@ close(con_out)
 ## stream it back in
 game_data <- stream_in(file("./data.json")) |> as_tibble()
 
-game_data <- game_data |> mutate(win = color == winner)
+## add `color` and `win`
+game_data <- game_data |> filter(status == "draw" | !is.na(winner)) |>
+  mutate(color =
+           if_else(players.white.user.name == "h8gi", "white", "black", missing = "black")) |>
+  mutate(win = color == winner)
+
+## game_data |> group_by(color) |> summarise(count(win))
