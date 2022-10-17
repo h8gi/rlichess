@@ -1,0 +1,8 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+.Random.seed|object|b717c781bc60f573|||||||||||||||
+access_token|stem|bafff85d1ce804e5|6afa2156e2410362|3e805c6108496dca|-1770059020||t19282.5393937165s|dff9495c51b724c1|77|rds|local|vector|||0.669||
+data|stem|2bc855ea0f9041f2|eaccb10064123c0c|644466b776ec40bb|1588979285||t19282.538561526s|9e646c5803af6bb5|65106|feather|local|vector|||16.352||
+file|stem|7d73b48c8056e5c5|6a804e5b406448e0|ef46db3751d8e999|-1301001980|.env|t19260.4039318202s|f0d9abd8dbb312a1|37|file|local|vector|||0.001||
+finished_with_winner|object|f3ae77d7255f6428|||||||||||||||
+get_game_data|function|30a43ad882c0443f|||||||||||||||
+read_access_token|function|126c2b9f4808cc59|||||||||||||||
