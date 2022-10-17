@@ -5,6 +5,7 @@
 
 # Load packages required to define the pipeline:
 library(targets)
+library(tarchetypes)
 # library(tarchetypes) # Load other packages as needed. # nolint
 
 # Set target options:
@@ -21,7 +22,6 @@ options(clustermq.scheduler = "multicore")
 # Install packages {{future}}, {{future.callr}}, and {{future.batchtools}} to allow use_targets() to configure tar_make_future() options.
 
 # Run the R scripts in the R/ folder with your custom functions:
-## tar_source()
 source("R/functions.R") # Source other scripts as needed. # nolint
 
 # Replace the target list below with your own:
@@ -29,7 +29,17 @@ source("R/functions.R") # Source other scripts as needed. # nolint
 list(
   tar_target(access_token, command = Sys.getenv("LICHESS_API_ACCESS_TOKEN")),
   tar_target(
-    data,
+    raw_data,
     get_game_data(username = "h8gi", access_token = access_token),
-    format = "feather")
+    format = "feather"
+  ),
+  tar_target(
+    data,
+    normalize_game_data(raw_data),
+    format = "feather"
+  ),
+  tar_render(
+    report,
+    "report.Rmd"
+  )
 )

@@ -12,8 +12,8 @@ get_game_data <- function(username, access_token) {
   url <- "https://lichess.org/api/games/user/" |> str_c(username) |>
     param_set(key = "perfType", value = "bullet") |>
     param_set(key = "opening", value = "true") |>
-    param_set(key = "moves", value = "false") |>
-    param_set(key = "max", value = 500)
+    param_set(key = "moves", value = "false") ## |>
+    ## param_set(key = "max", value = 500)
 
   ## Full JSON IO stream from URL to file connection.
   tmp <- tempfile()
@@ -29,10 +29,16 @@ get_game_data <- function(username, access_token) {
   stream_in(file(tmp)) |> as_tibble()
 }
 
-## add `color` and `win`
-## game_data <- game_data |> filter(status == "draw" | !is.na(winner)) |>
-##   mutate(color =
-##            if_else(players.white.user.name == "h8gi", "white", "black", missing = "black")) |>
-##   mutate(win = color == winner)
+normalize_game_data <- function(data) {
+  data |>
+    replace_na(list(
+      players.white.user.name = "",
+      players.black.user.name = ""
+    )) |>
+    mutate(
+      color = if_else(players.white.user.name == "h8gi", "white", "black"),
+      win = color == winner)
+}
+
 
 ## game_data |> group_by(color) |> summarise(count(win))
