@@ -1,0 +1,6 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+get_game_data|function|fd3869d7e6a46ebc
+finished_with_winner|object|f3ae77d7255f6428
+normalize_game_data|function|4eefc042ad0dc699
+access_token|stem|bafff85d1ce804e5|6afa2156e2410362|3e805c6108496dca|-1770059020||t19282.6559899089s|dff9495c51b724c1|77|rds|local|vector|||0.648||
+report|stem|7e227f212025fdf8|3f584dbe430ae414|4745aa592080ea1d|-237041703|report.pdf*report.Rmd|t19282.6560392128s|5c8327ce45cd4a01|8525|file|local|vector|||4.311||
