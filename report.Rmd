@@ -1,11 +1,15 @@
 ---
 title: "Chess Analysis"
-output: html_document
+output:
+  pdf_document:
+    latex_engine: lualatex
+documentclass: ltjsarticle
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 options(tidyverse.quiet = TRUE)
+options(tinytex.verbose = TRUE)
 ```
 
 こんにちは
