@@ -1,6 +1,11 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-get_game_data|function|fd3869d7e6a46ebc
-finished_with_winner|object|f3ae77d7255f6428
-normalize_game_data|function|4eefc042ad0dc699
+.Random.seed|object|f4c102fdff1dcb55|||||||||||||||
 access_token|stem|bafff85d1ce804e5|6afa2156e2410362|3e805c6108496dca|-1770059020||t19282.6559899089s|dff9495c51b724c1|77|rds|local|vector|||0.648||
-report|stem|7e227f212025fdf8|3f584dbe430ae414|4745aa592080ea1d|-237041703|report.pdf*report.Rmd|t19282.6560392128s|5c8327ce45cd4a01|8525|file|local|vector|||4.311||
+calc_win_rate|function|be5a8cc821d4a920|||||||||||||||
+data|stem|8122269309e62d77|20f19010ab8c9be3|f72e8594d212968e|1588979285||t19283.5047576423s|17a5ed1e80e8bd12|1130850|feather|local|vector|||0.01||
+finished_with_winner|object|f3ae77d7255f6428|||||||||||||||
+get_game_data|function|fd3869d7e6a46ebc|||||||||||||||
+normalize_game_data|function|b0ce7cc60e8346b1|||||||||||||||
+raw_data|stem|c9e7ef0bf3171070|eaccb10064123c0c|2e0421336a67e39d|-979620141||t19282.6579410747s|f33712e97b5e7a2e|1076874|feather|local|vector|||163.993||
+report|stem|ae87c06de9fcdede|7289c37e7698eeca|5dfddea45c875b3b|-237041703|report_files*report.html*report.pdf*report.qmd|t19283.504943811s|fdf9f527eb468da8|821691|file|local|vector|||16.15||
+win_rate|function|2629682493bc173b|||||||||||||||

@@ -1,0 +1,58 @@
+---
+title: "Chess analysis"
+author: "Hiroki Yagi"
+date: "`r lubridate::today()`"
+echo: false
+output-format: pdf
+format:
+  html:
+    code-fold: true
+    df-print: kable
+  pdf:
+    df-print: kable
+    toc: true
+    number-sections: true
+    documentclass: ltjsarticle
+    pdf-engine: lualatex
+---
+
+```{r}
+#| include: false
+library(tidyverse)
+library(ggplot2)
+targets::tar_load(data)
+```
+
+## 戦形
+
+### white
+```{r}
+data |> filter(color == "white") |> count(opening.name) |> arrange(desc(n)) |> head(20)
+```
+
+### black
+```{r}
+data |> filter(color == "black") |> count(opening.name) |> arrange(desc(n)) |> head(20)
+```
+
+## 戦形別の勝率
+
+<!-- 円グラフ -->
+
+## Air Quality
+
+@fig-airquality further explores the impact of temperature on ozone level.
+
+あいうえ
+
+```{r}
+#| label: fig-airquality
+#| fig-cap: Temperature and ozone level.
+#| warning: false
+
+library(ggplot2)
+
+ggplot(airquality, aes(Temp, Ozone)) +
+  geom_point() +
+  geom_smooth(method = "loess")
+```

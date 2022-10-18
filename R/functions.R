@@ -3,6 +3,7 @@
 ## val finishedWithWinner = List(Mate, Resign, Timeout, Outoftime, Cheat, NoStart, VariantEnd)
 finished_with_winner <- c("mate", "resign", "timeout", "outoftime", "cheated", "noStart", "variantEnd")
 
+## download game data from lichess.org
 get_game_data <- function(username, access_token) {
   h <- new_handle() |> handle_setheaders(
     "Authorization" = str_c("Bearer ", access_token),
@@ -29,16 +30,19 @@ get_game_data <- function(username, access_token) {
   stream_in(file(tmp)) |> as_tibble()
 }
 
-normalize_game_data <- function(data) {
+normalize_game_data <- function(data, username) {
   data |>
     replace_na(list(
       players.white.user.name = "",
       players.black.user.name = ""
     )) |>
     mutate(
-      color = if_else(players.white.user.name == "h8gi", "white", "black"),
+      color = if_else(players.white.user.name == username, "white", "black"),
       win = color == winner)
 }
 
+calc_win_rate <- function(data) {
+  data |> count(win)  |> mutate(win_rate = n / sum(n)) |> arrange(desc(win))
+}
 
-## game_data |> group_by(color) |> summarise(count(win))
+## data |> group_by(color) |> group_by(opening.name)

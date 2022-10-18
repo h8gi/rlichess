@@ -35,11 +35,11 @@ list(
   ),
   tar_target(
     data,
-    normalize_game_data(raw_data),
+    normalize_game_data(raw_data, username = "h8gi"),
     format = "feather"
   ),
-  tar_render(
+  tar_quarto(
     report,
-    "report.Rmd"
+    "report.qmd"
   )
 )
