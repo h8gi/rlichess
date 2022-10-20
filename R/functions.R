@@ -1,7 +1,9 @@
 ## win or lose
 ## https://github.com/lichess-org/scalachess/blob/0a7d6f2c63b1ca06cd3c958ed3264e738af5c5f6/src/main/scala/Status.scala#L50
 ## val finishedWithWinner = List(Mate, Resign, Timeout, Outoftime, Cheat, NoStart, VariantEnd)
-finished_with_winner <- c("mate", "resign", "timeout", "outoftime", "cheated", "noStart", "variantEnd")
+## finished_with_winner <- c("mate", "resign", "timeout", "outoftime", "cheated", "noStart", "variantEnd")
+## timeout: when player leaves the game
+## outoftime: clock flag
 
 ## download game data from lichess.org
 get_game_data <- function(username, access_token) {
@@ -41,8 +43,9 @@ normalize_game_data <- function(data, username) {
       win = color == winner)
 }
 
-calc_win_rate <- function(data) {
-  data |> count(win)  |> mutate(win_rate = n / sum(n)) |> arrange(desc(win))
-}
-
-## data |> group_by(color) |> group_by(opening.name)
+## data |>
+##   group_by(color, opening.name) |>
+##   summarise(n = n(), winrate = sum(win, na.rm = TRUE) / n()) |>
+##   arrange(desc(n)) |>
+##   filter(n > 50) |>
+##   group_split() |> map(knitr::kable)

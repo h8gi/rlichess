@@ -10,7 +10,7 @@ library(tarchetypes)
 
 # Set target options:
 tar_option_set(
-  packages = c("tidyverse", "curl", "urltools", "jsonlite"), # packages that your targets need to run
+  packages = c("tidyverse", "curl", "urltools", "jsonlite", "kableExtra"), # packages that your targets need to run
   format = "rds" # default storage format
   # Set other options as needed.
 )
@@ -37,6 +37,23 @@ list(
     data,
     normalize_game_data(raw_data, username = "h8gi"),
     format = "feather"
+  ),
+  tar_target(min_game_number, 50),
+  tar_target(
+    opening_winrate,
+    data |>
+      group_by(color, opening.name) |>
+      summarise(n = n(), winrate = sum(win, na.rm = TRUE) / n()) |>
+      arrange(desc(winrate)) |>
+      filter(n > min_game_number) |> group_split()
+  ),
+  tar_target(
+    white_opening_winrate,
+    opening_winrate[[2]]
+  ),
+  tar_target(
+    black_opening_winrate,
+    opening_winrate[[1]]
   ),
   tar_quarto(
     report,

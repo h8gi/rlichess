@@ -136,3 +136,5 @@ rsconnect/
 
 
 .env
+
+report_files

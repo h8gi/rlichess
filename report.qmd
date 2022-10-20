@@ -1,5 +1,5 @@
 ---
-title: "Chess analysis"
+title: "Lichess Bullet Chess Analysis"
 author: "Hiroki Yagi"
 date: "`r lubridate::today()`"
 echo: false
@@ -8,6 +8,8 @@ format:
   html:
     code-fold: true
     df-print: kable
+    toc: true
+    number-sections: true
   pdf:
     df-print: kable
     toc: true
@@ -20,39 +22,47 @@ format:
 #| include: false
 library(tidyverse)
 library(ggplot2)
+library(targets)
+library(kableExtra)
 targets::tar_load(data)
-```
 
-## 戦形
 
-### white
-```{r}
-data |> filter(color == "white") |> count(opening.name) |> arrange(desc(n)) |> head(20)
-```
+print_win_rate_table <- function(data) {
+  data |>
+    mutate(
+      winrate = sprintf("%.3f", round(winrate, 3))
+    ) |>
+    kbl(escape = FALSE) |> kable_styling() |>
+    column_spec(4, color = "white",
+      background = spec_color(data$winrate, option = "B", scale_from = c(0, 1))
+    )
+}
 
-### black
-```{r}
-data |> filter(color == "black") |> count(opening.name) |> arrange(desc(n)) |> head(20)
+
 ```
 
 ## 戦形別の勝率
 
-<!-- 円グラフ -->
+ゲーム数が`r tar_read(min_game_number)`を越えるものに限った
 
-## Air Quality
+### white
 
-@fig-airquality further explores the impact of temperature on ozone level.
-
-あいうえ
+白番での成績は @tbl-white-score のようになった。
 
 ```{r}
-#| label: fig-airquality
-#| fig-cap: Temperature and ozone level.
-#| warning: false
+#| label: tbl-white-score
+#| tbl-cap: "Opening Score: White"
+tar_read(white_opening_winrate) |> print_win_rate_table()
+```
 
-library(ggplot2)
+{{< pagebreak >}}
 
-ggplot(airquality, aes(Temp, Ozone)) +
-  geom_point() +
-  geom_smooth(method = "loess")
+### black
+
+黒番での成績は @tbl-black-score のようになった。
+
+```{r}
+#| label: tbl-black-score
+#| tbl-cap: "Opening Score: Black"
+tar_read(black_opening_winrate) |> print_win_rate_table()
 ```
