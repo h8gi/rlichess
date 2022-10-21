@@ -55,6 +55,15 @@ list(
     black_opening_winrate,
     opening_winrate[[1]]
   ),
+  tar_target(
+    opening_file,
+    "./data/opening.tsv",
+    format = "file"
+  ),
+  tar_target(
+    opening_data,
+    read_tsv(opening_file)
+  ),
   tar_quarto(
     report,
     "report.qmd"

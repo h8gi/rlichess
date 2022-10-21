@@ -66,3 +66,7 @@ tar_read(white_opening_winrate) |> print_win_rate_table()
 #| tbl-cap: "Opening Score: Black"
 tar_read(black_opening_winrate) |> print_win_rate_table()
 ```
+
+<!-- ```{r} -->
+<!-- tar_read(black_opening_winrate) |> inner_join(tar_read(opening_data), by = c("opening.name" = "name")) -->
+<!-- ``` -->
