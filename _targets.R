@@ -38,14 +38,14 @@ list(
     format = "feather"
   ),
   tar_target(
-    data,
+    games,
     normalize_game_data(raw_data, username = "h8gi"),
     format = "feather"
   ),
   tar_target(min_game_number, 50),
   tar_target(
     opening_winrate,
-    data |>
+    games |>
       group_by(color, opening.name) |>
       summarise(n = n(), winrate = sum(win, na.rm = TRUE) / n()) |>
       arrange(desc(winrate)) |>

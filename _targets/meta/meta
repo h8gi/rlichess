@@ -1,5 +1,5 @@
 name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
-.Random.seed|object|94830eadbb20db47|||||||||||||||
+.Random.seed|object|3566df78919fc863|||||||||||||||
 access_token|stem|4742b66dcaae621f|4c56a3149906191c|2c530c1562a7fbd1|852503134||t20072.5805699406s|04fcf8b2530d31e5|77|rds|local|vector|||0.499||
 black_opening_win_rate|stem|4a8ac4d2a06776a8|b9c9d8b6a55c60e5|3686db1a68609812|1845068909||t19285.5877369388s|876a51f315af1861|852|rds|local|vector|||0||
 black_opening_winrate|stem|7b4adcd432e6f501|9ae0f0e1e9acddb0|8b1ba33471323158|-861791048||t20072.6965893875s|262328b878f27db0|1425|rds|local|vector|||0||
@@ -7,6 +7,7 @@ calc_win_rate|function|be5a8cc821d4a920|||||||||||||||
 calc_winrate|function|47f7fa03cf6fdee6|||||||||||||||
 data|stem|257cf4e248a34bf2|f05022497d901f6e|f7040684573c0b16|33550471||t20072.7004651534s|e74a104622e439f8|4720138|feather|local|vector|||0.007||
 finished_with_winner|object|f3ae77d7255f6428|||||||||||||||
+games|stem|257cf4e248a34bf2|f05022497d901f6e|f7040684573c0b16|1986910045||t20072.7035521168s|e74a104622e439f8|4720138|feather|local|vector|||0.014||
 get_game_data|function|5b559161fd2b3455|||||||||||||||
 min_game_number|stem|170519edd3c34a1b|d6c480ee8049249e|2c530c1562a7fbd1|1581615492||t20072.5158417138s|948ebae6388656f3|51|rds|local|vector|||0||
 normalize_game_data|function|96f7eeefa31c8dbd|||||||||||||||
@@ -14,14 +15,14 @@ opening_data|stem|13834d0e2e68dfd5|d6929fea8a4792de|5a439bc897c0018d|-823358000|
 opening_file|stem|4f6e0c7ee90cc645|1720e20408b8ccbf|2c530c1562a7fbd1|233222374|./data/opening.tsv|t20072.5092167469s|be3bcf7eade5dcec|337247|file|local|vector|||0||
 opening_win_rate|stem|27828a5dfcc0445d|01a16aca33ba0544|a39f48c7eaa909a8|354461890||t19285.5877368988s|2e514b6e7df76d81|1332|rds|local|vector|||0.053||
 opening_win_rate_tables|stem|03a66f7e80512a5f|1bdd9f6d8ea594e0|aad2716dc6242b96|-192944042||t19285.5856735395s|90d1404e1e1c1883|1313|rds|local|vector|||0.067||
-opening_winrate|stem|5bf4f9c45e03411e|8e431210c0a69c4a|b69b2e60c9b0d41b|1745716710||t20072.7004675664s|0f428f849b181ac3|2293|rds|local|vector|||0.023||
+opening_winrate|stem|5bf4f9c45e03411e|9962a1c1f338a5ad|6c300534400ef962|1745716710||t20072.703552476s|0f428f849b181ac3|2293|rds|local|vector|||0.024||
 plot_pie_chart|function|835d7554061c23a6|||||||||||||||
 print_win_rate_table|function|309db9fdc25e67b3|||||||||||||||
 raw_data|stem|8abfe9c2c81b9961|04b564e223688fd5|3ff587d784ef2d69|-1101284392||t20072.7004644351s|421206937ab82d20|4415658|feather|local|vector|||6.713||
 raw_data_csv|stem|de7813a46a3dfe54|49c79d9b5e9b10e9|4a56b94a5058009b|-797825803|./data/raw_data.csv|t20072.7004659187s|e5119d13116a3c14|7623520|file|local|vector|||0.167||
 raw_json_file|stem|7c5ab39edf32e5f9|7c8f1de4b07cdedb|2c530c1562a7fbd1|-838272034|./data/raw_data.json|t20072.6942793631s|ad8b0210e57c2a73|16942492|file|local|vector|||0.501||
 read_game_data|function|9b22d7abe41297cf|||||||||||||||
-report|stem|f80f970c0ca0733a|d212c345aa7ddd6c|9e0e100e69dfc8e6|787668912|report_files*report.html*report.pdf*report.qmd|t20072.7005909392s|a1f768869843bc16|104679|file|local|vector|||10.669||
+report|stem|30eb10dfe785fafd|d212c345aa7ddd6c|3cf5d0b548e535a5|787668912|report_files*report.html*report.pdf*report.qmd|t20072.7036735934s|ba34b235acd66815|1218542|file|local|vector|||10.473||
 required_columns|object|84f7633ecfb9ef05|||||||||||||||
 single_opening_win_rate_table|pattern|9400c151093314a3|0ff3ad8d622c6091||438055104||||1456|rds|local|list||single_opening_win_rate_table_fb3369f7*single_opening_win_rate_table_71a872db|0.012||
 single_opening_win_rate_table_71a872db|branch|309b5b46872c806b|0ff3ad8d622c6091|426744196178d7be|145380329||t19285.5754635961s|bea4075b4710d630|650|rds|local|list|single_opening_win_rate_table||0.002||
