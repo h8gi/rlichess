@@ -10,7 +10,7 @@ library(tarchetypes)
 
 # Set target options:
 tar_option_set(
-  packages = c("tidyverse", "curl", "urltools", "jsonlite", "kableExtra"), # packages that your targets need to run
+  packages = c("tidyverse", "curl", "urltools", "jsonlite", "kableExtra", "arrow"), # packages that your targets need to run
   format = "rds" # default storage format
   # Set other options as needed.
 )
@@ -27,10 +27,14 @@ source("R/functions.R") # Source other scripts as needed. # nolint
 # Replace the target list below with your own:
 # Replace the target list below with your own:
 list(
-  tar_target(access_token, command = Sys.getenv("LICHESS_API_ACCESS_TOKEN")),
+  tar_target(
+    raw_json_file,
+    "./data/raw_data.json",
+    format = "file"
+  ),
   tar_target(
     raw_data,
-    get_game_data(username = "h8gi", access_token = access_token),
+    read_game_data(raw_json_file),
     format = "feather"
   ),
   tar_target(

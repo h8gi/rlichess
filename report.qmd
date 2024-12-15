@@ -18,6 +18,51 @@ format:
     pdf-engine: lualatex
 ---
 
+## データの準備
+
+### オープニングデータ
+
+### ゲームのデータ
+
+TODO: 日付の変更。おそらくtimestamp
+
+lichess api のデータが2024-6-15あたりで変わっている(columnが追加されたっぽい)
+どかこのタイミングでlichessのゲームデータにカラムが追加されたみたい。> colnames(tmp1)
+```{text}
+[1] "id"                       "rated"
+ [3] "variant"                  "speed"
+ [5] "perf"                     "createdAt"
+ [7] "lastMoveAt"               "status"
+ [9] "source"                   "fullId"
+[11] "winner"                   "players.white.rating"
+[13] "players.white.ratingDiff" "players.white.user.name"
+[15] "players.white.user.id"    "players.black.rating"
+[17] "players.black.ratingDiff" "players.black.user.name"
+[19] "players.black.user.id"    "opening.eco"
+[21] "opening.name"             "opening.ply"
+[23] "clock.initial"            "clock.increment"
+[25] "clock.totalTime"          "color"
+[27] "win"
+> colnames(tmp2)
+ [1] "id"                        "rated"
+ [3] "variant"                   "speed"
+ [5] "perf"                      "createdAt"
+ [7] "lastMoveAt"                "status"
+ [9] "source"                    "fullId"
+[11] "winner"                    "players.white.rating"
+[13] "players.white.ratingDiff"  "players.white.user.name"
+[15] "players.white.user.id"     "players.black.rating"
+[17] "players.black.ratingDiff"  "players.black.user.name"
+[19] "players.black.user.id"     "opening.eco"
+[21] "opening.name"              "opening.ply"
+[23] "clock.initial"             "clock.increment"
+[25] "clock.totalTime"           "players.black.user.flair"
+[27] "players.white.user.flair"  "players.black.user.patron"
+[29] "players.white.user.patron" "color"
+[31] "win"
+```
+
+
 ```{r}
 #| include: false
 library(tidyverse)
@@ -41,9 +86,9 @@ print_win_rate_table <- function(data) {
 
 ```
 
-## 戦形別の勝率
+## 戦形別の勝率??
 
-ゲーム数が`r tar_read(min_game_number)`を越えるものに限った
+ゲーム数が`r tar_read(min_game_number)`を越えるものに限ったyo
 
 ### white
 

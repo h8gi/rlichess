@@ -5,31 +5,9 @@
 ## timeout: when player leaves the game
 ## outoftime: clock flag
 
-## download game data from lichess.org
-get_game_data <- function(username, access_token) {
-  h <- new_handle() |> handle_setheaders(
-    "Authorization" = str_c("Bearer ", access_token),
-    "Accept" = "application/x-ndjson"
-  )
-
-  url <- "https://lichess.org/api/games/user/" |> str_c(username) |>
-    param_set(key = "perfType", value = "bullet") |>
-    param_set(key = "opening", value = "true") |>
-    param_set(key = "moves", value = "false") ## |>
-    ## param_set(key = "max", value = 500)
-
-  ## Full JSON IO stream from URL to file connection.
-  tmp <- tempfile()
-  con_in <- curl(url, handle = h)
-  con_out <- file(tmp, open = "wb")
-  stream_in(con = con_in, handler = function(df) {
-    df |>
-      flatten() |>
-      stream_out(con_out, pagesize = 100)
-  }, pagesize = 500)
-  close(con_out)
-  ## stream it back in
-  stream_in(file(tmp)) |> as_tibble()
+read_game_data <- function(filename) {
+  json_lines <- readLines(file(filename))
+  map(json_lines, ~ unlist(fromJSON(.x))) |> bind_rows() |> type_convert()
 }
 
 normalize_game_data <- function(data, username) {
@@ -39,6 +17,8 @@ normalize_game_data <- function(data, username) {
       players.black.user.name = ""
     )) |>
     mutate(
+      createdAt = as_datetime(createdAt / 1000),
+      lastMoveAt = as_datetime(lastMoveAt / 1000),
       color = if_else(players.white.user.name == username, "white", "black"),
       win = color == winner)
 }

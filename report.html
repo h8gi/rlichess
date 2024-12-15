@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Hiroki Yagi">
-<meta name="dcterms.date" content="2022-10-21">
+<meta name="dcterms.date" content="2024-12-16">
 
 <title>Lichess Bullet Chess Analysis</title>
 <style>
@@ -19,7 +19,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -31,11 +31,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="report_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="report_files/libs/quarto-html/anchor.min.js"></script>
 <link href="report_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="report_files/libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="report_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-
+<link href="report_files/libs/bootstrap/bootstrap-973236bd072d72a04ee9cd82dcc9cb29.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="report_files/libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="report_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
@@ -50,13 +49,18 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#戦形別の勝率" id="toc-戦形別の勝率" class="nav-link active" data-scroll-target="#戦形別の勝率"><span class="toc-section-number">1</span>  戦形別の勝率</a>
+  <li><a href="#データの準備" id="toc-データの準備" class="nav-link active" data-scroll-target="#データの準備"><span class="header-section-number">1</span> データの準備</a>
   <ul class="collapse">
-  <li><a href="#white" id="toc-white" class="nav-link" data-scroll-target="#white"><span class="toc-section-number">1.1</span>  white</a></li>
-  <li><a href="#black" id="toc-black" class="nav-link" data-scroll-target="#black"><span class="toc-section-number">1.2</span>  black</a></li>
+  <li><a href="#オープニングデータ" id="toc-オープニングデータ" class="nav-link" data-scroll-target="#オープニングデータ"><span class="header-section-number">1.1</span> オープニングデータ</a></li>
+  <li><a href="#ゲームのデータ" id="toc-ゲームのデータ" class="nav-link" data-scroll-target="#ゲームのデータ"><span class="header-section-number">1.2</span> ゲームのデータ</a></li>
+  </ul></li>
+  <li><a href="#戦形別の勝率" id="toc-戦形別の勝率" class="nav-link" data-scroll-target="#戦形別の勝率"><span class="header-section-number">2</span> 戦形別の勝率??</a>
+  <ul class="collapse">
+  <li><a href="#white" id="toc-white" class="nav-link" data-scroll-target="#white"><span class="header-section-number">2.1</span> white</a></li>
+  <li><a href="#black" id="toc-black" class="nav-link" data-scroll-target="#black"><span class="header-section-number">2.2</span> black</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -79,340 +83,626 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 21, 2022</p>
+      <p class="date">December 16, 2024</p>
     </div>
   </div>
+  
     
   </div>
   
 
+
 </header>
 
-<section id="戦形別の勝率" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="戦形別の勝率"><span class="header-section-number">1</span> 戦形別の勝率</h2>
-<p>ゲーム数が50を越えるものに限った</p>
-<section id="white" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="white"><span class="header-section-number">1.1</span> white</h3>
-<p>白番での成績は <a href="#tbl-white-score">Table&nbsp;1</a> のようになった。</p>
-<div class="cell">
-<div class="cell-output-display">
-<div id="tbl-white-score" class="anchored">
 
-<table class="table" style="margin-left: auto; margin-right: auto;"><caption>Table&nbsp;1:  Opening Score: White </caption>
- <thead>
-  <tr>
-   <th style="text-align:left;"> color </th>
-   <th style="text-align:left;"> opening.name </th>
-   <th style="text-align:right;"> n </th>
-   <th style="text-align:left;"> winrate </th>
-  </tr>
- </thead>
+<section id="データの準備" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="データの準備"><span class="header-section-number">1</span> データの準備</h2>
+<section id="オープニングデータ" class="level3" data-number="1.1">
+<h3 data-number="1.1" class="anchored" data-anchor-id="オープニングデータ"><span class="header-section-number">1.1</span> オープニングデータ</h3>
+</section>
+<section id="ゲームのデータ" class="level3" data-number="1.2">
+<h3 data-number="1.2" class="anchored" data-anchor-id="ゲームのデータ"><span class="header-section-number">1.2</span> ゲームのデータ</h3>
+<p>TODO: 日付の変更。おそらくtimestamp</p>
+<p>lichess api のデータが2024-6-15あたりで変わっている(columnが追加されたっぽい) どかこのタイミングでlichessのゲームデータにカラムが追加されたみたい。&gt; colnames(tmp1)</p>
+</section>
+</section>
+<section id="戦形別の勝率" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="戦形別の勝率"><span class="header-section-number">2</span> 戦形別の勝率??</h2>
+<p>ゲーム数が50を越えるものに限ったyo</p>
+<section id="white" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="white"><span class="header-section-number">2.1</span> white</h3>
+<p>白番での成績は <a href="#tbl-white-score" class="quarto-xref">Table&nbsp;1</a> のようになった。</p>
+<div class="cell">
+<div id="tbl-white-score" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-white-score-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Opening Score: White
+</figcaption>
+<div aria-describedby="tbl-white-score-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="table do-not-create-environment cell caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">color</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">opening.name</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">winrate</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Queen's Pawn Game: Symmetrical Variation, Pseudo-Catalan </td>
-   <td style="text-align:right;"> 421 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(211, 71, 67, 1) !important;"> 0.570 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Indian Defense: Knights Variation </td>
-   <td style="text-align:right;"> 216 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(211, 71, 67, 1) !important;"> 0.569 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Queen's Pawn Game </td>
-   <td style="text-align:right;"> 316 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(210, 70, 68, 1) !important;"> 0.566 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Dutch Defense: Stonewall Variation, Modern Variation </td>
-   <td style="text-align:right;"> 53 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(210, 70, 68, 1) !important;"> 0.566 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Queen's Pawn Game: Chigorin Variation </td>
-   <td style="text-align:right;"> 106 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(207, 68, 70, 1) !important;"> 0.557 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Horwitz Defense </td>
-   <td style="text-align:right;"> 413 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(206, 67, 71, 1) !important;"> 0.554 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Queen's Gambit Declined </td>
-   <td style="text-align:right;"> 67 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(206, 67, 71, 1) !important;"> 0.552 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Englund Gambit Declined: Reversed Alekhine </td>
-   <td style="text-align:right;"> 51 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(204, 66, 72, 1) !important;"> 0.549 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Englund Gambit </td>
-   <td style="text-align:right;"> 88 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(199, 62, 76, 1) !important;"> 0.534 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Modern Defense </td>
-   <td style="text-align:right;"> 265 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(198, 61, 77, 1) !important;"> 0.528 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Indian Defense: Przepiorka Variation </td>
-   <td style="text-align:right;"> 136 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(192, 58, 81, 1) !important;"> 0.515 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Slav Defense: Modern Line </td>
-   <td style="text-align:right;"> 81 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(189, 56, 83, 1) !important;"> 0.506 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Queen's Pawn Game: Zukertort Variation </td>
-   <td style="text-align:right;"> 441 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(185, 53, 86, 1) !important;"> 0.494 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> English Defense </td>
-   <td style="text-align:right;"> 122 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(180, 51, 89, 1) !important;"> 0.484 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Indian Defense: Wade-Tartakower Defense </td>
-   <td style="text-align:right;"> 71 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(179, 50, 90, 1) !important;"> 0.479 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Queen's Gambit Declined: Marshall Defense </td>
-   <td style="text-align:right;"> 59 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(177, 50, 90, 1) !important;"> 0.475 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Benoni Defense: Old Benoni </td>
-   <td style="text-align:right;"> 330 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(168, 46, 95, 1) !important;"> 0.452 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Dutch Defense </td>
-   <td style="text-align:right;"> 57 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(163, 44, 97, 1) !important;"> 0.439 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> white </td>
-   <td style="text-align:left;"> Catalan Opening: Closed </td>
-   <td style="text-align:right;"> 68 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(146, 37, 104, 1) !important;"> 0.397 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Pawn Game: Anti-Torre</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: left; color: white !important; background-color: rgba(235, 100, 41, 255) !important;">0.656</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Pawn Game: Chigorin Variation</td>
+<td style="text-align: right;">396</td>
+<td style="text-align: left; color: white !important; background-color: rgba(213, 74, 65, 255) !important;">0.576</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Englund Gambit: Main Line</td>
+<td style="text-align: right;">84</td>
+<td style="text-align: left; color: white !important; background-color: rgba(212, 72, 66, 255) !important;">0.571</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Neo-Grünfeld Defense: Classical Variation</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: left; color: white !important; background-color: rgba(211, 71, 67, 255) !important;">0.570</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Indian Defense: Knights Variation</td>
+<td style="text-align: right;">882</td>
+<td style="text-align: left; color: white !important; background-color: rgba(208, 69, 69, 255) !important;">0.560</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Dutch Defense: Stonewall Variation, Modern Variation</td>
+<td style="text-align: right;">171</td>
+<td style="text-align: left; color: white !important; background-color: rgba(207, 68, 70, 255) !important;">0.556</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Indian Defense: Spielmann-Indian</td>
+<td style="text-align: right;">247</td>
+<td style="text-align: left; color: white !important; background-color: rgba(206, 67, 71, 255) !important;">0.555</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Horwitz Defense</td>
+<td style="text-align: right;">1536</td>
+<td style="text-align: left; color: white !important; background-color: rgba(204, 66, 72, 255) !important;">0.551</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Benoni Defense: Hromádka System</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left; color: white !important; background-color: rgba(204, 66, 72, 255) !important;">0.549</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Zukertort Opening: Reversed Grünfeld</td>
+<td style="text-align: right;">317</td>
+<td style="text-align: left; color: white !important; background-color: rgba(204, 66, 72, 255) !important;">0.549</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Gambit Declined</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: left; color: white !important; background-color: rgba(203, 65, 73, 255) !important;">0.547</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Pawn Game: Symmetrical Variation, Pseudo-Catalan</td>
+<td style="text-align: right;">1602</td>
+<td style="text-align: left; color: white !important; background-color: rgba(200, 63, 75, 255) !important;">0.536</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Pawn Game: Modern Defense</td>
+<td style="text-align: right;">943</td>
+<td style="text-align: left; color: white !important; background-color: rgba(198, 61, 77, 255) !important;">0.528</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Pawn Game</td>
+<td style="text-align: right;">1384</td>
+<td style="text-align: left; color: white !important; background-color: rgba(196, 60, 78, 255) !important;">0.525</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Indian Defense: Wade-Tartakower Defense</td>
+<td style="text-align: right;">378</td>
+<td style="text-align: left; color: white !important; background-color: rgba(196, 60, 78, 255) !important;">0.524</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Englund Gambit Declined: Reversed Alekhine</td>
+<td style="text-align: right;">200</td>
+<td style="text-align: left; color: white !important; background-color: rgba(195, 59, 79, 255) !important;">0.520</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Pawn Game: Zukertort Variation</td>
+<td style="text-align: right;">1776</td>
+<td style="text-align: left; color: white !important; background-color: rgba(193, 58, 80, 255) !important;">0.519</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Indian Defense: Przepiorka Variation</td>
+<td style="text-align: right;">639</td>
+<td style="text-align: left; color: white !important; background-color: rgba(193, 58, 80, 255) !important;">0.516</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Slav Defense: Modern Line</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: left; color: white !important; background-color: rgba(191, 57, 82, 255) !important;">0.511</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">English Defense</td>
+<td style="text-align: right;">427</td>
+<td style="text-align: left; color: white !important; background-color: rgba(191, 57, 82, 255) !important;">0.508</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Pawn Game: Chandler Gambit</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: left; color: white !important; background-color: rgba(185, 53, 86, 255) !important;">0.496</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Mikenas Defense</td>
+<td style="text-align: right;">67</td>
+<td style="text-align: left; color: white !important; background-color: rgba(185, 53, 86, 255) !important;">0.493</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Dutch Defense</td>
+<td style="text-align: right;">174</td>
+<td style="text-align: left; color: white !important; background-color: rgba(183, 53, 87, 255) !important;">0.489</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Englund Gambit</td>
+<td style="text-align: right;">296</td>
+<td style="text-align: left; color: white !important; background-color: rgba(180, 51, 89, 255) !important;">0.483</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Benoni Defense: Old Benoni</td>
+<td style="text-align: right;">1073</td>
+<td style="text-align: left; color: white !important; background-color: rgba(179, 50, 90, 255) !important;">0.480</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Mieses Opening</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: left; color: white !important; background-color: rgba(179, 50, 90, 255) !important;">0.479</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Catalan Opening: Closed</td>
+<td style="text-align: right;">117</td>
+<td style="text-align: left; color: white !important; background-color: rgba(176, 49, 91, 255) !important;">0.470</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">King's Indian Defense: Fianchetto Variation, Uhlmann-Szabo System</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: left; color: white !important; background-color: rgba(173, 48, 93, 255) !important;">0.464</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Neo-Grünfeld Defense: Ultra-Delayed Exchange Variation</td>
+<td style="text-align: right;">157</td>
+<td style="text-align: left; color: white !important; background-color: rgba(171, 47, 94, 255) !important;">0.459</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Queen's Gambit Declined: Marshall Defense</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: left; color: white !important; background-color: rgba(171, 47, 94, 255) !important;">0.458</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Neo-Grünfeld Defense: Classical Variation, Original Defense</td>
+<td style="text-align: right;">108</td>
+<td style="text-align: left; color: white !important; background-color: rgba(162, 43, 98, 255) !important;">0.435</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Benoni Defense: King's Pawn Line</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left; color: white !important; background-color: rgba(160, 42, 99, 255) !important;">0.431</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Zukertort Opening: Vos Gambit</td>
+<td style="text-align: right;">72</td>
+<td style="text-align: left; color: white !important; background-color: rgba(160, 42, 99, 255) !important;">0.431</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Catalan Opening: Open Defense, Classical Line</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: left; color: white !important; background-color: rgba(159, 42, 99, 255) !important;">0.427</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Englund Gambit: Hartlaub-Charlick Gambit</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: left; color: white !important; background-color: rgba(157, 41, 100, 255) !important;">0.423</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">white</td>
+<td style="text-align: left;">Englund Gambit Declined: Reversed Krebs</td>
+<td style="text-align: right;">207</td>
+<td style="text-align: left; color: white !important; background-color: rgba(146, 37, 104, 255) !important;">0.396</td>
+</tr>
 </tbody>
 </table>
 
+
 </div>
+</div>
+</figure>
 </div>
 </div>
 <div style="page-break-after: always;"></div>
 </section>
-<section id="black" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="black"><span class="header-section-number">1.2</span> black</h3>
-<p>黒番での成績は <a href="#tbl-black-score">Table&nbsp;2</a> のようになった。</p>
+<section id="black" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="black"><span class="header-section-number">2.2</span> black</h3>
+<p>黒番での成績は <a href="#tbl-black-score" class="quarto-xref">Table&nbsp;2</a> のようになった。</p>
 <div class="cell">
+<div id="tbl-black-score" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-black-score-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Opening Score: Black
+</figcaption>
+<div aria-describedby="tbl-black-score-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="tbl-black-score" class="anchored">
-
-<table class="table" style="margin-left: auto; margin-right: auto;"><caption>Table&nbsp;2:  Opening Score: Black </caption>
- <thead>
-  <tr>
-   <th style="text-align:left;"> color </th>
-   <th style="text-align:left;"> opening.name </th>
-   <th style="text-align:right;"> n </th>
-   <th style="text-align:left;"> winrate </th>
-  </tr>
- </thead>
+<table class="table do-not-create-environment cell caption-top table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">color</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">opening.name</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">n</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">winrate</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Hillbilly Attack </td>
-   <td style="text-align:right;"> 92 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(217, 77, 61, 1) !important;"> 0.587 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Queen's Pawn Game </td>
-   <td style="text-align:right;"> 67 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(206, 67, 71, 1) !important;"> 0.552 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Benoni Defense: Classical Variation </td>
-   <td style="text-align:right;"> 57 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(196, 60, 78, 1) !important;"> 0.526 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Bronstein-Larsen Variation </td>
-   <td style="text-align:right;"> 82 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(192, 58, 81, 1) !important;"> 0.512 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Classical Variation </td>
-   <td style="text-align:right;"> 65 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(189, 56, 83, 1) !important;"> 0.508 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Hungarian Opening: Slav Formation </td>
-   <td style="text-align:right;"> 87 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(189, 56, 83, 1) !important;"> 0.506 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense </td>
-   <td style="text-align:right;"> 850 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(186, 54, 85, 1) !important;"> 0.498 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Exchange Variation </td>
-   <td style="text-align:right;"> 206 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(185, 53, 86, 1) !important;"> 0.495 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Benoni Defense: Benoni Gambit Accepted </td>
-   <td style="text-align:right;"> 65 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(185, 53, 86, 1) !important;"> 0.492 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Van't Kruijs Opening </td>
-   <td style="text-align:right;"> 109 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(174, 48, 92, 1) !important;"> 0.468 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Benoni Defense: Old Benoni </td>
-   <td style="text-align:right;"> 282 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(173, 48, 93, 1) !important;"> 0.461 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Zukertort Opening: Slav Invitation </td>
-   <td style="text-align:right;"> 88 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(169, 46, 94, 1) !important;"> 0.455 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Benoni Defense </td>
-   <td style="text-align:right;"> 89 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(168, 46, 95, 1) !important;"> 0.449 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Indian Defense: Spielmann-Indian </td>
-   <td style="text-align:right;"> 140 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(165, 44, 96, 1) !important;"> 0.443 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Benoni Defense: King's Pawn Line </td>
-   <td style="text-align:right;"> 84 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(163, 44, 97, 1) !important;"> 0.440 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Breyer Variation </td>
-   <td style="text-align:right;"> 93 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(160, 42, 99, 1) !important;"> 0.430 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Panov Attack, Modern Defense, Mieses Line </td>
-   <td style="text-align:right;"> 63 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(159, 42, 99, 1) !important;"> 0.429 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Panov Attack </td>
-   <td style="text-align:right;"> 54 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(159, 42, 99, 1) !important;"> 0.426 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> English Opening: Symmetrical Variation, Anti-Benoni Variation </td>
-   <td style="text-align:right;"> 71 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(151, 39, 102, 1) !important;"> 0.408 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Advance Variation, Short Variation </td>
-   <td style="text-align:right;"> 120 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(151, 39, 102, 1) !important;"> 0.408 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Nimzo-Larsen Attack </td>
-   <td style="text-align:right;"> 95 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(147, 38, 103, 1) !important;"> 0.400 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Bird Opening </td>
-   <td style="text-align:right;"> 53 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(146, 37, 104, 1) !important;"> 0.396 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> English Opening: Caro-Kann Defensive System </td>
-   <td style="text-align:right;"> 120 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(138, 34, 106, 1) !important;"> 0.375 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Two Knights Attack </td>
-   <td style="text-align:right;"> 168 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(135, 33, 107, 1) !important;"> 0.369 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Benoni Defense: Modern Variation </td>
-   <td style="text-align:right;"> 129 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(133, 33, 107, 1) !important;"> 0.364 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Caro-Kann Defense: Advance Variation </td>
-   <td style="text-align:right;"> 107 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(125, 30, 109, 1) !important;"> 0.346 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> black </td>
-   <td style="text-align:left;"> Mieses Opening </td>
-   <td style="text-align:right;"> 64 </td>
-   <td style="text-align:left;color: white !important;background-color: rgba(125, 30, 109, 1) !important;"> 0.344 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Accelerated Panov Attack, Modern Variation</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: left; color: white !important; background-color: rgba(225, 86, 53, 255) !important;">0.616</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Four Pawns Attack</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: left; color: white !important; background-color: rgba(224, 85, 54, 255) !important;">0.613</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Benoni-Indian Defense, Kingside Move Order</td>
+<td style="text-align: right;">86</td>
+<td style="text-align: left; color: white !important; background-color: rgba(222, 82, 56, 255) !important;">0.605</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Hillbilly Attack</td>
+<td style="text-align: right;">276</td>
+<td style="text-align: left; color: white !important; background-color: rgba(212, 72, 66, 255) !important;">0.572</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Classical Variation</td>
+<td style="text-align: right;">176</td>
+<td style="text-align: left; color: white !important; background-color: rgba(208, 69, 69, 255) !important;">0.562</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Slav Indian</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: left; color: white !important; background-color: rgba(199, 62, 76, 255) !important;">0.532</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Saragossa Opening</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: left; color: white !important; background-color: rgba(196, 60, 78, 255) !important;">0.524</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Panov Attack, Modern Defense</td>
+<td style="text-align: right;">101</td>
+<td style="text-align: left; color: white !important; background-color: rgba(192, 58, 81, 255) !important;">0.515</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Accelerated Panov Attack</td>
+<td style="text-align: right;">150</td>
+<td style="text-align: left; color: white !important; background-color: rgba(192, 58, 81, 255) !important;">0.513</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Classical Variation</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: left; color: white !important; background-color: rgba(192, 58, 81, 255) !important;">0.512</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense</td>
+<td style="text-align: right;">2586</td>
+<td style="text-align: left; color: white !important; background-color: rgba(186, 54, 85, 255) !important;">0.497</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Classical Variation, Averbakh-Grivas Attack</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: left; color: white !important; background-color: rgba(185, 53, 86, 255) !important;">0.495</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Bronstein-Larsen Variation</td>
+<td style="text-align: right;">382</td>
+<td style="text-align: left; color: white !important; background-color: rgba(185, 53, 86, 255) !important;">0.495</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Hungarian Opening: Slav Formation</td>
+<td style="text-align: right;">352</td>
+<td style="text-align: left; color: white !important; background-color: rgba(183, 53, 87, 255) !important;">0.491</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: King's Pawn Line</td>
+<td style="text-align: right;">312</td>
+<td style="text-align: left; color: white !important; background-color: rgba(182, 52, 88, 255) !important;">0.487</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Exchange Variation</td>
+<td style="text-align: right;">659</td>
+<td style="text-align: left; color: white !important; background-color: rgba(182, 52, 88, 255) !important;">0.487</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Van Geet Opening</td>
+<td style="text-align: right;">68</td>
+<td style="text-align: left; color: white !important; background-color: rgba(182, 52, 88, 255) !important;">0.485</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Modern Variation</td>
+<td style="text-align: right;">381</td>
+<td style="text-align: left; color: white !important; background-color: rgba(179, 50, 90, 255) !important;">0.478</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Van't Kruijs Opening</td>
+<td style="text-align: right;">443</td>
+<td style="text-align: left; color: white !important; background-color: rgba(177, 50, 90, 255) !important;">0.476</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Uhlmann Variation</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: left; color: white !important; background-color: rgba(177, 50, 90, 255) !important;">0.473</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Advance Variation, Bayonet Attack</td>
+<td style="text-align: right;">102</td>
+<td style="text-align: left; color: white !important; background-color: rgba(176, 49, 91, 255) !important;">0.471</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Slav Defense: Exchange Variation</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: left; color: white !important; background-color: rgba(173, 48, 93, 255) !important;">0.463</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense</td>
+<td style="text-align: right;">240</td>
+<td style="text-align: left; color: white !important; background-color: rgba(173, 48, 93, 255) !important;">0.462</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Old Benoni</td>
+<td style="text-align: right;">1195</td>
+<td style="text-align: left; color: white !important; background-color: rgba(171, 47, 94, 255) !important;">0.459</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Queen's Pawn Game</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: left; color: white !important; background-color: rgba(171, 47, 94, 255) !important;">0.459</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Benoni Gambit Accepted</td>
+<td style="text-align: right;">234</td>
+<td style="text-align: left; color: white !important; background-color: rgba(169, 46, 94, 255) !important;">0.453</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Exchange Variation, Rubinstein Variation</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: left; color: white !important; background-color: rgba(168, 46, 95, 255) !important;">0.452</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Indian Defense: Spielmann-Indian</td>
+<td style="text-align: right;">488</td>
+<td style="text-align: left; color: white !important; background-color: rgba(166, 45, 96, 255) !important;">0.449</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Main Line</td>
+<td style="text-align: right;">289</td>
+<td style="text-align: left; color: white !important; background-color: rgba(165, 44, 96, 255) !important;">0.443</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">English Opening: Caro-Kann Defensive System</td>
+<td style="text-align: right;">429</td>
+<td style="text-align: left; color: white !important; background-color: rgba(165, 44, 96, 255) !important;">0.443</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Slav Defense</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: left; color: white !important; background-color: rgba(165, 44, 96, 255) !important;">0.443</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Advance Variation, Short Variation</td>
+<td style="text-align: right;">329</td>
+<td style="text-align: left; color: white !important; background-color: rgba(163, 44, 97, 255) !important;">0.438</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Two Knights Attack</td>
+<td style="text-align: right;">570</td>
+<td style="text-align: left; color: white !important; background-color: rgba(162, 43, 98, 255) !important;">0.433</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Breyer Variation</td>
+<td style="text-align: right;">261</td>
+<td style="text-align: left; color: white !important; background-color: rgba(159, 42, 99, 255) !important;">0.429</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">King's Indian Attack: Yugoslav Variation</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: left; color: white !important; background-color: rgba(159, 42, 99, 255) !important;">0.429</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Zukertort Opening: Slav Invitation</td>
+<td style="text-align: right;">425</td>
+<td style="text-align: left; color: white !important; background-color: rgba(159, 42, 99, 255) !important;">0.428</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Nimzo-Larsen Attack</td>
+<td style="text-align: right;">422</td>
+<td style="text-align: left; color: white !important; background-color: rgba(157, 41, 100, 255) !important;">0.424</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Bird Opening</td>
+<td style="text-align: right;">236</td>
+<td style="text-align: left; color: white !important; background-color: rgba(157, 41, 100, 255) !important;">0.424</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Indian Defense: Reversed Chigorin Defense</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: left; color: white !important; background-color: rgba(155, 41, 100, 255) !important;">0.419</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Panov Attack, Modern Defense, Mieses Line</td>
+<td style="text-align: right;">305</td>
+<td style="text-align: left; color: white !important; background-color: rgba(154, 40, 101, 255) !important;">0.416</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">English Opening: Symmetrical Variation, Anti-Benoni Variation</td>
+<td style="text-align: right;">209</td>
+<td style="text-align: left; color: white !important; background-color: rgba(152, 39, 102, 255) !important;">0.411</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Panov Attack</td>
+<td style="text-align: right;">141</td>
+<td style="text-align: left; color: white !important; background-color: rgba(152, 39, 102, 255) !important;">0.411</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Sicilian Defense</td>
+<td style="text-align: right;">242</td>
+<td style="text-align: left; color: white !important; background-color: rgba(151, 39, 102, 255) !important;">0.409</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Benoni Defense: Benoni-Indian Defense</td>
+<td style="text-align: right;">147</td>
+<td style="text-align: left; color: white !important; background-color: rgba(146, 37, 104, 255) !important;">0.395</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Sicilian Defense: Closed</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: left; color: white !important; background-color: rgba(141, 35, 105, 255) !important;">0.383</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Nimzo-Larsen Attack: English Variation</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: left; color: white !important; background-color: rgba(140, 35, 105, 255) !important;">0.382</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Advance Variation</td>
+<td style="text-align: right;">342</td>
+<td style="text-align: left; color: white !important; background-color: rgba(133, 33, 107, 255) !important;">0.365</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Mieses Opening</td>
+<td style="text-align: right;">242</td>
+<td style="text-align: left; color: white !important; background-color: rgba(133, 33, 107, 255) !important;">0.364</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Endgame Offer</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: left; color: white !important; background-color: rgba(128, 31, 108, 255) !important;">0.353</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Sicilian Defense: Smith-Morra Gambit</td>
+<td style="text-align: right;">94</td>
+<td style="text-align: left; color: white !important; background-color: rgba(128, 31, 108, 255) !important;">0.351</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Advance Variation, Tal Variation</td>
+<td style="text-align: right;">133</td>
+<td style="text-align: left; color: white !important; background-color: rgba(122, 29, 109, 255) !important;">0.338</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Slav Defense: Three Knights Variation</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: left; color: white !important; background-color: rgba(116, 26, 110, 255) !important;">0.323</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">Caro-Kann Defense: Maróczy Variation</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: left; color: white !important; background-color: rgba(111, 25, 110, 255) !important;">0.311</td>
+</tr>
 </tbody>
 </table>
 
+
 </div>
+</div>
+</figure>
 </div>
 </div>
 <!-- ```{r} -->
@@ -450,12 +740,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
     }
-  });
-  clipboard.on('success', function(e) {
+    return false;
+  }
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -464,17 +757,71 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
-  function tippyHover(el, contentFn) {
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -484,8 +831,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -497,31 +853,285 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
