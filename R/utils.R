@@ -27,3 +27,48 @@ lic_request <- function(url, token = lic_token()) {
 
   req
 }
+
+#' Convert Date/POSIXct/Character to Milliseconds Timestamp
+#'
+#' @param x A Date, POSIXt, numeric, or Date-like character string.
+#' @return A character string representing UNIX timestamp in milliseconds, or `NULL`.
+#' @noRd
+lic_to_timestamp <- function(x) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+
+  if (is.numeric(x)) {
+    if (x < 1e11) {
+      return(sprintf("%.0f", x * 1000))
+    }
+    return(sprintf("%.0f", x))
+  }
+
+  if (is.character(x)) {
+    x <- as.POSIXct(x, tz = "UTC")
+  }
+
+  if (inherits(x, "Date")) {
+    x <- as.POSIXct(x, tz = "UTC")
+  }
+
+  if (inherits(x, "POSIXt")) {
+    ms <- as.numeric(x) * 1000
+    return(sprintf("%.0f", ms))
+  }
+
+  cli::cli_abort("Unsupported date/time format for timestamp conversion.")
+}
+
+#' Convert Epoch Milliseconds to POSIXct
+#'
+#' @param ms Numeric vector of epoch milliseconds.
+#' @return POSIXct datetime vector in UTC.
+#' @noRd
+lic_from_timestamp <- function(ms) {
+  if (is.null(ms)) {
+    return(as.POSIXct(character(), tz = "UTC"))
+  }
+  as.POSIXct(as.numeric(ms) / 1000, origin = "1970-01-01", tz = "UTC")
+}

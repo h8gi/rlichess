@@ -7,10 +7,17 @@
 lic_get_games(
   username,
   perf_type = NULL,
+  since = NULL,
+  until = NULL,
   max = NULL,
+  vs = NULL,
   rated = NULL,
+  color = NULL,
+  analysed = NULL,
   opening = TRUE,
-  moves = FALSE,
+  moves = TRUE,
+  clocks = FALSE,
+  evals = FALSE,
   token = lic_token()
 )
 }
@@ -19,13 +26,27 @@ lic_get_games(
 
 \item{perf_type}{Optional game type filter (e.g. \code{"bullet"}, \code{"blitz"}, \code{"rapid"}, \code{"classical"}).}
 
+\item{since}{Download games played since this timestamp or Date (e.g. \code{"2025-01-01"} or \code{as.Date(...)}).}
+
+\item{until}{Download games played until this timestamp or Date.}
+
 \item{max}{Maximum number of games to download. Default is \code{NULL} (all games).}
+
+\item{vs}{Filter for games played against a specific opponent username.}
 
 \item{rated}{Logical. Whether to fetch only rated games. Default is \code{NULL}.}
 
+\item{color}{Filter for player's color: \code{"white"} or \code{"black"}.}
+
+\item{analysed}{Logical. Whether to fetch only games with computer analysis.}
+
 \item{opening}{Logical. Whether to include opening name and ECO code. Default is \code{TRUE}.}
 
-\item{moves}{Logical. Whether to include PGN moves. Default is \code{FALSE}.}
+\item{moves}{Logical. Whether to include PGN moves string. Default is \code{TRUE}.}
+
+\item{clocks}{Logical. Whether to include clock times for each move. Default is \code{FALSE}.}
+
+\item{evals}{Logical. Whether to include Stockfish evaluations. Default is \code{FALSE}.}
 
 \item{token}{API access token. By default, retrieved via \code{\link[=lic_token]{lic_token()}}.}
 }

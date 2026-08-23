@@ -2,24 +2,18 @@
 % Please edit documentation in R/games.R
 \name{lic_normalize_games}
 \alias{lic_normalize_games}
-\title{Normalize Game Data}
+\title{Normalize Game Data (Legacy Alias)}
 \usage{
 lic_normalize_games(data, username)
 }
 \arguments{
-\item{data}{Raw game tibble returned by \code{\link[=lic_get_games]{lic_get_games()}}.}
+\item{data}{Raw game tibble.}
 
-\item{username}{Target username to calculate user-centric perspective.}
+\item{username}{Target username.}
 }
 \value{
-A \link[tibble:tibble]{tibble::tibble} with normalized columns.
+A tidy tibble.
 }
 \description{
-Enriches game data with user-perspective columns such as \code{color}, \code{win}, \code{result}, and \code{status}.
-}
-\examples{
-\dontrun{
-raw <- lic_get_games("h8gi", max = 20)
-games <- lic_normalize_games(raw, username = "h8gi")
-}
+Alias for \code{\link[=lic_tidy_games]{lic_tidy_games()}} for backward compatibility.
 }
