@@ -1,0 +1,29 @@
+Package: rlichess
+Title: R Client and Analysis Tools for Lichess
+Version: 0.1.0.9000
+Authors@R: 
+    person("Hiroki", "Yagi", , "hiro.yagi0245@gmail.com", role = c("aut", "cre"))
+Description: Provides an interface to the Lichess API (https://lichess.org/api)
+    for downloading chess game data, player profiles, and ratings, along with
+    tidy tools for analyzing chess performances, openings, and trends.
+License: MIT + file LICENSE
+URL: https://github.com/h8gi/rlichess
+BugReports: https://github.com/h8gi/rlichess/issues
+Depends: 
+    R (>= 4.1.0)
+Imports: 
+    cli,
+    dplyr (>= 1.1.0),
+    httr2 (>= 1.0.0),
+    jsonlite,
+    rlang (>= 1.1.0),
+    tibble (>= 3.2.0)
+Suggests: 
+    ggplot2,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.0
