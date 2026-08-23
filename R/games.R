@@ -29,13 +29,8 @@ lic_get_games <- function(username,
 
   url <- paste0("https://lichess.org/api/games/user/", username)
 
-  req <- httr2::request(url) |>
-    httr2::req_headers("Accept" = "application/x-ndjson") |>
-    httr2::req_retry(max_tries = 3)
-
-  if (!is.null(token) && nzchar(token)) {
-    req <- req |> httr2::req_auth_bearer_token(token)
-  }
+  req <- lic_request(url, token = token) |>
+    httr2::req_headers("Accept" = "application/x-ndjson")
 
   query_params <- list(
     opening = if (isTRUE(opening)) "true" else "false",

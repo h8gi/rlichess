@@ -2,6 +2,13 @@
 
 export(lic_get_games)
 export(lic_normalize_games)
+export(lic_rating_history)
 export(lic_stats_openings)
 export(lic_token)
-importFrom(rlang,.data)
+export(lic_user_perf_stats)
+export(lic_user_perfs)
+export(lic_user_profile)
+importFrom(rlang,
+  "%||%",
+  .data
+)
