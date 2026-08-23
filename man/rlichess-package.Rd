@@ -12,6 +12,7 @@ Provides an interface to the Lichess API (https://lichess.org/api) for downloadi
 Useful links:
 \itemize{
   \item \url{https://github.com/h8gi/rlichess}
+  \item \url{https://h8gi.github.io/rlichess/}
   \item Report bugs at \url{https://github.com/h8gi/rlichess/issues}
 }
 

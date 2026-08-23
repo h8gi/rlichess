@@ -138,3 +138,5 @@ rsconnect/
 .env
 
 report_files
+docs
+inst/doc

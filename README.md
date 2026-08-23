@@ -1,6 +1,7 @@
 # rlichess
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/h8gi/rlichess/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/h8gi/rlichess/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 `rlichess` は、Lichess (https://lichess.org) の対局データ、プレイヤー情報、オープニング統計、パズルデータを取得し、Tidyverse（`dplyr`, `ggplot2` 等）で直感的に分析できるように設計された R パッケージです。

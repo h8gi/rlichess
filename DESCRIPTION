@@ -7,7 +7,7 @@ Description: Provides an interface to the Lichess API (https://lichess.org/api)
     for downloading chess game data, player profiles, and ratings, along with
     tidy tools for analyzing chess performances, openings, and trends.
 License: MIT + file LICENSE
-URL: https://github.com/h8gi/rlichess
+URL: https://github.com/h8gi/rlichess, https://h8gi.github.io/rlichess/
 BugReports: https://github.com/h8gi/rlichess/issues
 Depends: 
     R (>= 4.1.0)
@@ -28,3 +28,4 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Config/roxygen2/version: 8.1.0
 LazyData: true
+VignetteBuilder: knitr

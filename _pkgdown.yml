@@ -1,0 +1,49 @@
+url: https://h8gi.github.io/rlichess/
+template:
+  bootstrap: 5
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [github]
+
+reference:
+  - title: "Authentication"
+    desc: "Manage API tokens for authenticated Lichess requests."
+    contents:
+      - lic_token
+
+  - title: "Games & Moves"
+    desc: "Download, tidy, and expand game and move data."
+    contents:
+      - lic_get_games
+      - lic_get_game
+      - lic_tidy_games
+      - lic_tidy_moves
+      - lic_normalize_games
+
+  - title: "Users & Performance"
+    desc: "Fetch user profiles, rating history, and performance statistics."
+    contents:
+      - lic_user_profile
+      - lic_user_perfs
+      - lic_rating_history
+      - lic_user_perf_stats
+
+  - title: "Opening Statistics & Explorer"
+    desc: "Analyze opening statistics and query Lichess/Masters opening explorer databases."
+    contents:
+      - lic_stats_openings
+      - lic_opening_explorer
+      - lic_masters_explorer
+
+  - title: "Puzzles"
+    desc: "Fetch daily puzzles and user puzzle activity."
+    contents:
+      - lic_puzzle_daily
+      - lic_puzzle_activity
+
+  - title: "Datasets"
+    desc: "Included package datasets."
+    contents:
+      - lichess_openings
