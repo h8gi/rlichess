@@ -2,92 +2,132 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/h8gi/rlichess/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/h8gi/rlichess/actions/workflows/R-CMD-check.yaml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation](https://img.shields.io/badge/docs-pkgdown-blue.svg)](https://h8gi.github.io/rlichess/)
 <!-- badges: end -->
 
-`rlichess` は、Lichess (https://lichess.org) の対局データ、プレイヤー情報、オープニング統計、パズルデータを取得し、Tidyverse（`dplyr`, `ggplot2` 等）で直感的に分析できるように設計された R パッケージです。
+**rlichess** is a modern, tidy R client for the [Lichess API](https://lichess.org/api). It provides tools for fetching, standardizing, and analyzing chess games, opening repertoires, user profiles, rating histories, and puzzles using tidyverse conventions.
 
-## インストール
+## Features
 
-```R
-# devtools::install_github("h8gi/rlichess")
-# または
-# pak::pak("h8gi/rlichess")
+- **Tidy Game Data**: Fetch user games (NDJSON stream) and convert them into tidy tibbles with user-perspective columns (`user_color`, `user_result`, `user_rating`, `opponent_name`, `created_at`).
+- **Move-by-Move Expansion**: Unpack game move sequences, clock times, and Stockfish evaluations into long-format tibbles (1 row per half-move).
+- **Opening Analysis & Explorer**: Calculate opening win rates and query the Lichess/Masters Opening Explorer databases directly from R.
+- **User & Rating Analytics**: Retrieve user performance profiles, detailed statistics, and daily rating histories.
+- **Included Dataset**: Built-in `lichess_openings` dataset containing 3,378 ECO codes, opening names, and PGN move sequences.
+- **Robust Networking**: Powered by `httr2` with automatic retry, rate limiting, and friendly error messages.
+
+## Installation
+
+Install the development version from GitHub:
+
+```r
+# install.packages("pak")
+pak::pak("h8gi/rlichess")
+
+# or using devtools / remotes
+devtools::install_github("h8gi/rlichess")
 ```
 
-## 基本機能と使い方
+## Quick Start
 
-### 1. APIトークンの設定 (任意)
+### 1. API Token Setup (Optional)
 
-Lichess Personal Access Token を環境変数に設定しておくと、レート制限が大幅に緩和され、日次レーティング推移のオンデマンド取得が可能になります。
+While public endpoints can be accessed anonymously, providing a Lichess Personal Access Token increases rate limits and enables on-demand rating history retrieval.
 
-```R
-Sys.setenv(LICHESS_API_TOKEN = "your_personal_token_here")
+Set your token in `.Renviron`:
+
+```bash
+LICHESS_API_TOKEN="your_personal_access_token"
 ```
 
-### 2. 対局データの取得と Tidy 化
+In R, `rlichess` automatically loads it via `lic_token()`:
 
-```R
+```r
+library(rlichess)
+lic_token()
+```
+
+### 2. Download and Tidy Game Data
+
+```r
 library(rlichess)
 library(dplyr)
 
-# 1. ユーザーの対局データを取得 (日付フィルタや評価値・時計の指定が可能)
+# 1. Download games (supports date filtering, clocks, evals)
 raw_games <- lic_get_games(
   username = "h8gi",
   perf_type = "bullet",
   since = "2025-01-01",
-  max = 100,
+  max = 50,
   clocks = TRUE,
   evals = TRUE
 )
 
-# 2. ユーザー視点での手番・勝敗・対戦相手情報・日時に整形 (Tidy 化)
+# 2. Tidy into user-centric format (win/loss, dates, opponent info)
 games <- lic_tidy_games(raw_games, username = "h8gi")
 
-# 3. 1手ごとのロング形式テーブルに展開 (着手ごとの消費時間や評価値分析用)
+# 3. Unpack moves into long format (1 row per half-move)
 moves_df <- lic_tidy_moves(games)
 head(moves_df)
 
-# 4. オープニング別の戦績・勝率を集計
+# 4. Calculate opening win rates
 opening_stats <- lic_stats_openings(games, min_games = 5)
+head(opening_stats)
 ```
 
-### 3. ユーザープロファイル・レーティング履歴の取得
+### 3. User Profiles and Rating History
 
-```R
-# ユーザーの種目別レーティング・対局数一覧
+```r
+# Summary of ratings across performance categories
 perfs <- lic_user_perfs("h8gi")
 
-# 日次レーティング推移の取得 (日付・レーティング値の tibble)
+# Daily rating history (returns a tidy tibble of dates and ratings)
 history <- lic_rating_history("h8gi", perf_type = "bullet")
 
-# 種目別の詳細パフォーマンス統計 (勝敗数・連勝記録・最高/最低レーティング)
+# Detailed stats (streaks, best wins, worst losses, average opponent)
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")
 ```
 
-### 4. オープニングエクスプローラー (Lichess DB / Masters DB)
+### 4. Opening Explorer (Lichess & Masters Databases)
 
-```R
-# 初手 e4 c5 (Sicilian) の Lichess 対局統計と候補手一覧を取得
+```r
+# Query Lichess opening database for candidate moves (e.g. 1. e4 c5)
 explorer <- lic_opening_explorer(play = "e4,c5")
 explorer$moves
 
-# FIDE マスター対局データベースの検索
+# Query FIDE master games (2200+ FIDE)
 masters <- lic_masters_explorer(play = "e4,c5")
 masters$moves
 ```
 
-### 5. 付属データセット
+### 5. Daily Puzzle
 
-Lichess の全オープニングデータベース（3,378件の ECO コード、戦形名、PGN 初手定義）が同梱されています。
+```r
+# Fetch today's featured puzzle
+puzzle <- lic_puzzle_daily()
+puzzle$puzzle$rating
+```
 
-```R
+### 6. Built-in Dataset
+
+```r
 data(lichess_openings)
 head(lichess_openings)
 ```
 
-## 開発フロー
+## Documentation
 
-- `devtools::load_all()`: 開発中コードの読み込み
-- `devtools::document()`: ドキュメントおよび NAMESPACE の自動更新
-- `devtools::test()`: ユニットテストの実行
-- `devtools::check()`: CRAN ガイドライン準拠チェック
+Full documentation, function references, and vignettes are available at:  
+👉 **[https://h8gi.github.io/rlichess/](https://h8gi.github.io/rlichess/)**
+
+## Development
+
+- `devtools::load_all()`: Load package functions into memory
+- `devtools::document()`: Update roxygen documentation and `NAMESPACE`
+- `devtools::test()`: Run `testthat` suite
+- `devtools::check()`: Run comprehensive CRAN checks
+
+## License
+
+MIT © Hiroki Yagi
