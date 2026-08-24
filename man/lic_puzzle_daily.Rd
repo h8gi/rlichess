@@ -21,8 +21,8 @@ Retrieves today's featured puzzle from Lichess.
 \strong{Official Documentation:} \url{https://lichess.org/api#tag/Puzzles/operation/apiPuzzleDaily}
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 puzzle <- lic_puzzle_daily()
 puzzle$puzzle$rating
-}
+\dontshow{\}) # examplesIf}
 }

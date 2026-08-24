@@ -32,7 +32,7 @@ Rating history is generated on demand for authenticated requests (OAuth token).
 Unauthenticated requests return a cached version if available, otherwise an empty dataset.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 hist <- lic_user_rating_history("h8gi", perf_type = "bullet")
-}
+\dontshow{\}) # examplesIf}
 }

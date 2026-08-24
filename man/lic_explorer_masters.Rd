@@ -44,8 +44,8 @@ Retrieves opening statistics from historical FIDE master-level games (2200+ FIDE
 \strong{Official Documentation:} \url{https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerMaster}
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 masters <- lic_explorer_masters(play = "e4,c5")
 masters$moves
-}
+\dontshow{\}) # examplesIf}
 }

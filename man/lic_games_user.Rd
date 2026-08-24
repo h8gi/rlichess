@@ -83,7 +83,7 @@ Rate limits: Anonymous requests are throttled at 20 games/sec. Authenticated
 OAuth requests receive 30 games/sec (or 60 games/sec when fetching your own games).
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 games <- lic_games_user("h8gi", perf_type = "bullet", max = 50)
-}
+\dontshow{\}) # examplesIf}
 }

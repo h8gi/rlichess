@@ -30,8 +30,8 @@ If \code{raw = TRUE}, returns the full parsed JSON list.
 \strong{Official Documentation:} \url{https://lichess.org/api#tag/Users/operation/apiUser}
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 user <- lic_user("h8gi")
 user$created_at
-}
+\dontshow{\}) # examplesIf}
 }

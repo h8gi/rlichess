@@ -15,11 +15,9 @@
 #'
 #' @return A 1-row [tibble::tibble] (if `raw = FALSE`) or a nested `list` (if `raw = TRUE`).
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' user <- lic_user("h8gi")
 #' user$created_at
-#' }
 lic_user <- function(username, raw = FALSE, token = lic_token()) {
   if (missing(username) || !is.character(username) || length(username) != 1 || !nzchar(username)) {
     cli::cli_abort("{.arg username} must be a single non-empty character string.")
@@ -84,10 +82,8 @@ lic_user_profile <- function(username, raw = FALSE, token = lic_token()) {
 #'
 #' @return A [tibble::tibble] with columns `perf`, `games`, `rating`, `rd`, `prog`, `prov`.
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' perfs <- lic_user_perfs("h8gi")
-#' }
 lic_user_perfs <- function(username, token = lic_token()) {
   prof <- lic_user(username = username, raw = TRUE, token = token)
 
@@ -139,10 +135,8 @@ lic_user_perfs <- function(username, token = lic_token()) {
 #'
 #' @return A [tibble::tibble] with columns `username`, `perf`, `date`, and `rating`.
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' hist <- lic_user_rating_history("h8gi", perf_type = "bullet")
-#' }
 lic_user_rating_history <- function(username, perf_type = NULL, token = lic_token()) {
   if (missing(username) || !is.character(username) || length(username) != 1 || !nzchar(username)) {
     cli::cli_abort("{.arg username} must be a single non-empty character string.")
@@ -233,11 +227,9 @@ lic_rating_history <- function(username, perf_type = NULL, token = lic_token()) 
 #'
 #' @return A list containing performance statistics.
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' stats <- lic_user_perf_stats("h8gi", perf = "bullet")
 #' stats$stat$count
-#' }
 lic_user_perf_stats <- function(username, perf = "bullet", token = lic_token()) {
   if (missing(username) || !is.character(username) || length(username) != 1 || !nzchar(username)) {
     cli::cli_abort("{.arg username} must be a single non-empty character string.")

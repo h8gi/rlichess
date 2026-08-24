@@ -50,8 +50,8 @@ Retrieves opening statistics (win rates, popular candidate moves) from the Liche
 Note: As of 2026, Lichess requires OAuth2 / API Token authentication for explorer queries.
 }
 \examples{
-\dontrun{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 exp <- lic_explorer_lichess(play = "e4,c5")
 exp$moves
-}
+\dontshow{\}) # examplesIf}
 }
