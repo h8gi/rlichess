@@ -62,6 +62,16 @@ A list containing aggregate stats (`white`, `draws`, `black`) and a tidy
 [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html) of
 candidate `moves`.
 
+## Details
+
+**Lichess API Endpoint:** `GET https://explorer.lichess.ovh/lichess`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerLichess>
+
+Note: As of 2026, Lichess requires OAuth2 / API Token authentication for
+explorer queries.
+
 ## Examples
 
 ``` r

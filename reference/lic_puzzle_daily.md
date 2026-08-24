@@ -20,6 +20,13 @@ lic_puzzle_daily(token = lic_token())
 A list containing puzzle metadata (puzzle ID, rating, plays, FEN, moves,
 themes).
 
+## Details
+
+**Lichess API Endpoint:** `GET /api/puzzle/daily`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Puzzles/operation/apiPuzzleDaily>
+
 ## Examples
 
 ``` r

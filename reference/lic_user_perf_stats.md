@@ -30,6 +30,13 @@ lic_user_perf_stats(username, perf = "bullet", token = lic_token())
 
 A list containing performance statistics.
 
+## Details
+
+**Lichess API Endpoint:** `GET /api/user/{username}/perf/{perf}`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Users/operation/userPerf>
+
 ## Examples
 
 ``` r

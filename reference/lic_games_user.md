@@ -109,6 +109,17 @@ lic_get_games(
 A [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
 containing raw game records.
 
+## Details
+
+**Lichess API Endpoint:** `GET /api/games/user/{username}`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Games/operation/apiGamesUser>
+
+Rate limits: Anonymous requests are throttled at 20 games/sec.
+Authenticated OAuth requests receive 30 games/sec (or 60 games/sec when
+fetching your own games).
+
 ## Examples
 
 ``` r

@@ -68,6 +68,13 @@ up-to-date rating history on-demand for authenticated requests.</p>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble</a> with columns <code>username</code>, <code>perf</code>, <code>date</code>, and <code>rating</code>.</p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p><strong>Lichess API Endpoint:</strong> <code>GET /api/user/{username}/rating-history</code></p>
+<p><strong>Official Documentation:</strong> <a href="https://lichess.org/api#tag/Users/operation/apiUserRatingHistory" class="external-link">https://lichess.org/api#tag/Users/operation/apiUserRatingHistory</a></p>
+<p>Rating history is generated on demand for authenticated requests (OAuth token).
+Unauthenticated requests return a cached version if available, otherwise an empty dataset.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

@@ -49,6 +49,13 @@ lic_explorer_player(
 A list containing aggregate stats (`white`, `draws`, `black`) and
 candidate `moves` tibble.
 
+## Details
+
+**Lichess API Endpoint:** `GET https://explorer.lichess.ovh/player`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerPlayer>
+
 ## Examples
 
 ``` r

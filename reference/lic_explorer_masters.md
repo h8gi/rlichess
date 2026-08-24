@@ -51,6 +51,13 @@ lic_masters_explorer(
 A list containing aggregate stats (`white`, `draws`, `black`), candidate
 `moves` tibble, and top `topGames`.
 
+## Details
+
+**Lichess API Endpoint:** `GET https://explorer.lichess.ovh/masters`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerMaster>
+
 ## Examples
 
 ``` r

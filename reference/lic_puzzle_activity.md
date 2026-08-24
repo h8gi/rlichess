@@ -26,6 +26,13 @@ A tidy
 [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html) of
 puzzle attempts.
 
+## Details
+
+**Lichess API Endpoint:** `GET /api/puzzle/activity`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Puzzles/operation/apiPuzzleActivity>
+
 ## Examples
 
 ``` r

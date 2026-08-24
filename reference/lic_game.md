@@ -57,6 +57,13 @@ A single-row
 [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
 containing game details.
 
+## Details
+
+**Lichess API Endpoint:** `GET /game/export/{gameId}`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Games/operation/gamePgn>
+
 ## Examples
 
 ``` r

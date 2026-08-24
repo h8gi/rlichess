@@ -25,6 +25,13 @@ lic_user_perfs(username, token = lic_token())
 A [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
 with columns `perf`, `games`, `rating`, `rd`, `prog`, `prov`.
 
+## Details
+
+**Lichess API Endpoint:** Extracted from `GET /api/user/{username}`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Users/operation/apiUser>
+
 ## Examples
 
 ``` r

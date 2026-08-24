@@ -49,6 +49,13 @@ with columns:
 
   Stockfish evaluation in centipawns or mate (if available)
 
+## Details
+
+This is an **offline data transformation** function (no API network
+request). It unnests the move string (`moves`), clock array (`clocks`),
+and evaluation array (`evals`) from game records into a tidy ply-by-ply
+dataset.
+
 ## Examples
 
 ``` r

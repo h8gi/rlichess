@@ -30,6 +30,14 @@ A tidy
 [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
 with standardized column names and types.
 
+## Details
+
+This is an **offline data transformation** function (no API network
+request). It standardizes raw data returned by
+[`lic_games_user()`](https://h8gi.github.io/rlichess/reference/lic_games_user.md)
+or
+[`lic_game()`](https://h8gi.github.io/rlichess/reference/lic_game.md).
+
 ## Examples
 
 ``` r

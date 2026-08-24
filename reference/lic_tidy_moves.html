@@ -79,6 +79,12 @@ long-format tidy tibble where each row corresponds to one half-move (ply).</p>
 <dd><p>Stockfish evaluation in centipawns or mate (if available)</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>This is an <strong>offline data transformation</strong> function (no API network request).
+It unnests the move string (<code>moves</code>), clock array (<code>clocks</code>), and evaluation array (<code>evals</code>)
+from game records into a tidy ply-by-ply dataset.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

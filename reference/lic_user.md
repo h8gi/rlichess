@@ -36,6 +36,13 @@ A 1-row
 [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html) (if
 `raw = FALSE`) or a nested `list` (if `raw = TRUE`).
 
+## Details
+
+**Lichess API Endpoint:** `GET /api/user/{username}`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Users/operation/apiUser>
+
 ## Examples
 
 ``` r

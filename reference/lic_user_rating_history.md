@@ -32,6 +32,17 @@ lic_rating_history(username, perf_type = NULL, token = lic_token())
 A [tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
 with columns `username`, `perf`, `date`, and `rating`.
 
+## Details
+
+**Lichess API Endpoint:** `GET /api/user/{username}/rating-history`
+
+**Official Documentation:**
+<https://lichess.org/api#tag/Users/operation/apiUserRatingHistory>
+
+Rating history is generated on demand for authenticated requests (OAuth
+token). Unauthenticated requests return a cached version if available,
+otherwise an empty dataset.
+
 ## Examples
 
 ``` r
