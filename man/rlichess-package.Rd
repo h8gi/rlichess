@@ -6,7 +6,7 @@
 \alias{rlichess-package}
 \title{rlichess: R Client and Analysis Tools for Lichess}
 \description{
-Provides an interface to the Lichess API (https://lichess.org/api) for downloading chess game data, player profiles, and ratings, along with tidy tools for analyzing chess performances, openings, and trends.
+Provides an interface to the Lichess API (\url{https://lichess.org/api}) for downloading chess game data, player profiles, and ratings, along with tidy tools for analyzing chess performances, openings, and trends.
 }
 \seealso{
 Useful links:

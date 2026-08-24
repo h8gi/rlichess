@@ -27,8 +27,9 @@
 #'
 #' @return A [tibble::tibble] containing raw game records.
 #' @export
-#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
+#' @examples
 #' games <- lic_games_user("h8gi", perf_type = "bullet", max = 5)
+#' games
 lic_games_user <- function(username,
                            perf_type = NULL,
                            since = NULL,
@@ -74,7 +75,23 @@ lic_games_user <- function(username,
 
   req <- httr2::req_url_query(req, !!!query_params)
 
-  resp <- httr2::req_perform(req)
+  resp <- tryCatch({
+    httr2::req_perform(req)
+  }, error = function(e) {
+    if (grepl("429", e$message)) {
+      cli::cli_warn(c(
+        "!" = "Lichess game stream rate limit (429) encountered. Returning empty tibble.",
+        "i" = "Wait a moment before retrying or use authenticated requests for higher limits."
+      ))
+      return(NULL)
+    }
+    rlang::abort(e$message, parent = e)
+  })
+
+  if (is.null(resp)) {
+    return(tibble::tibble())
+  }
+
   body <- httr2::resp_body_string(resp)
 
   if (!nzchar(trimws(body))) {

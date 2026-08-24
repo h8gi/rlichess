@@ -7,7 +7,7 @@
 #'
 #' **Official Documentation:** <https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerLichess>
 #'
-#' Note: As of 2026, Lichess requires OAuth2 / API Token authentication for explorer queries.
+#' Note: Lichess requires API Token authentication for explorer queries.
 #'
 #' @param fen FEN position string. Default is the starting chess position.
 #' @param play Comma-separated or vector of move sequence in UCI or SAN (e.g. `"e2e4,e7e5"` or `c("e4", "e5")`).
@@ -18,7 +18,7 @@
 #'
 #' @return A list containing aggregate stats (`white`, `draws`, `black`) and a tidy [tibble::tibble] of candidate `moves`.
 #' @export
-#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
+#' @examples
 #' exp <- lic_explorer_lichess(play = "e4,c5")
 #' exp$moves
 lic_explorer_lichess <- function(fen = NULL,
@@ -48,7 +48,36 @@ lic_explorer_lichess <- function(fen = NULL,
   }
 
   req <- httr2::req_url_query(req, !!!query_params)
-  resp <- httr2::req_perform(req)
+  
+  resp <- tryCatch({
+    httr2::req_perform(req)
+  }, error = function(e) {
+    if (grepl("401", e$message) || is.null(token) || !nzchar(token)) {
+      cli::cli_inform(c(
+        "i" = "Opening Explorer requires an API access token (OAuth2).",
+        "*" = "Set `LICHESS_API_TOKEN` environment variable or provide `token` argument."
+      ))
+      return(NULL)
+    }
+    rlang::abort(e$message, parent = e)
+  })
+
+  if (is.null(resp)) {
+    return(list(
+      white = 0L,
+      draws = 0L,
+      black = 0L,
+      moves = tibble::tibble(
+        uci = character(),
+        san = character(),
+        white = integer(),
+        draws = integer(),
+        black = integer(),
+        averageRating = integer()
+      ),
+      opening = NULL
+    ))
+  }
 
   parsed <- jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
 
@@ -109,7 +138,7 @@ lic_opening_explorer <- function(fen = NULL,
 #'
 #' @return A list containing aggregate stats (`white`, `draws`, `black`), candidate `moves` tibble, and top `topGames`.
 #' @export
-#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
+#' @examples
 #' masters <- lic_explorer_masters(play = "e4,c5")
 #' masters$moves
 lic_explorer_masters <- function(fen = NULL,
@@ -131,7 +160,30 @@ lic_explorer_masters <- function(fen = NULL,
   if (!is.null(until)) query_params$until <- as.character(until)
 
   req <- httr2::req_url_query(req, !!!query_params)
-  resp <- httr2::req_perform(req)
+  
+  resp <- tryCatch({
+    httr2::req_perform(req)
+  }, error = function(e) {
+    if (grepl("401", e$message) || is.null(token) || !nzchar(token)) {
+      cli::cli_inform(c(
+        "i" = "Masters Opening Explorer requires an API access token (OAuth2).",
+        "*" = "Set `LICHESS_API_TOKEN` environment variable or provide `token` argument."
+      ))
+      return(NULL)
+    }
+    rlang::abort(e$message, parent = e)
+  })
+
+  if (is.null(resp)) {
+    return(list(
+      white = 0L,
+      draws = 0L,
+      black = 0L,
+      moves = tibble::tibble(),
+      topGames = tibble::tibble(),
+      opening = NULL
+    ))
+  }
 
   parsed <- jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
 
@@ -185,7 +237,7 @@ lic_masters_explorer <- function(fen = NULL,
 #'
 #' @return A list containing aggregate stats (`white`, `draws`, `black`) and candidate `moves` tibble.
 #' @export
-#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
+#' @examples
 #' player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
 #' player_exp$moves
 lic_explorer_player <- function(username,
@@ -217,7 +269,29 @@ lic_explorer_player <- function(username,
   }
 
   req <- httr2::req_url_query(req, !!!query_params)
-  resp <- httr2::req_perform(req)
+  
+  resp <- tryCatch({
+    httr2::req_perform(req)
+  }, error = function(e) {
+    if (grepl("401", e$message) || is.null(token) || !nzchar(token)) {
+      cli::cli_inform(c(
+        "i" = "Player Opening Explorer requires an API access token (OAuth2).",
+        "*" = "Set `LICHESS_API_TOKEN` environment variable or provide `token` argument."
+      ))
+      return(NULL)
+    }
+    rlang::abort(e$message, parent = e)
+  })
+
+  if (is.null(resp)) {
+    return(list(
+      white = 0L,
+      draws = 0L,
+      black = 0L,
+      moves = tibble::tibble(),
+      opening = NULL
+    ))
+  }
 
   parsed <- jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
 
