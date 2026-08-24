@@ -5,24 +5,28 @@
 \alias{lic_user_profile}
 \title{Get Lichess User Profile}
 \usage{
-lic_user(username, token = lic_token())
+lic_user(username, raw = FALSE, token = lic_token())
 
-lic_user_profile(username, token = lic_token())
+lic_user_profile(username, raw = FALSE, token = lic_token())
 }
 \arguments{
 \item{username}{Lichess username.}
 
+\item{raw}{Logical. If \code{TRUE}, returns the raw nested list from Lichess API. Default is \code{FALSE}.}
+
 \item{token}{API access token. By default, retrieved via \code{\link[=lic_token]{lic_token()}}.}
 }
 \value{
-A list containing user metadata and performance summaries.
+A 1-row \link[tibble:tibble]{tibble::tibble} (if \code{raw = FALSE}) or a nested \code{list} (if \code{raw = TRUE}).
 }
 \description{
-Fetches the public user profile from Lichess.
+Fetches the public user profile from Lichess. By default (\code{raw = FALSE}), returns
+a 1-row tidy \link[tibble:tibble]{tibble::tibble} containing core user metadata, timestamps, and game counts.
+If \code{raw = TRUE}, returns the full parsed JSON list.
 }
 \examples{
 \dontrun{
 user <- lic_user("h8gi")
-user$username
+user$created_at
 }
 }
