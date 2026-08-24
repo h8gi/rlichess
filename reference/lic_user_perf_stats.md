@@ -40,8 +40,36 @@ A list containing performance statistics.
 ## Examples
 
 ``` r
-if (FALSE) { # interactive()
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")
 stats$stat$count
-}
+#> $all
+#> [1] 49007
+#> 
+#> $rated
+#> [1] 49005
+#> 
+#> $win
+#> [1] 23896
+#> 
+#> $loss
+#> [1] 23159
+#> 
+#> $draw
+#> [1] 1952
+#> 
+#> $tour
+#> [1] 230
+#> 
+#> $berserk
+#> [1] 0
+#> 
+#> $opAvg
+#> [1] 2082.56
+#> 
+#> $seconds
+#> [1] 5508384
+#> 
+#> $disconnects
+#> [1] 12
+#> 
 ```

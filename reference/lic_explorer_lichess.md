@@ -75,7 +75,7 @@ explorer queries.
 ## Examples
 
 ``` r
-if (FALSE) { # interactive()
+if (FALSE) { # nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 exp <- lic_explorer_lichess(play = "e4,c5")
 exp$moves
 }

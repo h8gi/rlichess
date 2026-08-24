@@ -59,7 +59,7 @@ candidate `moves` tibble.
 ## Examples
 
 ``` r
-if (FALSE) { # interactive()
+if (FALSE) { # nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
 player_exp$moves
 }

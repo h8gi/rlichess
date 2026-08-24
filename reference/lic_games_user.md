@@ -123,7 +123,7 @@ fetching your own games).
 ## Examples
 
 ``` r
-if (FALSE) { # interactive()
-games <- lic_games_user("h8gi", perf_type = "bullet", max = 50)
+if (FALSE) { # nzchar(Sys.getenv("LICHESS_API_TOKEN"))
+games <- lic_games_user("h8gi", perf_type = "bullet", max = 5)
 }
 ```

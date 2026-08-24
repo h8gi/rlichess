@@ -61,7 +61,7 @@ A list containing aggregate stats (`white`, `draws`, `black`), candidate
 ## Examples
 
 ``` r
-if (FALSE) { # interactive()
+if (FALSE) { # nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 masters <- lic_explorer_masters(play = "e4,c5")
 masters$moves
 }

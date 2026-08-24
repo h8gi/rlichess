@@ -67,9 +67,19 @@ for a user as a tidy tibble.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># interactive()</span></span></span>
-<span class="r-in"><span><span class="va">perfs</span> <span class="op">&lt;-</span> <span class="fu">lic_user_perfs</span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">lic_user_perfs</span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   perf           games rating    rd  prog prov </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> bullet         <span style="text-decoration: underline;">49</span>004   <span style="text-decoration: underline;">2</span>216    45   -<span style="color: #BB0000;">15</span> FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> blitz           <span style="text-decoration: underline;">1</span>709   <span style="text-decoration: underline;">2</span>077    52     8 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> rapid             82   <span style="text-decoration: underline;">2</span>156   152  -<span style="color: #BB0000;">108</span> TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> classical          5   <span style="text-decoration: underline;">1</span>889   364     0 TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> correspondence     2   <span style="text-decoration: underline;">2</span>200   403     0 TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span> puzzle          <span style="text-decoration: underline;">6</span>071   <span style="text-decoration: underline;">2</span>067    67     0 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span> storm              0     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     0 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span> racer              0     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     0 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span> streak             0     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     0 FALSE</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
