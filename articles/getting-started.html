@@ -61,48 +61,76 @@
 
     
     
-<p><code>rlichess</code> provides an intuitive and tidy interface to the
-Lichess API (<a href="https://lichess.org/api" class="external-link uri">https://lichess.org/api</a>) for chess players and data
-analysts working with R and tidyverse.</p>
+<p><code>rlichess</code> is a modern, tidy R client designed for chess
+players and data scientists to interact with the <a href="https://lichess.org/api" class="external-link">Lichess API</a> and analyze chess data
+using standard <code>tidyverse</code> principles.</p>
+<div class="section level2">
+<h2 id="package-architecture">Package Architecture<a class="anchor" aria-label="anchor" href="#package-architecture"></a>
+</h2>
+<p><code>rlichess</code> is structured into three clean layers:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Layer 1: API Clients (<code>lic_*</code>)</strong>: Direct,
+transparent HTTP wrappers corresponding 1-to-1 with official Lichess API
+endpoints.</li>
+<li>
+<strong>Layer 2: Tidy Wranglers (<code>lic_tidy_*</code>)</strong>:
+Pure offline transformation functions that clean, unnest, and
+standardize chess data into tidy tibbles.</li>
+<li>
+<strong>Layer 3: Chess Analytics
+(<code>lic_stats_*</code>)</strong>: Offline statistics and analysis
+tools (e.g., opening win rates).</li>
+</ol>
+<pre><code>[ Lichess REST API ]
+        │
+        ▼ (Layer 1: API Clients)
+  lic_games_user() / lic_user() / lic_explorer_lichess()
+        │
+        ▼ (Layer 2: Tidy Wranglers)
+  lic_tidy_games() / lic_tidy_moves()
+        │
+        ▼ (Layer 3: Analytics / Visualization)
+  lic_stats_openings() / dplyr / ggplot2</code></pre>
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install <code>rlichess</code> directly from GitHub:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<p>Install the development version from GitHub:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"h8gi/rlichess"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># or using devtools</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"h8gi/rlichess"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/h8gi/rlichess" class="external-link">rlichess</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="authentication-optional-but-recommended">1. Authentication (Optional but Recommended)<a class="anchor" aria-label="anchor" href="#authentication-optional-but-recommended"></a>
 </h2>
-<p>Lichess offers generous public API access. However, providing a
+<p>While public endpoints can be accessed anonymously, providing a
 Personal Access Token increases rate limits (up to 30–60 games/sec) and
-allows on-demand rating history retrieval.</p>
-<p>You can set your token in your <code>.Renviron</code> file:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="va">LICHESS_API_TOKEN</span><span class="op">=</span><span class="st">"your_personal_access_token"</span></span></code></pre></div>
-<p>In R code, <code>rlichess</code> automatically picks it up via
+enables on-demand rating history retrieval.</p>
+<p>Set your token in your <code>.Renviron</code> file:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="va">LICHESS_API_TOKEN</span><span class="op">=</span><span class="st">"your_personal_access_token"</span></span></code></pre></div>
+<p>In R code, <code>rlichess</code> automatically loads it via
 <code><a href="../reference/lic_token.html">lic_token()</a></code>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Check if token is available</span></span>
-<span><span class="fu"><a href="../reference/lic_token.html">lic_token</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/lic_token.html">lic_token</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="downloading-tidying-game-data">2. Downloading &amp; Tidying Game Data<a class="anchor" aria-label="anchor" href="#downloading-tidying-game-data"></a>
+<h2 id="layer-1-api-clients">2. Layer 1: API Clients<a class="anchor" aria-label="anchor" href="#layer-1-api-clients"></a>
 </h2>
 <div class="section level3">
-<h3 id="downloading-user-games">Downloading User Games<a class="anchor" aria-label="anchor" href="#downloading-user-games"></a>
+<h3 id="fetching-user-games">Fetching User Games<a class="anchor" aria-label="anchor" href="#fetching-user-games"></a>
 </h3>
-<p>Use <code><a href="../reference/lic_games_user.html">lic_get_games()</a></code> to fetch games for any Lichess user.
-You can filter by date, speed/perf, or opponent:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p><code><a href="../reference/lic_games_user.html">lic_games_user()</a></code> downloads game records directly from
+the Lichess API in NDJSON format:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download recent bullet games since 2025</span></span>
-<span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_games_user.html">lic_get_games</a></span><span class="op">(</span></span>
+<span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_games_user.html">lic_games_user</a></span><span class="op">(</span></span>
 <span>  username <span class="op">=</span> <span class="st">"h8gi"</span>,</span>
 <span>  perf_type <span class="op">=</span> <span class="st">"bullet"</span>,</span>
 <span>  since <span class="op">=</span> <span class="st">"2025-01-01"</span>,</span>
@@ -112,13 +140,48 @@ You can filter by date, speed/perf, or opponent:</p>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="tidying-into-user-centric-format">Tidying into User-Centric Format<a class="anchor" aria-label="anchor" href="#tidying-into-user-centric-format"></a>
+<h3 id="fetching-user-profiles-rating-history">Fetching User Profiles &amp; Rating History<a class="anchor" aria-label="anchor" href="#fetching-user-profiles-rating-history"></a>
 </h3>
-<p><code><a href="../reference/lic_tidy_games.html">lic_tidy_games()</a></code> enriches raw NDJSON records into a tidy
-format with readable dates (<code>POSIXct</code>), color
-(<code>"white"</code> / <code>"black"</code>), win/loss results, and
-rating differences:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># User profile summary as a 1-row tidy tibble</span></span>
+<span><span class="va">user</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user.html">lic_user</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
+<span><span class="va">user</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">username</span>, <span class="va">created_at</span>, <span class="va">play_time_total_hours</span>, <span class="va">count_all</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Performance ratings across game types</span></span>
+<span><span class="va">perfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perfs.html">lic_user_perfs</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
+<span><span class="va">perfs</span></span>
+<span></span>
+<span><span class="co"># Daily rating history</span></span>
+<span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_rating_history.html">lic_user_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="querying-opening-explorer-databases">Querying Opening Explorer Databases<a class="anchor" aria-label="anchor" href="#querying-opening-explorer-databases"></a>
+</h3>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Query Lichess opening database (e.g. 1. e4 c5)</span></span>
+<span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_lichess.html">lic_explorer_lichess</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="va">exp</span><span class="op">$</span><span class="va">moves</span></span>
+<span></span>
+<span><span class="co"># Query FIDE Masters database (2200+ FIDE)</span></span>
+<span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_masters.html">lic_explorer_masters</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="va">masters</span><span class="op">$</span><span class="va">moves</span></span>
+<span></span>
+<span><span class="co"># Query a specific player's repertoire</span></span>
+<span><span class="va">player_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_player.html">lic_explorer_player</a></span><span class="op">(</span><span class="st">"h8gi"</span>, color <span class="op">=</span> <span class="st">"white"</span>, play <span class="op">=</span> <span class="st">"e4"</span><span class="op">)</span></span>
+<span><span class="va">player_exp</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="layer-2-tidy-wranglers">3. Layer 2: Tidy Wranglers<a class="anchor" aria-label="anchor" href="#layer-2-tidy-wranglers"></a>
+</h2>
+<div class="section level3">
+<h3 id="standardizing-game-data">Standardizing Game Data<a class="anchor" aria-label="anchor" href="#standardizing-game-data"></a>
+</h3>
+<p><code><a href="../reference/lic_tidy_games.html">lic_tidy_games()</a></code> parses raw API output into a
+user-centric format with <code>POSIXct</code> timestamps, user
+perspective (<code>user_color</code>, <code>user_result</code>,
+<code>win</code>), opponent information, and rating differences:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_tidy_games.html">lic_tidy_games</a></span><span class="op">(</span><span class="va">raw_games</span>, username <span class="op">=</span> <span class="st">"h8gi"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">games</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -128,10 +191,10 @@ rating differences:</p>
 <div class="section level3">
 <h3 id="expanding-move-sequences-long-format">Expanding Move Sequences (Long Format)<a class="anchor" aria-label="anchor" href="#expanding-move-sequences-long-format"></a>
 </h3>
-<p>For in-depth move-by-move analysis (evaluations, clock times,
-blunders), <code><a href="../reference/lic_tidy_moves.html">lic_tidy_moves()</a></code> unpacks games into a long
-format where each row is a half-move (ply):</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>For move-by-move analysis (evaluations, clock times, blunders),
+<code><a href="../reference/lic_tidy_moves.html">lic_tidy_moves()</a></code> unnests games into a long format where
+each row is a single half-move (ply):</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moves_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_tidy_moves.html">lic_tidy_moves</a></span><span class="op">(</span><span class="va">games</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">moves_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -141,59 +204,24 @@ format where each row is a half-move (ply):</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="opening-analysis">3. Opening Analysis<a class="anchor" aria-label="anchor" href="#opening-analysis"></a>
+<h2 id="layer-3-chess-analytics">4. Layer 3: Chess Analytics<a class="anchor" aria-label="anchor" href="#layer-3-chess-analytics"></a>
 </h2>
 <div class="section level3">
 <h3 id="opening-win-rates">Opening Win Rates<a class="anchor" aria-label="anchor" href="#opening-win-rates"></a>
 </h3>
-<p>Summarize win rates for each opening variation:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<p>Calculate win rates and sample sizes for each opening variation:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_stats_openings.html">lic_stats_openings</a></span><span class="op">(</span><span class="va">games</span>, min_games <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">stats</span></span></code></pre></div>
 </div>
-<div class="section level3">
-<h3 id="exploring-lichess-opening-database">Exploring Lichess Opening Database<a class="anchor" aria-label="anchor" href="#exploring-lichess-opening-database"></a>
-</h3>
-<p>Query Lichess’s vast opening database for candidate moves and win
-statistics:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Query Sicilian Defense (1. e4 c5)</span></span>
-<span><span class="va">explorer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_lichess.html">lic_opening_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Candidate moves</span></span>
-<span><span class="va">explorer</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="master-games-explorer">Master Games Explorer<a class="anchor" aria-label="anchor" href="#master-games-explorer"></a>
-</h3>
-<p>Search historical games played by FIDE titled masters (2200+):</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_masters.html">lic_masters_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
-<span><span class="va">masters</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
-</div>
 </div>
 <div class="section level2">
-<h2 id="user-profiles-rating-history">4. User Profiles &amp; Rating History<a class="anchor" aria-label="anchor" href="#user-profiles-rating-history"></a>
+<h2 id="built-in-dataset">5. Built-in Dataset<a class="anchor" aria-label="anchor" href="#built-in-dataset"></a>
 </h2>
-<p>Retrieve user ratings and historical progress:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Current performance summaries</span></span>
-<span><span class="va">perfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perfs.html">lic_user_perfs</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
-<span><span class="va">perfs</span></span>
-<span></span>
-<span><span class="co"># Detailed stats for bullet</span></span>
-<span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perf_stats.html">lic_user_perf_stats</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Daily rating history</span></span>
-<span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_rating_history.html">lic_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="daily-puzzle">5. Daily Puzzle<a class="anchor" aria-label="anchor" href="#daily-puzzle"></a>
-</h2>
-<p>Fetch today’s featured puzzle:</p>
+<p>Access the included database of 3,378 ECO openings:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">daily_puzzle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_puzzle_daily.html">lic_puzzle_daily</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">daily_puzzle</span><span class="op">$</span><span class="va">puzzle</span><span class="op">$</span><span class="va">rating</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lichess_openings</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lichess_openings</span><span class="op">)</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

@@ -55,6 +55,19 @@
 
 <p><strong>rlichess</strong> is a modern, tidy R client for the <a href="https://lichess.org/api" class="external-link">Lichess API</a>. It provides tools for fetching, standardizing, and analyzing chess games, opening repertoires, user profiles, rating histories, and puzzles using tidyverse conventions.</p>
 <div class="section level2">
+<h2 id="architecture">Architecture<a class="anchor" aria-label="anchor" href="#architecture"></a>
+</h2>
+<p><code>rlichess</code> is designed with a clear 3-layer separation of concerns:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Layer 1: API Clients (<code>lic_*</code>)</strong>: Direct HTTP wrappers corresponding 1-to-1 with official Lichess API endpoints.</li>
+<li>
+<strong>Layer 2: Tidy Wranglers (<code>lic_tidy_*</code>)</strong>: Offline data transformation functions that unnest and standardize chess data into tidy tibbles.</li>
+<li>
+<strong>Layer 3: Chess Analytics (<code>lic_stats_*</code>)</strong>: Offline statistical summaries (e.g., opening win rates).</li>
+</ol>
+</div>
+<div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
 <ul>
@@ -105,7 +118,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 1. Download games (supports date filtering, clocks, evals)</span></span>
-<span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_games_user.html">lic_get_games</a></span><span class="op">(</span></span>
+<span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_games_user.html">lic_games_user</a></span><span class="op">(</span></span>
 <span>  username <span class="op">=</span> <span class="st">"h8gi"</span>,</span>
 <span>  perf_type <span class="op">=</span> <span class="st">"bullet"</span>,</span>
 <span>  since <span class="op">=</span> <span class="st">"2025-01-01"</span>,</span>
@@ -129,26 +142,33 @@
 <h3 id="id_3-user-profiles-and-rating-history">3. User Profiles and Rating History<a class="anchor" aria-label="anchor" href="#id_3-user-profiles-and-rating-history"></a>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Summary of ratings across performance categories</span></span>
+<code class="sourceCode R"><span><span class="co"># Summary of user metadata as a 1-row tidy tibble</span></span>
+<span><span class="va">user</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_user.html">lic_user</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Ratings across performance categories</span></span>
 <span><span class="va">perfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_user_perfs.html">lic_user_perfs</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Daily rating history (returns a tidy tibble of dates and ratings)</span></span>
-<span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_user_rating_history.html">lic_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span>
+<span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_user_rating_history.html">lic_user_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Detailed stats (streaks, best wins, worst losses, average opponent)</span></span>
 <span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_user_perf_stats.html">lic_user_perf_stats</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_4-opening-explorer-lichess--masters-databases">4. Opening Explorer (Lichess &amp; Masters Databases)<a class="anchor" aria-label="anchor" href="#id_4-opening-explorer-lichess--masters-databases"></a>
+<h3 id="id_4-opening-explorer-lichess-masters--player-databases">4. Opening Explorer (Lichess, Masters, &amp; Player Databases)<a class="anchor" aria-label="anchor" href="#id_4-opening-explorer-lichess-masters--player-databases"></a>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Query Lichess opening database for candidate moves (e.g. 1. e4 c5)</span></span>
-<span><span class="va">explorer</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_explorer_lichess.html">lic_opening_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="va">explorer</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_explorer_lichess.html">lic_explorer_lichess</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
 <span><span class="va">explorer</span><span class="op">$</span><span class="va">moves</span></span>
 <span></span>
 <span><span class="co"># Query FIDE master games (2200+ FIDE)</span></span>
-<span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_explorer_masters.html">lic_masters_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
-<span><span class="va">masters</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
+<span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_explorer_masters.html">lic_explorer_masters</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="va">masters</span><span class="op">$</span><span class="va">moves</span></span>
+<span></span>
+<span><span class="co"># Query a player's personal opening repertoire</span></span>
+<span><span class="va">player_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_explorer_player.html">lic_explorer_player</a></span><span class="op">(</span><span class="st">"h8gi"</span>, color <span class="op">=</span> <span class="st">"white"</span>, play <span class="op">=</span> <span class="st">"e4"</span><span class="op">)</span></span>
+<span><span class="va">player_exp</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="id_5-daily-puzzle">5. Daily Puzzle<a class="anchor" aria-label="anchor" href="#id_5-daily-puzzle"></a>

@@ -35,7 +35,7 @@
     <div class="section level2">
       <h2 id="authentication">Authentication<a class="anchor" aria-label="anchor" href="#authentication"></a></h2>
 
-      <div class="section-desc"><p>Manage API tokens for authenticated Lichess requests.</p></div>
+      <div class="section-desc"><p>Manage Personal API access tokens for authenticated requests.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -49,9 +49,9 @@
         </dt>
         <dd>Get Lichess API Token</dd>
       </dl></div><div class="section level2">
-      <h2 id="games-moves">Games &amp; Moves<a class="anchor" aria-label="anchor" href="#games-moves"></a></h2>
+      <h2 id="api-clients-games">API Clients: Games<a class="anchor" aria-label="anchor" href="#api-clients-games"></a></h2>
 
-      <div class="section-desc"><p>Download, tidy, and expand game and move data.</p></div>
+      <div class="section-desc"><p>Direct interfaces to the Lichess Games API (HTTP requests).</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -71,31 +71,10 @@
 
         </dt>
         <dd>Download a Single Lichess Game</dd>
-
-        <dt>
-
-          <code><a href="lic_tidy_games.html">lic_tidy_games()</a></code>
-
-        </dt>
-        <dd>Tidy Lichess Game Data</dd>
-
-        <dt>
-
-          <code><a href="lic_tidy_moves.html">lic_tidy_moves()</a></code>
-
-        </dt>
-        <dd>Tidy Game Moves, Clocks, and Evaluations</dd>
-
-        <dt>
-
-          <code><a href="lic_normalize_games.html">lic_normalize_games()</a></code>
-
-        </dt>
-        <dd>Normalize Game Data (Legacy Alias)</dd>
       </dl></div><div class="section level2">
-      <h2 id="users-performance">Users &amp; Performance<a class="anchor" aria-label="anchor" href="#users-performance"></a></h2>
+      <h2 id="api-clients-users-ratings">API Clients: Users &amp; Ratings<a class="anchor" aria-label="anchor" href="#api-clients-users-ratings"></a></h2>
 
-      <div class="section-desc"><p>Fetch user profiles, rating history, and performance statistics.</p></div>
+      <div class="section-desc"><p>Direct interfaces to the Lichess Users and Ratings API (HTTP requests).</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -130,9 +109,9 @@
         </dt>
         <dd>Get Detailed Performance Statistics of a Lichess User</dd>
       </dl></div><div class="section level2">
-      <h2 id="opening-statistics-explorer">Opening Statistics &amp; Explorer<a class="anchor" aria-label="anchor" href="#opening-statistics-explorer"></a></h2>
+      <h2 id="api-clients-opening-explorer">API Clients: Opening Explorer<a class="anchor" aria-label="anchor" href="#api-clients-opening-explorer"></a></h2>
 
-      <div class="section-desc"><p>Analyze opening statistics and query Lichess/Masters opening explorer databases.</p></div>
+      <div class="section-desc"><p>Direct interfaces to the Lichess and Masters Opening Explorer databases.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -140,13 +119,6 @@
 
 
       <dl><dt>
-
-          <code><a href="lic_stats_openings.html">lic_stats_openings()</a></code>
-
-        </dt>
-        <dd>Calculate Opening Statistics</dd>
-
-        <dt>
 
           <code><a href="lic_explorer_lichess.html">lic_explorer_lichess()</a></code> <code><a href="lic_explorer_lichess.html">lic_opening_explorer()</a></code>
 
@@ -167,9 +139,9 @@
         </dt>
         <dd>Query Player Opening Explorer Database</dd>
       </dl></div><div class="section level2">
-      <h2 id="puzzles">Puzzles<a class="anchor" aria-label="anchor" href="#puzzles"></a></h2>
+      <h2 id="api-clients-puzzles">API Clients: Puzzles<a class="anchor" aria-label="anchor" href="#api-clients-puzzles"></a></h2>
 
-      <div class="section-desc"><p>Fetch daily puzzles and user puzzle activity.</p></div>
+      <div class="section-desc"><p>Direct interfaces to the Lichess Puzzles API.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -190,9 +162,55 @@
         </dt>
         <dd>Get User Puzzle Activity</dd>
       </dl></div><div class="section level2">
-      <h2 id="datasets">Datasets<a class="anchor" aria-label="anchor" href="#datasets"></a></h2>
+      <h2 id="tidy-wranglers-offline-transformation-">Tidy Wranglers (Offline Transformation)<a class="anchor" aria-label="anchor" href="#tidy-wranglers-offline-transformation-"></a></h2>
 
-      <div class="section-desc"><p>Included package datasets.</p></div>
+      <div class="section-desc"><p>Offline data manipulation functions that unnest, standardize, and format chess data into tidy tibbles.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="lic_tidy_games.html">lic_tidy_games()</a></code>
+
+        </dt>
+        <dd>Tidy Lichess Game Data</dd>
+
+        <dt>
+
+          <code><a href="lic_tidy_moves.html">lic_tidy_moves()</a></code>
+
+        </dt>
+        <dd>Tidy Game Moves, Clocks, and Evaluations</dd>
+
+        <dt>
+
+          <code><a href="lic_normalize_games.html">lic_normalize_games()</a></code>
+
+        </dt>
+        <dd>Normalize Game Data (Legacy Alias)</dd>
+      </dl></div><div class="section level2">
+      <h2 id="chess-analytics-offline-statistics-">Chess Analytics (Offline Statistics)<a class="anchor" aria-label="anchor" href="#chess-analytics-offline-statistics-"></a></h2>
+
+      <div class="section-desc"><p>Offline analysis tools to summarize win rates, repertoire performance, and tactical metrics.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="lic_stats_openings.html">lic_stats_openings()</a></code>
+
+        </dt>
+        <dd>Calculate Opening Statistics</dd>
+      </dl></div><div class="section level2">
+      <h2 id="package-datasets">Package Datasets<a class="anchor" aria-label="anchor" href="#package-datasets"></a></h2>
+
+      <div class="section-desc"><p>Built-in datasets included with the package.</p></div>
 
       <dl></dl></div><div class="section level2">
 
