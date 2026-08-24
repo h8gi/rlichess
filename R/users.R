@@ -9,10 +9,10 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' user <- lic_user_profile("h8gi")
+#' user <- lic_user("h8gi")
 #' user$username
 #' }
-lic_user_profile <- function(username, token = lic_token()) {
+lic_user <- function(username, token = lic_token()) {
   if (missing(username) || !is.character(username) || length(username) != 1 || !nzchar(username)) {
     cli::cli_abort("{.arg username} must be a single non-empty character string.")
   }
@@ -23,6 +23,12 @@ lic_user_profile <- function(username, token = lic_token()) {
 
   resp <- httr2::req_perform(req)
   jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
+}
+
+#' @rdname lic_user
+#' @export
+lic_user_profile <- function(username, token = lic_token()) {
+  lic_user(username = username, token = token)
 }
 
 #' Get Lichess User Performances Summary
@@ -40,7 +46,7 @@ lic_user_profile <- function(username, token = lic_token()) {
 #' perfs <- lic_user_perfs("h8gi")
 #' }
 lic_user_perfs <- function(username, token = lic_token()) {
-  prof <- lic_user_profile(username = username, token = token)
+  prof <- lic_user(username = username, token = token)
 
   if (is.null(prof$perfs)) {
     return(tibble::tibble(
@@ -84,9 +90,9 @@ lic_user_perfs <- function(username, token = lic_token()) {
 #' @export
 #' @examples
 #' \dontrun{
-#' hist <- lic_rating_history("h8gi", perf_type = "bullet")
+#' hist <- lic_user_rating_history("h8gi", perf_type = "bullet")
 #' }
-lic_rating_history <- function(username, perf_type = NULL, token = lic_token()) {
+lic_user_rating_history <- function(username, perf_type = NULL, token = lic_token()) {
   if (missing(username) || !is.character(username) || length(username) != 1 || !nzchar(username)) {
     cli::cli_abort("{.arg username} must be a single non-empty character string.")
   }
@@ -126,7 +132,6 @@ lic_rating_history <- function(username, perf_type = NULL, token = lic_token()) 
       next
     }
 
-    # Each point is [year, month (0-indexed), day, rating]
     dates <- vapply(points, function(pt) {
       sprintf("%04d-%02d-%02d", pt[[1]], pt[[2]] + 1L, pt[[3]])
     }, FUN.VALUE = character(1))
@@ -153,6 +158,12 @@ lic_rating_history <- function(username, perf_type = NULL, token = lic_token()) 
   }
 
   dplyr::bind_rows(out_list)
+}
+
+#' @rdname lic_user_rating_history
+#' @export
+lic_rating_history <- function(username, perf_type = NULL, token = lic_token()) {
+  lic_user_rating_history(username = username, perf_type = perf_type, token = token)
 }
 
 #' Get Detailed Performance Statistics of a Lichess User
