@@ -8,6 +8,14 @@
 
 **rlichess** is a modern, tidy R client for the [Lichess API](https://lichess.org/api). It provides tools for fetching, standardizing, and analyzing chess games, opening repertoires, user profiles, rating histories, and puzzles using tidyverse conventions.
 
+## Architecture
+
+`rlichess` is designed with a clear 3-layer separation of concerns:
+
+1. **Layer 1: API Clients (`lic_*`)**: Direct HTTP wrappers corresponding 1-to-1 with official Lichess API endpoints.
+2. **Layer 2: Tidy Wranglers (`lic_tidy_*`)**: Offline data transformation functions that unnest and standardize chess data into tidy tibbles.
+3. **Layer 3: Chess Analytics (`lic_stats_*`)**: Offline statistical summaries (e.g., opening win rates).
+
 ## Features
 
 - **Tidy Game Data**: Fetch user games (NDJSON stream) and convert them into tidy tibbles with user-perspective columns (`user_color`, `user_result`, `user_rating`, `opponent_name`, `created_at`).
@@ -55,7 +63,7 @@ library(rlichess)
 library(dplyr)
 
 # 1. Download games (supports date filtering, clocks, evals)
-raw_games <- lic_get_games(
+raw_games <- lic_games_user(
   username = "h8gi",
   perf_type = "bullet",
   since = "2025-01-01",
@@ -79,26 +87,33 @@ head(opening_stats)
 ### 3. User Profiles and Rating History
 
 ```r
-# Summary of ratings across performance categories
+# Summary of user metadata as a 1-row tidy tibble
+user <- lic_user("h8gi")
+
+# Ratings across performance categories
 perfs <- lic_user_perfs("h8gi")
 
 # Daily rating history (returns a tidy tibble of dates and ratings)
-history <- lic_rating_history("h8gi", perf_type = "bullet")
+history <- lic_user_rating_history("h8gi", perf_type = "bullet")
 
 # Detailed stats (streaks, best wins, worst losses, average opponent)
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")
 ```
 
-### 4. Opening Explorer (Lichess & Masters Databases)
+### 4. Opening Explorer (Lichess, Masters, & Player Databases)
 
 ```r
 # Query Lichess opening database for candidate moves (e.g. 1. e4 c5)
-explorer <- lic_opening_explorer(play = "e4,c5")
+explorer <- lic_explorer_lichess(play = "e4,c5")
 explorer$moves
 
 # Query FIDE master games (2200+ FIDE)
-masters <- lic_masters_explorer(play = "e4,c5")
+masters <- lic_explorer_masters(play = "e4,c5")
 masters$moves
+
+# Query a player's personal opening repertoire
+player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
+player_exp$moves
 ```
 
 ### 5. Daily Puzzle
