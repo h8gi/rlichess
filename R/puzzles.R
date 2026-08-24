@@ -38,7 +38,7 @@ lic_puzzle_daily <- function(token = lic_token()) {
 #'
 #' @return A tidy [tibble::tibble] of puzzle attempts.
 #' @export
-#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
+#' @examples
 #' puzzles <- lic_puzzle_activity(max = 20)
 lic_puzzle_activity <- function(max = 50, token = lic_token()) {
   url <- "https://lichess.org/api/puzzle/activity"
@@ -49,7 +49,23 @@ lic_puzzle_activity <- function(max = 50, token = lic_token()) {
     req <- httr2::req_url_query(req, max = as.character(max))
   }
 
-  resp <- httr2::req_perform(req)
+  resp <- tryCatch({
+    httr2::req_perform(req)
+  }, error = function(e) {
+    if (grepl("401", e$message) || is.null(token) || !nzchar(token)) {
+      cli::cli_inform(c(
+        "i" = "Puzzle activity requires an authenticated request with puzzle:read scope.",
+        "*" = "Set `LICHESS_API_TOKEN` environment variable or provide `token` argument."
+      ))
+      return(NULL)
+    }
+    rlang::abort(e$message, parent = e)
+  })
+
+  if (is.null(resp)) {
+    return(tibble::tibble())
+  }
+
   body <- httr2::resp_body_string(resp)
 
   if (!nzchar(trimws(body))) {
