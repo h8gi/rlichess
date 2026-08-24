@@ -13,11 +13,13 @@
 #'   losses (`losses`), draws (`draws`), and win rate (`winrate`).
 #' @export
 #' @examples
-#' \dontrun{
-#' games <- lic_games_user("h8gi", max = 100) |>
-#'   lic_tidy_games(username = "h8gi")
-#' stats <- lic_stats_openings(games, min_games = 5)
-#' }
+#' sample_games <- tibble::tibble(
+#'   user_color = c("white", "white", "black"),
+#'   opening.name = c("Ruy Lopez", "Ruy Lopez", "Sicilian Defense"),
+#'   opening.eco = c("C60", "C60", "B20"),
+#'   user_result = c("win", "win", "loss")
+#' )
+#' lic_stats_openings(sample_games, min_games = 1)
 lic_stats_openings <- function(data, min_games = 10) {
   if (nrow(data) == 0) {
     return(tibble::tibble(

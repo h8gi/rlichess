@@ -27,10 +27,8 @@
 #'
 #' @return A [tibble::tibble] containing raw game records.
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' games <- lic_games_user("h8gi", perf_type = "bullet", max = 50)
-#' }
 lic_games_user <- function(username,
                            perf_type = NULL,
                            since = NULL,
@@ -142,10 +140,8 @@ lic_get_games <- function(username,
 #'
 #' @return A single-row [tibble::tibble] containing game details.
 #' @export
-#' @examples
-#' \dontrun{
+#' @examplesIf interactive()
 #' game <- lic_game("0tMlsM69")
-#' }
 lic_game <- function(game_id,
                      moves = TRUE,
                      clocks = TRUE,
@@ -213,10 +209,16 @@ lic_get_game <- function(game_id,
 #' @return A tidy [tibble::tibble] with standardized column names and types.
 #' @export
 #' @examples
-#' \dontrun{
-#' raw <- lic_games_user("h8gi", max = 20)
-#' games <- lic_tidy_games(raw, username = "h8gi")
-#' }
+#' sample_raw <- tibble::tibble(
+#'   id = "demo123",
+#'   createdAt = 1730000000000,
+#'   players.white.user.name = "h8gi",
+#'   players.black.user.name = "opponent",
+#'   players.white.rating = 2100L,
+#'   players.black.rating = 2050L,
+#'   winner = "white"
+#' )
+#' lic_tidy_games(sample_raw, username = "h8gi")
 lic_tidy_games <- function(data, username = NULL) {
   if (nrow(data) == 0) {
     return(data)
