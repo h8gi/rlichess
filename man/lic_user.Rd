@@ -24,6 +24,11 @@ Fetches the public user profile from Lichess. By default (\code{raw = FALSE}), r
 a 1-row tidy \link[tibble:tibble]{tibble::tibble} containing core user metadata, timestamps, and game counts.
 If \code{raw = TRUE}, returns the full parsed JSON list.
 }
+\details{
+\strong{Lichess API Endpoint:} \code{GET /api/user/{username}}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Users/operation/apiUser}
+}
 \examples{
 \dontrun{
 user <- lic_user("h8gi")

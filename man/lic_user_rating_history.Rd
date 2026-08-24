@@ -23,6 +23,14 @@ A \link[tibble:tibble]{tibble::tibble} with columns \code{username}, \code{perf}
 Retrieves the daily rating history across performance types. Note that Lichess generates
 up-to-date rating history on-demand for authenticated requests.
 }
+\details{
+\strong{Lichess API Endpoint:} \code{GET /api/user/{username}/rating-history}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Users/operation/apiUserRatingHistory}
+
+Rating history is generated on demand for authenticated requests (OAuth token).
+Unauthenticated requests return a cached version if available, otherwise an empty dataset.
+}
 \examples{
 \dontrun{
 hist <- lic_user_rating_history("h8gi", perf_type = "bullet")

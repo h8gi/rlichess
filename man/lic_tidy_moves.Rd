@@ -23,6 +23,11 @@ A \link[tibble:tibble]{tibble::tibble} with columns:
 Expands game move sequences, clock times, and Stockfish evaluations into a
 long-format tidy tibble where each row corresponds to one half-move (ply).
 }
+\details{
+This is an \strong{offline data transformation} function (no API network request).
+It unnests the move string (\code{moves}), clock array (\code{clocks}), and evaluation array (\code{evals})
+from game records into a tidy ply-by-ply dataset.
+}
 \examples{
 sample_game <- tibble::tibble(
   id = "demo123",

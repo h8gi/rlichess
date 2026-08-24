@@ -2,6 +2,11 @@
 #'
 #' Retrieves today's featured puzzle from Lichess.
 #'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/puzzle/daily`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Puzzles/operation/apiPuzzleDaily>
+#'
 #' @param token API access token. By default, retrieved via [lic_token()].
 #'
 #' @return A list containing puzzle metadata (puzzle ID, rating, plays, FEN, moves, themes).
@@ -24,6 +29,11 @@ lic_puzzle_daily <- function(token = lic_token()) {
 #'
 #' Retrieves recent puzzle attempts for the authenticated user in NDJSON format.
 #' Requires authentication token with puzzle read permission.
+#'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/puzzle/activity`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Puzzles/operation/apiPuzzleActivity>
 #'
 #' @param max Maximum number of puzzle activities to fetch. Default is 50.
 #' @param token API access token. By default, retrieved via [lic_token()].

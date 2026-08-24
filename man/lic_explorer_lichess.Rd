@@ -42,6 +42,13 @@ A list containing aggregate stats (\code{white}, \code{draws}, \code{black}) and
 \description{
 Retrieves opening statistics (win rates, popular candidate moves) from the Lichess game database.
 }
+\details{
+\strong{Lichess API Endpoint:} \verb{GET https://explorer.lichess.ovh/lichess}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerLichess}
+
+Note: As of 2026, Lichess requires OAuth2 / API Token authentication for explorer queries.
+}
 \examples{
 \dontrun{
 exp <- lic_explorer_lichess(play = "e4,c5")

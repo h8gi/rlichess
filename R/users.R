@@ -4,6 +4,11 @@
 #' a 1-row tidy [tibble::tibble] containing core user metadata, timestamps, and game counts.
 #' If `raw = TRUE`, returns the full parsed JSON list.
 #'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/user/{username}`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Users/operation/apiUser>
+#'
 #' @param username Lichess username.
 #' @param raw Logical. If `TRUE`, returns the raw nested list from Lichess API. Default is `FALSE`.
 #' @param token API access token. By default, retrieved via [lic_token()].
@@ -69,6 +74,11 @@ lic_user_profile <- function(username, raw = FALSE, token = lic_token()) {
 #' Extracts performance categories (e.g. bullet, blitz, rapid, puzzle) and ratings
 #' for a user as a tidy tibble.
 #'
+#' @details
+#' **Lichess API Endpoint:** Extracted from `GET /api/user/{username}`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Users/operation/apiUser>
+#'
 #' @param username Lichess username.
 #' @param token API access token. By default, retrieved via [lic_token()].
 #'
@@ -114,6 +124,14 @@ lic_user_perfs <- function(username, token = lic_token()) {
 #'
 #' Retrieves the daily rating history across performance types. Note that Lichess generates
 #' up-to-date rating history on-demand for authenticated requests.
+#'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/user/{username}/rating-history`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Users/operation/apiUserRatingHistory>
+#'
+#' Rating history is generated on demand for authenticated requests (OAuth token).
+#' Unauthenticated requests return a cached version if available, otherwise an empty dataset.
 #'
 #' @param username Lichess username.
 #' @param perf_type Optional filter for performance types (e.g. `"bullet"`, `"blitz"`).
@@ -203,6 +221,11 @@ lic_rating_history <- function(username, perf_type = NULL, token = lic_token()) 
 #'
 #' Retrieves in-depth stats for a specific game type (e.g. bullet, blitz, rapid),
 #' including win/loss counts, streaks, highest/lowest ratings, and average opponent rating.
+#'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/user/{username}/perf/{perf}`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Users/operation/userPerf>
 #'
 #' @param username Lichess username.
 #' @param perf Performance type (e.g. `"bullet"`, `"blitz"`, `"rapid"`, `"classical"`). Default is `"bullet"`.

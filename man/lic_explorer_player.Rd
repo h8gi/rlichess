@@ -32,6 +32,11 @@ A list containing aggregate stats (\code{white}, \code{draws}, \code{black}) and
 \description{
 Retrieves opening statistics for a specific player's game history.
 }
+\details{
+\strong{Lichess API Endpoint:} \verb{GET https://explorer.lichess.ovh/player}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerPlayer}
+}
 \examples{
 \dontrun{
 player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
