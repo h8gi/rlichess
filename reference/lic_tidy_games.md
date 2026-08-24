@@ -14,9 +14,9 @@ lic_tidy_games(data, username = NULL)
 - data:
 
   Raw game tibble returned by
-  [`lic_get_games()`](https://h8gi.github.io/rlichess/reference/lic_get_games.md)
+  [`lic_games_user()`](https://h8gi.github.io/rlichess/reference/lic_games_user.md)
   or
-  [`lic_get_game()`](https://h8gi.github.io/rlichess/reference/lic_get_game.md).
+  [`lic_game()`](https://h8gi.github.io/rlichess/reference/lic_game.md).
 
 - username:
 
@@ -34,7 +34,7 @@ with standardized column names and types.
 
 ``` r
 if (FALSE) { # \dontrun{
-raw <- lic_get_games("h8gi", max = 20)
+raw <- lic_games_user("h8gi", max = 20)
 games <- lic_tidy_games(raw, username = "h8gi")
 } # }
 ```

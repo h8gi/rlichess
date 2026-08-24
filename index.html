@@ -105,7 +105,7 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 1. Download games (supports date filtering, clocks, evals)</span></span>
-<span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_get_games.html">lic_get_games</a></span><span class="op">(</span></span>
+<span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_games_user.html">lic_get_games</a></span><span class="op">(</span></span>
 <span>  username <span class="op">=</span> <span class="st">"h8gi"</span>,</span>
 <span>  perf_type <span class="op">=</span> <span class="st">"bullet"</span>,</span>
 <span>  since <span class="op">=</span> <span class="st">"2025-01-01"</span>,</span>
@@ -133,7 +133,7 @@
 <span><span class="va">perfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_user_perfs.html">lic_user_perfs</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Daily rating history (returns a tidy tibble of dates and ratings)</span></span>
-<span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_rating_history.html">lic_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span>
+<span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_user_rating_history.html">lic_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Detailed stats (streaks, best wins, worst losses, average opponent)</span></span>
 <span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_user_perf_stats.html">lic_user_perf_stats</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span></code></pre></div>
@@ -143,11 +143,11 @@
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Query Lichess opening database for candidate moves (e.g. 1. e4 c5)</span></span>
-<span><span class="va">explorer</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_opening_explorer.html">lic_opening_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="va">explorer</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_explorer_lichess.html">lic_opening_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
 <span><span class="va">explorer</span><span class="op">$</span><span class="va">moves</span></span>
 <span></span>
 <span><span class="co"># Query FIDE master games (2200+ FIDE)</span></span>
-<span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_masters_explorer.html">lic_masters_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/lic_explorer_masters.html">lic_masters_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
 <span><span class="va">masters</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
 </div>
 <div class="section level3">

@@ -11,9 +11,11 @@ Manage API tokens for authenticated Lichess requests.
 
 Download, tidy, and expand game and move data.
 
-- [`lic_get_games()`](https://h8gi.github.io/rlichess/reference/lic_get_games.md)
+- [`lic_games_user()`](https://h8gi.github.io/rlichess/reference/lic_games_user.md)
+  [`lic_get_games()`](https://h8gi.github.io/rlichess/reference/lic_games_user.md)
   : Download Games of a Lichess User
-- [`lic_get_game()`](https://h8gi.github.io/rlichess/reference/lic_get_game.md)
+- [`lic_game()`](https://h8gi.github.io/rlichess/reference/lic_game.md)
+  [`lic_get_game()`](https://h8gi.github.io/rlichess/reference/lic_game.md)
   : Download a Single Lichess Game
 - [`lic_tidy_games()`](https://h8gi.github.io/rlichess/reference/lic_tidy_games.md)
   : Tidy Lichess Game Data
@@ -26,11 +28,13 @@ Download, tidy, and expand game and move data.
 
 Fetch user profiles, rating history, and performance statistics.
 
-- [`lic_user_profile()`](https://h8gi.github.io/rlichess/reference/lic_user_profile.md)
+- [`lic_user()`](https://h8gi.github.io/rlichess/reference/lic_user.md)
+  [`lic_user_profile()`](https://h8gi.github.io/rlichess/reference/lic_user.md)
   : Get Lichess User Profile
 - [`lic_user_perfs()`](https://h8gi.github.io/rlichess/reference/lic_user_perfs.md)
   : Get Lichess User Performances Summary
-- [`lic_rating_history()`](https://h8gi.github.io/rlichess/reference/lic_rating_history.md)
+- [`lic_user_rating_history()`](https://h8gi.github.io/rlichess/reference/lic_user_rating_history.md)
+  [`lic_rating_history()`](https://h8gi.github.io/rlichess/reference/lic_user_rating_history.md)
   : Get Rating History of a Lichess User
 - [`lic_user_perf_stats()`](https://h8gi.github.io/rlichess/reference/lic_user_perf_stats.md)
   : Get Detailed Performance Statistics of a Lichess User
@@ -42,10 +46,14 @@ databases.
 
 - [`lic_stats_openings()`](https://h8gi.github.io/rlichess/reference/lic_stats_openings.md)
   : Calculate Opening Statistics
-- [`lic_opening_explorer()`](https://h8gi.github.io/rlichess/reference/lic_opening_explorer.md)
+- [`lic_explorer_lichess()`](https://h8gi.github.io/rlichess/reference/lic_explorer_lichess.md)
+  [`lic_opening_explorer()`](https://h8gi.github.io/rlichess/reference/lic_explorer_lichess.md)
   : Query Lichess Opening Explorer Database
-- [`lic_masters_explorer()`](https://h8gi.github.io/rlichess/reference/lic_masters_explorer.md)
+- [`lic_explorer_masters()`](https://h8gi.github.io/rlichess/reference/lic_explorer_masters.md)
+  [`lic_masters_explorer()`](https://h8gi.github.io/rlichess/reference/lic_explorer_masters.md)
   : Query Lichess Masters Opening Explorer
+- [`lic_explorer_player()`](https://h8gi.github.io/rlichess/reference/lic_explorer_player.md)
+  : Query Player Opening Explorer Database
 
 ## Puzzles
 

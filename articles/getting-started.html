@@ -98,11 +98,11 @@ allows on-demand rating history retrieval.</p>
 <div class="section level3">
 <h3 id="downloading-user-games">Downloading User Games<a class="anchor" aria-label="anchor" href="#downloading-user-games"></a>
 </h3>
-<p>Use <code><a href="../reference/lic_get_games.html">lic_get_games()</a></code> to fetch games for any Lichess user.
+<p>Use <code><a href="../reference/lic_games_user.html">lic_get_games()</a></code> to fetch games for any Lichess user.
 You can filter by date, speed/perf, or opponent:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Download recent bullet games since 2025</span></span>
-<span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_get_games.html">lic_get_games</a></span><span class="op">(</span></span>
+<span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_games_user.html">lic_get_games</a></span><span class="op">(</span></span>
 <span>  username <span class="op">=</span> <span class="st">"h8gi"</span>,</span>
 <span>  perf_type <span class="op">=</span> <span class="st">"bullet"</span>,</span>
 <span>  since <span class="op">=</span> <span class="st">"2025-01-01"</span>,</span>
@@ -158,7 +158,7 @@ format where each row is a half-move (ply):</p>
 statistics:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Query Sicilian Defense (1. e4 c5)</span></span>
-<span><span class="va">explorer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_opening_explorer.html">lic_opening_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="va">explorer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_lichess.html">lic_opening_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Candidate moves</span></span>
 <span><span class="va">explorer</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
@@ -168,7 +168,7 @@ statistics:</p>
 </h3>
 <p>Search historical games played by FIDE titled masters (2200+):</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_masters_explorer.html">lic_masters_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_masters.html">lic_masters_explorer</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
 <span><span class="va">masters</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
 </div>
 </div>
@@ -185,7 +185,7 @@ statistics:</p>
 <span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perf_stats.html">lic_user_perf_stats</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Daily rating history</span></span>
-<span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_rating_history.html">lic_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_rating_history.html">lic_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="daily-puzzle">5. Daily Puzzle<a class="anchor" aria-label="anchor" href="#daily-puzzle"></a>

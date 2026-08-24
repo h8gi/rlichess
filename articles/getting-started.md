@@ -49,7 +49,7 @@ lic_token()
 ### Downloading User Games
 
 Use
-[`lic_get_games()`](https://h8gi.github.io/rlichess/reference/lic_get_games.md)
+[`lic_get_games()`](https://h8gi.github.io/rlichess/reference/lic_games_user.md)
 to fetch games for any Lichess user. You can filter by date, speed/perf,
 or opponent:
 
