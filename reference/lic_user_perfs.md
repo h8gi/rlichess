@@ -35,7 +35,7 @@ with columns `perf`, `games`, `rating`, `rd`, `prog`, `prov`.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 perfs <- lic_user_perfs("h8gi")
-} # }
+}
 ```

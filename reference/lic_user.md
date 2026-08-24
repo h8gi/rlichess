@@ -46,8 +46,8 @@ A 1-row
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 user <- lic_user("h8gi")
 user$created_at
-} # }
+}
 ```

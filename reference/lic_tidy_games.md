@@ -41,8 +41,22 @@ or
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-raw <- lic_games_user("h8gi", max = 20)
-games <- lic_tidy_games(raw, username = "h8gi")
-} # }
+sample_raw <- tibble::tibble(
+  id = "demo123",
+  createdAt = 1730000000000,
+  players.white.user.name = "h8gi",
+  players.black.user.name = "opponent",
+  players.white.rating = 2100L,
+  players.black.rating = 2050L,
+  winner = "white"
+)
+lic_tidy_games(sample_raw, username = "h8gi")
+#> # A tibble: 1 × 15
+#>   id          createdAt players.white.user.name players.black.user.name
+#>   <chr>           <dbl> <chr>                   <chr>                  
+#> 1 demo123 1730000000000 h8gi                    opponent               
+#> # ℹ 11 more variables: players.white.rating <int>, players.black.rating <int>,
+#> #   winner <chr>, created_at <dttm>, user_color <chr>, user_result <chr>,
+#> #   win <lgl>, user_rating <int>, opponent_rating <int>, opponent_name <chr>,
+#> #   user_rating_diff <int>
 ```

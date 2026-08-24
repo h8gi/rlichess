@@ -75,8 +75,8 @@ explorer queries.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 exp <- lic_explorer_lichess(play = "e4,c5")
 exp$moves
-} # }
+}
 ```

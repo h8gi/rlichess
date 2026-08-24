@@ -59,8 +59,8 @@ candidate `moves` tibble.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
 player_exp$moves
-} # }
+}
 ```

@@ -30,8 +30,8 @@ themes).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 puzzle <- lic_puzzle_daily()
 puzzle$puzzle$rating
-} # }
+}
 ```

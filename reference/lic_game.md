@@ -67,7 +67,7 @@ containing game details.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 game <- lic_game("0tMlsM69")
-} # }
+}
 ```

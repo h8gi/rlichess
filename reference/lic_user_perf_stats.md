@@ -40,8 +40,8 @@ A list containing performance statistics.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")
 stats$stat$count
-} # }
+}
 ```

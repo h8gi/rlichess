@@ -46,7 +46,7 @@ otherwise an empty dataset.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 hist <- lic_user_rating_history("h8gi", perf_type = "bullet")
-} # }
+}
 ```

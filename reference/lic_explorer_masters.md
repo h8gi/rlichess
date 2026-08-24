@@ -61,8 +61,8 @@ A list containing aggregate stats (`white`, `draws`, `black`), candidate
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 masters <- lic_explorer_masters(play = "e4,c5")
 masters$moves
-} # }
+}
 ```

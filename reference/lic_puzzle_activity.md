@@ -36,7 +36,7 @@ puzzle attempts.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 puzzles <- lic_puzzle_activity(max = 20)
-} # }
+}
 ```

@@ -123,7 +123,7 @@ fetching your own games).
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+if (FALSE) { # interactive()
 games <- lic_games_user("h8gi", perf_type = "bullet", max = 50)
-} # }
+}
 ```
