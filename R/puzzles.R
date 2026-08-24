@@ -11,7 +11,7 @@
 #'
 #' @return A list containing puzzle metadata (puzzle ID, rating, plays, FEN, moves, themes).
 #' @export
-#' @examplesIf interactive()
+#' @examples
 #' puzzle <- lic_puzzle_daily()
 #' puzzle$puzzle$rating
 lic_puzzle_daily <- function(token = lic_token()) {
@@ -38,7 +38,7 @@ lic_puzzle_daily <- function(token = lic_token()) {
 #'
 #' @return A tidy [tibble::tibble] of puzzle attempts.
 #' @export
-#' @examplesIf interactive()
+#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 #' puzzles <- lic_puzzle_activity(max = 20)
 lic_puzzle_activity <- function(max = 50, token = lic_token()) {
   url <- "https://lichess.org/api/puzzle/activity"

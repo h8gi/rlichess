@@ -26,8 +26,6 @@ including win/loss counts, streaks, highest/lowest ratings, and average opponent
 \strong{Official Documentation:} \url{https://lichess.org/api#tag/Users/operation/userPerf}
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")
 stats$stat$count
-\dontshow{\}) # examplesIf}
 }

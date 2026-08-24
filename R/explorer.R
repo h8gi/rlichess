@@ -18,7 +18,7 @@
 #'
 #' @return A list containing aggregate stats (`white`, `draws`, `black`) and a tidy [tibble::tibble] of candidate `moves`.
 #' @export
-#' @examplesIf interactive()
+#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 #' exp <- lic_explorer_lichess(play = "e4,c5")
 #' exp$moves
 lic_explorer_lichess <- function(fen = NULL,
@@ -109,7 +109,7 @@ lic_opening_explorer <- function(fen = NULL,
 #'
 #' @return A list containing aggregate stats (`white`, `draws`, `black`), candidate `moves` tibble, and top `topGames`.
 #' @export
-#' @examplesIf interactive()
+#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 #' masters <- lic_explorer_masters(play = "e4,c5")
 #' masters$moves
 lic_explorer_masters <- function(fen = NULL,
@@ -185,7 +185,7 @@ lic_masters_explorer <- function(fen = NULL,
 #'
 #' @return A list containing aggregate stats (`white`, `draws`, `black`) and candidate `moves` tibble.
 #' @export
-#' @examplesIf interactive()
+#' @examplesIf nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 #' player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
 #' player_exp$moves
 lic_explorer_player <- function(username,
