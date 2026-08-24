@@ -1,13 +1,17 @@
 # Get Lichess User Profile
 
-Fetches the public user profile from Lichess.
+Fetches the public user profile from Lichess. By default
+(`raw = FALSE`), returns a 1-row tidy
+[tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html)
+containing core user metadata, timestamps, and game counts. If
+`raw = TRUE`, returns the full parsed JSON list.
 
 ## Usage
 
 ``` r
-lic_user(username, token = lic_token())
+lic_user(username, raw = FALSE, token = lic_token())
 
-lic_user_profile(username, token = lic_token())
+lic_user_profile(username, raw = FALSE, token = lic_token())
 ```
 
 ## Arguments
@@ -16,6 +20,11 @@ lic_user_profile(username, token = lic_token())
 
   Lichess username.
 
+- raw:
+
+  Logical. If `TRUE`, returns the raw nested list from Lichess API.
+  Default is `FALSE`.
+
 - token:
 
   API access token. By default, retrieved via
@@ -23,13 +32,15 @@ lic_user_profile(username, token = lic_token())
 
 ## Value
 
-A list containing user metadata and performance summaries.
+A 1-row
+[tibble::tibble](https://tibble.tidyverse.org/reference/tibble.html) (if
+`raw = FALSE`) or a nested `list` (if `raw = TRUE`).
 
 ## Examples
 
 ``` r
 if (FALSE) { # \dontrun{
 user <- lic_user("h8gi")
-user$username
+user$created_at
 } # }
 ```
