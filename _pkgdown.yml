@@ -16,8 +16,8 @@ reference:
   - title: "Games & Moves"
     desc: "Download, tidy, and expand game and move data."
     contents:
-      - lic_get_games
-      - lic_get_game
+      - lic_games_user
+      - lic_game
       - lic_tidy_games
       - lic_tidy_moves
       - lic_normalize_games
@@ -25,17 +25,18 @@ reference:
   - title: "Users & Performance"
     desc: "Fetch user profiles, rating history, and performance statistics."
     contents:
-      - lic_user_profile
+      - lic_user
       - lic_user_perfs
-      - lic_rating_history
+      - lic_user_rating_history
       - lic_user_perf_stats
 
   - title: "Opening Statistics & Explorer"
     desc: "Analyze opening statistics and query Lichess/Masters opening explorer databases."
     contents:
       - lic_stats_openings
-      - lic_opening_explorer
-      - lic_masters_explorer
+      - lic_explorer_lichess
+      - lic_explorer_masters
+      - lic_explorer_player
 
   - title: "Puzzles"
     desc: "Fetch daily puzzles and user puzzle activity."
