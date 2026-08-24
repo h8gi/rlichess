@@ -9,42 +9,50 @@ navbar:
 
 reference:
   - title: "Authentication"
-    desc: "Manage API tokens for authenticated Lichess requests."
+    desc: "Manage Personal API access tokens for authenticated requests."
     contents:
       - lic_token
 
-  - title: "Games & Moves"
-    desc: "Download, tidy, and expand game and move data."
+  - title: "API Clients: Games"
+    desc: "Direct interfaces to the Lichess Games API (HTTP requests)."
     contents:
       - lic_games_user
       - lic_game
-      - lic_tidy_games
-      - lic_tidy_moves
-      - lic_normalize_games
 
-  - title: "Users & Performance"
-    desc: "Fetch user profiles, rating history, and performance statistics."
+  - title: "API Clients: Users & Ratings"
+    desc: "Direct interfaces to the Lichess Users and Ratings API (HTTP requests)."
     contents:
       - lic_user
       - lic_user_perfs
       - lic_user_rating_history
       - lic_user_perf_stats
 
-  - title: "Opening Statistics & Explorer"
-    desc: "Analyze opening statistics and query Lichess/Masters opening explorer databases."
+  - title: "API Clients: Opening Explorer"
+    desc: "Direct interfaces to the Lichess and Masters Opening Explorer databases."
     contents:
-      - lic_stats_openings
       - lic_explorer_lichess
       - lic_explorer_masters
       - lic_explorer_player
 
-  - title: "Puzzles"
-    desc: "Fetch daily puzzles and user puzzle activity."
+  - title: "API Clients: Puzzles"
+    desc: "Direct interfaces to the Lichess Puzzles API."
     contents:
       - lic_puzzle_daily
       - lic_puzzle_activity
 
-  - title: "Datasets"
-    desc: "Included package datasets."
+  - title: "Tidy Wranglers (Offline Transformation)"
+    desc: "Offline data manipulation functions that unnest, standardize, and format chess data into tidy tibbles."
+    contents:
+      - lic_tidy_games
+      - lic_tidy_moves
+      - lic_normalize_games
+
+  - title: "Chess Analytics (Offline Statistics)"
+    desc: "Offline analysis tools to summarize win rates, repertoire performance, and tactical metrics."
+    contents:
+      - lic_stats_openings
+
+  - title: "Package Datasets"
+    desc: "Built-in datasets included with the package."
     contents:
       - lichess_openings
