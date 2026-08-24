@@ -48,7 +48,5 @@ Retrieves full details of a specific game by its ID.
 \strong{Official Documentation:} \url{https://lichess.org/api#tag/Games/operation/gamePgn}
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-game <- lic_game("0tMlsM69")
-\dontshow{\}) # examplesIf}
+lic_game("0tMlsM69")
 }

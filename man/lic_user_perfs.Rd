@@ -24,7 +24,5 @@ for a user as a tidy tibble.
 \strong{Official Documentation:} \url{https://lichess.org/api#tag/Users/operation/apiUser}
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-perfs <- lic_user_perfs("h8gi")
-\dontshow{\}) # examplesIf}
+lic_user_perfs("h8gi")
 }

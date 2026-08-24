@@ -38,7 +38,7 @@ Retrieves opening statistics for a specific player's game history.
 \strong{Official Documentation:} \url{https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerPlayer}
 }
 \examples{
-\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
+\dontshow{if (nzchar(Sys.getenv("LICHESS_API_TOKEN"))) withAutoprint(\{ # examplesIf}
 player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
 player_exp$moves
 \dontshow{\}) # examplesIf}
