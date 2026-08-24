@@ -1,0 +1,225 @@
+# Get started with rlichess
+
+**rlichess** is a modern, tidy R client designed for chess players,
+analysts, and researchers. It bridges the [Lichess REST & Streaming
+API](https://lichess.org/api) with the `tidyverse` ecosystem, allowing
+you to seamlessly fetch games, user statistics, opening databases, and
+tactical puzzles into tidy tibbles.
+
+------------------------------------------------------------------------
+
+## 1. Package Architecture
+
+`rlichess` separates data access, data cleaning, and statistical
+calculations into three clear layers:
+
+    ┌────────────────────────────────────────────────────────┐
+    │ Layer 1: API Clients (Network / HTTP Requests)          │
+    │   • lic_games_user()      • lic_game()                 │
+    │   • lic_user()            • lic_user_rating_history()  │
+    │   • lic_explorer_*()      • lic_puzzle_*()             │
+    └──────────────────────────┬─────────────────────────────┘
+                               │ Raw tibble / list
+                               ▼
+    ┌────────────────────────────────────────────────────────┐
+    │ Layer 2: Tidy Wranglers (Offline Data Transformation)  │
+    │   • lic_tidy_games()  (user-centric perspective/dates) │
+    │   • lic_tidy_moves()  (1-row-per-ply move unnesting)   │
+    └──────────────────────────┬─────────────────────────────┘
+                               │ Tidy tibble
+                               ▼
+    ┌────────────────────────────────────────────────────────┐
+    │ Layer 3: Chess Analytics & Visualization               │
+    │   • lic_stats_openings()                               │
+    │   • standard dplyr / tidyr / ggplot2 workflows         │
+    └────────────────────────────────────────────────────────┘
+
+------------------------------------------------------------------------
+
+## 2. Installation & Setup
+
+Install the latest version from GitHub:
+
+``` r
+
+# install.packages("pak")
+pak::pak("h8gi/rlichess")
+
+# or using devtools / remotes
+devtools::install_github("h8gi/rlichess")
+```
+
+``` r
+
+library(rlichess)
+library(dplyr)
+```
+
+### Personal API Token (Optional)
+
+While public endpoints can be accessed anonymously, configuring a
+Lichess Personal Access Token increases rate limits (up to 30–60
+games/second) and enables on-demand rating history generation.
+
+Add your token to your `.Renviron` file:
+
+``` bash
+LICHESS_API_TOKEN="lip_your_personal_access_token_here"
+```
+
+In R code, `rlichess` automatically picks it up via
+[`lic_token()`](https://h8gi.github.io/rlichess/reference/lic_token.md):
+
+``` r
+
+lic_token()
+```
+
+------------------------------------------------------------------------
+
+## 3. Layer 1: API Clients
+
+### Fetching User Games
+
+[`lic_games_user()`](https://h8gi.github.io/rlichess/reference/lic_games_user.md)
+downloads game records directly from Lichess in NDJSON format. You can
+filter by date range, time control, opponent, or computer analysis:
+
+``` r
+
+# Download recent bullet games since 2025
+raw_games <- lic_games_user(
+  username = "h8gi",
+  perf_type = "bullet",
+  since = "2025-01-01",
+  max = 100,
+  clocks = TRUE,
+  evals = TRUE
+)
+```
+
+### Downloading a Single Game by ID
+
+``` r
+
+game <- lic_game("0tMlsM69")
+```
+
+### User Profiles & Ratings
+
+``` r
+
+# Core user profile summary as a 1-row tidy tibble
+user <- lic_user("h8gi")
+user %>%
+  select(username, created_at, play_time_total_hours, count_all)
+
+# Performance ratings across all game types (bullet, blitz, rapid, puzzle, etc.)
+perfs <- lic_user_perfs("h8gi")
+perfs
+
+# Daily rating history (dates and rating values)
+history <- lic_user_rating_history("h8gi", perf_type = "bullet")
+
+# In-depth performance statistics (streaks, best wins, worst losses)
+stats <- lic_user_perf_stats("h8gi", perf = "bullet")
+```
+
+### Opening Explorer Databases
+
+Query Lichess’s vast opening database (over billions of games) or
+historical FIDE master-level games (2200+ FIDE):
+
+``` r
+
+# Query Sicilian Defense (1. e4 c5) in Lichess database
+exp <- lic_explorer_lichess(play = "e4,c5")
+exp$moves
+
+# Query FIDE master tournament games
+masters <- lic_explorer_masters(play = "e4,c5")
+masters$moves
+
+# Query a specific player's personal opening repertoire
+player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
+player_exp$moves
+```
+
+### Daily Tactical Puzzle
+
+``` r
+
+daily <- lic_puzzle_daily()
+daily$puzzle$rating
+```
+
+------------------------------------------------------------------------
+
+## 4. Layer 2: Tidy Wranglers
+
+Raw API data often contains nested JSON objects and unformatted move
+strings. Layer 2 provides offline transformation functions to clean and
+reshape this data.
+
+### Tidying Game Metadata (`lic_tidy_games`)
+
+[`lic_tidy_games()`](https://h8gi.github.io/rlichess/reference/lic_tidy_games.md)
+parses raw game data into a user-centric perspective: - Converts
+timestamps into standard `POSIXct` datetime vectors (`created_at`,
+`last_move_at`). - Identifies the player’s color (`user_color`) and
+match result (`user_result`, `win`). - Extracts opponent names
+(`opponent_name`), opponent ratings (`opponent_rating`), and rating
+differences (`user_rating_diff`).
+
+``` r
+
+games <- lic_tidy_games(raw_games, username = "h8gi")
+
+games %>%
+  select(id, created_at, user_color, user_result, user_rating, opponent_name, opening.name) %>%
+  head()
+```
+
+### Unpacking Move Sequences (`lic_tidy_moves`)
+
+To analyze move-by-move evaluations, clock times, or time management,
+[`lic_tidy_moves()`](https://h8gi.github.io/rlichess/reference/lic_tidy_moves.md)
+unpacks game move strings into a long-format tibble where **each row
+corresponds to one half-move (ply)**:
+
+``` r
+
+moves_df <- lic_tidy_moves(games)
+
+moves_df %>%
+  filter(game_id == first(game_id)) %>%
+  select(ply, move_number, color, san, clock, eval) %>%
+  head(10)
+```
+
+------------------------------------------------------------------------
+
+## 5. Layer 3: Chess Analytics
+
+### Opening Win Rates
+
+Summarize performance across different opening variations:
+
+``` r
+
+opening_stats <- lic_stats_openings(games, min_games = 5)
+opening_stats
+```
+
+------------------------------------------------------------------------
+
+## 6. Built-in Dataset: `lichess_openings`
+
+`rlichess` bundles the official Lichess opening database containing
+3,378 ECO codes, opening names, and move sequences:
+
+``` r
+
+data(lichess_openings)
+head(lichess_openings)
+```

@@ -2,8 +2,8 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
-  getting-started: getting-started.html
-last_built: 2026-08-24T02:32Z
+  rlichess: rlichess.html
+last_built: 2026-08-24T07:04Z
 urls:
   reference: https://h8gi.github.io/rlichess/reference
   article: https://h8gi.github.io/rlichess/articles

@@ -2,5 +2,5 @@
 
 ### All vignettes
 
-- [Getting Started with
-  rlichess](https://h8gi.github.io/rlichess/articles/getting-started.md):
+- [Get started with
+  rlichess](https://h8gi.github.io/rlichess/articles/rlichess.md):
