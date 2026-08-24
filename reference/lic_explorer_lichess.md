@@ -69,14 +69,15 @@ candidate `moves`.
 **Official Documentation:**
 <https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerLichess>
 
-Note: As of 2026, Lichess requires OAuth2 / API Token authentication for
-explorer queries.
+Note: Lichess requires API Token authentication for explorer queries.
 
 ## Examples
 
 ``` r
-if (FALSE) { # nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 exp <- lic_explorer_lichess(play = "e4,c5")
 exp$moves
-}
+#> # A tibble: 1 × 6
+#>   uci   san   white draws black averageRating
+#>   <chr> <chr> <int> <int> <int>         <int>
+#> 1 e2e4  e4     1000   300   700          2200
 ```

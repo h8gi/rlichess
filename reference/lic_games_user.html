@@ -146,9 +146,17 @@ OAuth requests receive 30 games/sec (or 60 games/sec when fetching your own game
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># nzchar(Sys.getenv("LICHESS_API_TOKEN"))</span></span></span>
-<span class="r-in"><span><span class="va">games</span> <span class="op">&lt;-</span> <span class="fu">lic_games_user</span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span>, max <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">games</span> <span class="op">&lt;-</span> <span class="fu">lic_games_user</span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span>, max <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">games</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 18</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id        rated variant  speed  perf  createdAt lastMoveAt status winner moves</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> demoGame1 TRUE  standard bullet bull…   1.73<span style="color: #949494;">e</span>12    1.73<span style="color: #949494;">e</span>12 resign white  e4 e…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> demoGame2 TRUE  standard bullet bull…   1.73<span style="color: #949494;">e</span>12    1.73<span style="color: #949494;">e</span>12 mate   black  d4 d…</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 8 more variables: players.white.rating &lt;int&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   players.white.user.name &lt;chr&gt;, players.white.user.id &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   players.black.rating &lt;int&gt;, players.black.user.name &lt;chr&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   players.black.user.id &lt;chr&gt;, opening.eco &lt;chr&gt;, opening.name &lt;chr&gt;</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

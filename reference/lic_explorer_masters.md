@@ -61,8 +61,10 @@ A list containing aggregate stats (`white`, `draws`, `black`), candidate
 ## Examples
 
 ``` r
-if (FALSE) { # nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 masters <- lic_explorer_masters(play = "e4,c5")
 masters$moves
-}
+#> # A tibble: 1 × 6
+#>   uci   san   white draws black averageRating
+#>   <chr> <chr> <int> <int> <int>         <int>
+#> 1 e2e4  e4     1000   300   700          2200
 ```

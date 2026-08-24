@@ -1,6 +1,6 @@
 # rlichess: R Client and Analysis Tools for Lichess
 
-Provides an interface to the Lichess API (https://lichess.org/api) for
+Provides an interface to the Lichess API (<https://lichess.org/api>) for
 downloading chess game data, player profiles, and ratings, along with
 tidy tools for analyzing chess performances, openings, and trends.
 

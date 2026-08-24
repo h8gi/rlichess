@@ -59,8 +59,10 @@ candidate `moves` tibble.
 ## Examples
 
 ``` r
-if (FALSE) { # nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
 player_exp$moves
-}
+#> # A tibble: 1 × 6
+#>   uci   san   white draws black averageRating
+#>   <chr> <chr> <int> <int> <int>         <int>
+#> 1 e2e4  e4     1000   300   700          2200
 ```

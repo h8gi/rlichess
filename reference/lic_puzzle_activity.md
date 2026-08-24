@@ -36,7 +36,5 @@ puzzle attempts.
 ## Examples
 
 ``` r
-if (FALSE) { # nzchar(Sys.getenv("LICHESS_API_TOKEN"))
 puzzles <- lic_puzzle_activity(max = 20)
-}
 ```

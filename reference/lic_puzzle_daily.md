@@ -32,5 +32,5 @@ themes).
 ``` r
 puzzle <- lic_puzzle_daily()
 puzzle$puzzle$rating
-#> [1] 1973
+#> [1] 2026
 ```
