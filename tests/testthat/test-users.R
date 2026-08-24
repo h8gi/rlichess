@@ -3,15 +3,26 @@ test_that("lic_user handles input validation", {
   expect_error(lic_user(123), "must be a single non-empty character string")
 })
 
-test_that("lic_user returns profile for valid user", {
+test_that("lic_user returns tidy tibble by default and raw list with raw = TRUE", {
   skip_if_offline()
-  user <- lic_user("h8gi", token = NULL)
-  expect_equal(tolower(user$username), "h8gi")
-  expect_true("perfs" %in% names(user))
+
+  # Default: tidy tibble
+  user_df <- lic_user("h8gi", token = NULL)
+  expect_s3_class(user_df, "tbl_df")
+  expect_equal(nrow(user_df), 1)
+  expect_equal(tolower(user_df$username), "h8gi")
+  expect_true("created_at" %in% names(user_df))
+  expect_s3_class(user_df$created_at, "POSIXct")
+  expect_true(is.numeric(user_df$count_all))
+
+  # raw = TRUE
+  user_raw <- lic_user("h8gi", raw = TRUE, token = NULL)
+  expect_true(is.list(user_raw))
+  expect_true("perfs" %in% names(user_raw))
 
   # Test alias
   user_alias <- lic_user_profile("h8gi", token = NULL)
-  expect_equal(user$id, user_alias$id)
+  expect_equal(user_df$id, user_alias$id)
 })
 
 test_that("lic_user_perfs returns structured tibble for valid user", {

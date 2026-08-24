@@ -1,18 +1,21 @@
 #' Get Lichess User Profile
 #'
-#' Fetches the public user profile from Lichess.
+#' Fetches the public user profile from Lichess. By default (`raw = FALSE`), returns
+#' a 1-row tidy [tibble::tibble] containing core user metadata, timestamps, and game counts.
+#' If `raw = TRUE`, returns the full parsed JSON list.
 #'
 #' @param username Lichess username.
+#' @param raw Logical. If `TRUE`, returns the raw nested list from Lichess API. Default is `FALSE`.
 #' @param token API access token. By default, retrieved via [lic_token()].
 #'
-#' @return A list containing user metadata and performance summaries.
+#' @return A 1-row [tibble::tibble] (if `raw = FALSE`) or a nested `list` (if `raw = TRUE`).
 #' @export
 #' @examples
 #' \dontrun{
 #' user <- lic_user("h8gi")
-#' user$username
+#' user$created_at
 #' }
-lic_user <- function(username, token = lic_token()) {
+lic_user <- function(username, raw = FALSE, token = lic_token()) {
   if (missing(username) || !is.character(username) || length(username) != 1 || !nzchar(username)) {
     cli::cli_abort("{.arg username} must be a single non-empty character string.")
   }
@@ -22,13 +25,43 @@ lic_user <- function(username, token = lic_token()) {
     httr2::req_headers("Accept" = "application/json")
 
   resp <- httr2::req_perform(req)
-  jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
+  parsed <- jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
+
+  if (isTRUE(raw)) {
+    return(parsed)
+  }
+
+  # Build a tidy 1-row tibble
+  count_info <- parsed$count %||% list()
+  play_time <- parsed$playTime %||% list()
+  profile_info <- parsed$profile %||% list()
+
+  tibble::tibble(
+    id = parsed$id %||% username,
+    username = parsed$username %||% username,
+    title = parsed$title %||% NA_character_,
+    online = isTRUE(parsed$online),
+    patron = isTRUE(parsed$patron),
+    created_at = lic_from_timestamp(parsed$createdAt),
+    seen_at = lic_from_timestamp(parsed$seenAt),
+    bio = profile_info$bio %||% NA_character_,
+    country = profile_info$country %||% NA_character_,
+    location = profile_info$location %||% NA_character_,
+    play_time_total_hours = round((play_time$total %||% 0) / 3600, 1),
+    play_time_tv_hours = round((play_time$tv %||% 0) / 3600, 1),
+    count_all = count_info$all %||% 0L,
+    count_rated = count_info$rated %||% 0L,
+    count_win = count_info$win %||% 0L,
+    count_loss = count_info$loss %||% 0L,
+    count_draw = count_info$draw %||% 0L,
+    url = parsed$url %||% paste0("https://lichess.org/@/", username)
+  )
 }
 
 #' @rdname lic_user
 #' @export
-lic_user_profile <- function(username, token = lic_token()) {
-  lic_user(username = username, token = token)
+lic_user_profile <- function(username, raw = FALSE, token = lic_token()) {
+  lic_user(username = username, raw = raw, token = token)
 }
 
 #' Get Lichess User Performances Summary
@@ -46,7 +79,7 @@ lic_user_profile <- function(username, token = lic_token()) {
 #' perfs <- lic_user_perfs("h8gi")
 #' }
 lic_user_perfs <- function(username, token = lic_token()) {
-  prof <- lic_user(username = username, token = token)
+  prof <- lic_user(username = username, raw = TRUE, token = token)
 
   if (is.null(prof$perfs)) {
     return(tibble::tibble(
