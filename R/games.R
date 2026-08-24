@@ -21,22 +21,22 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' games <- lic_get_games("h8gi", perf_type = "bullet", max = 50)
+#' games <- lic_games_user("h8gi", perf_type = "bullet", max = 50)
 #' }
-lic_get_games <- function(username,
-                          perf_type = NULL,
-                          since = NULL,
-                          until = NULL,
-                          max = NULL,
-                          vs = NULL,
-                          rated = NULL,
-                          color = NULL,
-                          analysed = NULL,
-                          opening = TRUE,
-                          moves = TRUE,
-                          clocks = FALSE,
-                          evals = FALSE,
-                          token = lic_token()) {
+lic_games_user <- function(username,
+                           perf_type = NULL,
+                           since = NULL,
+                           until = NULL,
+                           max = NULL,
+                           vs = NULL,
+                           rated = NULL,
+                           color = NULL,
+                           analysed = NULL,
+                           opening = TRUE,
+                           moves = TRUE,
+                           clocks = FALSE,
+                           evals = FALSE,
+                           token = lic_token()) {
   if (missing(username) || !is.character(username) || length(username) != 1 || !nzchar(username)) {
     cli::cli_abort("{.arg username} must be a single non-empty character string.")
   }
@@ -82,6 +82,40 @@ lic_get_games <- function(username,
   tibble::as_tibble(jsonlite::flatten(df))
 }
 
+#' @rdname lic_games_user
+#' @export
+lic_get_games <- function(username,
+                          perf_type = NULL,
+                          since = NULL,
+                          until = NULL,
+                          max = NULL,
+                          vs = NULL,
+                          rated = NULL,
+                          color = NULL,
+                          analysed = NULL,
+                          opening = TRUE,
+                          moves = TRUE,
+                          clocks = FALSE,
+                          evals = FALSE,
+                          token = lic_token()) {
+  lic_games_user(
+    username = username,
+    perf_type = perf_type,
+    since = since,
+    until = until,
+    max = max,
+    vs = vs,
+    rated = rated,
+    color = color,
+    analysed = analysed,
+    opening = opening,
+    moves = moves,
+    clocks = clocks,
+    evals = evals,
+    token = token
+  )
+}
+
 #' Download a Single Lichess Game
 #'
 #' Retrieves full details of a specific game by its ID.
@@ -97,19 +131,18 @@ lic_get_games <- function(username,
 #' @export
 #' @examples
 #' \dontrun{
-#' game <- lic_get_game("0tMlsM69")
+#' game <- lic_game("0tMlsM69")
 #' }
-lic_get_game <- function(game_id,
-                         moves = TRUE,
-                         clocks = TRUE,
-                         evals = TRUE,
-                         opening = TRUE,
-                         token = lic_token()) {
+lic_game <- function(game_id,
+                     moves = TRUE,
+                     clocks = TRUE,
+                     evals = TRUE,
+                     opening = TRUE,
+                     token = lic_token()) {
   if (missing(game_id) || !is.character(game_id) || length(game_id) != 1 || !nzchar(game_id)) {
     cli::cli_abort("{.arg game_id} must be a single non-empty character string.")
   }
 
-  # Clean game ID (handle both 8-character ID and full URLs)
   game_id <- sub("^.*/", "", game_id)
   game_id <- substr(game_id, 1, 8)
 
@@ -133,12 +166,30 @@ lic_get_game <- function(game_id,
   tibble::as_tibble(df)
 }
 
+#' @rdname lic_game
+#' @export
+lic_get_game <- function(game_id,
+                         moves = TRUE,
+                         clocks = TRUE,
+                         evals = TRUE,
+                         opening = TRUE,
+                         token = lic_token()) {
+  lic_game(
+    game_id = game_id,
+    moves = moves,
+    clocks = clocks,
+    evals = evals,
+    opening = opening,
+    token = token
+  )
+}
+
 #' Tidy Lichess Game Data
 #'
 #' Enriches and standardizes raw game data with user-perspective columns,
 #' readable timestamps, and opponent details.
 #'
-#' @param data Raw game tibble returned by [lic_get_games()] or [lic_get_game()].
+#' @param data Raw game tibble returned by [lic_games_user()] or [lic_game()].
 #' @param username Target username to calculate user-centric perspective. If `NULL`,
 #'   user-centric columns (`user_color`, `user_result`, `win`) will not be computed.
 #'
@@ -146,7 +197,7 @@ lic_get_game <- function(game_id,
 #' @export
 #' @examples
 #' \dontrun{
-#' raw <- lic_get_games("h8gi", max = 20)
+#' raw <- lic_games_user("h8gi", max = 20)
 #' games <- lic_tidy_games(raw, username = "h8gi")
 #' }
 lic_tidy_games <- function(data, username = NULL) {
@@ -156,7 +207,6 @@ lic_tidy_games <- function(data, username = NULL) {
 
   res <- data
 
-  # Convert timestamps
   if ("createdAt" %in% names(res)) {
     res$created_at <- lic_from_timestamp(res$createdAt)
   }
@@ -164,7 +214,6 @@ lic_tidy_games <- function(data, username = NULL) {
     res$last_move_at <- lic_from_timestamp(res$lastMoveAt)
   }
 
-  # Add user-centric perspective if username is provided
   if (!is.null(username) && nzchar(username)) {
     white_col <- if ("players.white.user.name" %in% names(res)) {
       "players.white.user.name"
@@ -201,19 +250,16 @@ lic_tidy_games <- function(data, username = NULL) {
     res$user_result <- result
     res$win <- (result == "win")
 
-    # User and opponent ratings
     w_rat <- if ("players.white.rating" %in% names(res)) res[["players.white.rating"]] else rep(NA_integer_, nrow(res))
     b_rat <- if ("players.black.rating" %in% names(res)) res[["players.black.rating"]] else rep(NA_integer_, nrow(res))
 
     res$user_rating <- dplyr::if_else(color == "white", w_rat, b_rat)
     res$opponent_rating <- dplyr::if_else(color == "white", b_rat, w_rat)
 
-    # Opponent username
     w_name <- if (!is.na(white_col)) res[[white_col]] else rep(NA_character_, nrow(res))
     b_name <- if (!is.na(black_col)) res[[black_col]] else rep(NA_character_, nrow(res))
     res$opponent_name <- dplyr::if_else(color == "white", b_name, w_name)
 
-    # Rating diff
     w_diff <- if ("players.white.ratingDiff" %in% names(res)) res[["players.white.ratingDiff"]] else rep(NA_integer_, nrow(res))
     b_diff <- if ("players.black.ratingDiff" %in% names(res)) res[["players.black.ratingDiff"]] else rep(NA_integer_, nrow(res))
     res$user_rating_diff <- dplyr::if_else(color == "white", w_diff, b_diff)
@@ -292,7 +338,6 @@ lic_tidy_moves <- function(data) {
     move_nums <- (plies + 1L) %/% 2L
     colors <- ifelse(plies %% 2L == 1L, "white", "black")
 
-    # Clocks
     clocks_vec <- if ("clocks" %in% names(data) && is.list(data$clocks)) {
       ck <- data$clocks[[i]]
       if (length(ck) >= num_plies) as.numeric(ck[seq_len(num_plies)]) / 100 else rep(NA_real_, num_plies)
@@ -300,7 +345,6 @@ lic_tidy_moves <- function(data) {
       rep(NA_real_, num_plies)
     }
 
-    # Evals
     evals_vec <- if ("evals" %in% names(data) && is.list(data$evals)) {
       ev <- data$evals[[i]]
       if (is.data.frame(ev) && "cp" %in% names(ev)) {
@@ -312,7 +356,6 @@ lic_tidy_moves <- function(data) {
       rep(NA_real_, num_plies)
     }
 
-    # Pad evals if shorter
     if (length(evals_vec) < num_plies) {
       evals_vec <- c(evals_vec, rep(NA_real_, num_plies - length(evals_vec)))
     }

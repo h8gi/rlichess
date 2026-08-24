@@ -7,7 +7,7 @@
 lic_tidy_games(data, username = NULL)
 }
 \arguments{
-\item{data}{Raw game tibble returned by \code{\link[=lic_get_games]{lic_get_games()}} or \code{\link[=lic_get_game]{lic_get_game()}}.}
+\item{data}{Raw game tibble returned by \code{\link[=lic_games_user]{lic_games_user()}} or \code{\link[=lic_game]{lic_game()}}.}
 
 \item{username}{Target username to calculate user-centric perspective. If \code{NULL},
 user-centric columns (\code{user_color}, \code{user_result}, \code{win}) will not be computed.}
@@ -21,7 +21,7 @@ readable timestamps, and opponent details.
 }
 \examples{
 \dontrun{
-raw <- lic_get_games("h8gi", max = 20)
+raw <- lic_games_user("h8gi", max = 20)
 games <- lic_tidy_games(raw, username = "h8gi")
 }
 }

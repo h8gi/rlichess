@@ -13,15 +13,15 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' exp <- lic_opening_explorer(play = "e4,c5")
+#' exp <- lic_explorer_lichess(play = "e4,c5")
 #' exp$moves
 #' }
-lic_opening_explorer <- function(fen = NULL,
-                                 play = NULL,
-                                 variant = "standard",
-                                 ratings = c(2000, 2200, 2500),
-                                 speeds = c("blitz", "rapid"),
-                                 token = lic_token()) {
+lic_explorer_lichess <- function(fen = NULL,
+                                play = NULL,
+                                variant = "standard",
+                                ratings = c(2000, 2200, 2500),
+                                speeds = c("blitz", "rapid"),
+                                token = lic_token()) {
   url <- "https://explorer.lichess.ovh/lichess"
   req <- lic_request(url, token = token) |>
     httr2::req_headers("Accept" = "application/json")
@@ -69,6 +69,24 @@ lic_opening_explorer <- function(fen = NULL,
   )
 }
 
+#' @rdname lic_explorer_lichess
+#' @export
+lic_opening_explorer <- function(fen = NULL,
+                                 play = NULL,
+                                 variant = "standard",
+                                 ratings = c(2000, 2200, 2500),
+                                 speeds = c("blitz", "rapid"),
+                                 token = lic_token()) {
+  lic_explorer_lichess(
+    fen = fen,
+    play = play,
+    variant = variant,
+    ratings = ratings,
+    speeds = speeds,
+    token = token
+  )
+}
+
 #' Query Lichess Masters Opening Explorer
 #'
 #' Retrieves opening statistics from historical FIDE master-level games (2200+ FIDE).
@@ -83,10 +101,10 @@ lic_opening_explorer <- function(fen = NULL,
 #' @export
 #' @examples
 #' \dontrun{
-#' masters <- lic_masters_explorer(play = "e4,c5")
+#' masters <- lic_explorer_masters(play = "e4,c5")
 #' masters$moves
 #' }
-lic_masters_explorer <- function(fen = NULL,
+lic_explorer_masters <- function(fen = NULL,
                                  play = NULL,
                                  since = NULL,
                                  until = NULL,
@@ -121,6 +139,88 @@ lic_masters_explorer <- function(fen = NULL,
     black = parsed$black %||% 0L,
     moves = moves_df,
     topGames = if (!is.null(parsed$topGames)) tibble::as_tibble(parsed$topGames) else tibble::tibble(),
+    opening = parsed$opening %||% NULL
+  )
+}
+
+#' @rdname lic_explorer_masters
+#' @export
+lic_masters_explorer <- function(fen = NULL,
+                                 play = NULL,
+                                 since = NULL,
+                                 until = NULL,
+                                 token = lic_token()) {
+  lic_explorer_masters(
+    fen = fen,
+    play = play,
+    since = since,
+    until = until,
+    token = token
+  )
+}
+
+#' Query Player Opening Explorer Database
+#'
+#' Retrieves opening statistics for a specific player's game history.
+#'
+#' @param username Target player's Lichess username.
+#' @param color Player color perspective (`"white"` or `"black"`). Default is `"white"`.
+#' @param play Move sequence in UCI or SAN.
+#' @param fen FEN position string.
+#' @param speeds Character vector of game speeds (e.g. `c("blitz", "rapid", "bullet")`).
+#' @param token API access token. By default, retrieved via [lic_token()].
+#'
+#' @return A list containing aggregate stats (`white`, `draws`, `black`) and candidate `moves` tibble.
+#' @export
+#' @examples
+#' \dontrun{
+#' player_exp <- lic_explorer_player("h8gi", color = "white", play = "e4")
+#' player_exp$moves
+#' }
+lic_explorer_player <- function(username,
+                                color = "white",
+                                play = NULL,
+                                fen = NULL,
+                                speeds = c("blitz", "rapid", "bullet"),
+                                token = lic_token()) {
+  if (missing(username) || !is.character(username) || length(username) != 1 || !nzchar(username)) {
+    cli::cli_abort("{.arg username} must be a single non-empty character string.")
+  }
+
+  url <- "https://explorer.lichess.ovh/player"
+  req <- lic_request(url, token = token) |>
+    httr2::req_headers("Accept" = "application/json")
+
+  query_params <- list(
+    player = username,
+    color = tolower(color)
+  )
+
+  if (!is.null(fen)) query_params$fen <- fen
+  if (!is.null(play)) {
+    if (length(play) > 1) play <- paste(play, collapse = ",")
+    query_params$play <- play
+  }
+  if (!is.null(speeds)) {
+    query_params$speeds <- paste(speeds, collapse = ",")
+  }
+
+  req <- httr2::req_url_query(req, !!!query_params)
+  resp <- httr2::req_perform(req)
+
+  parsed <- jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
+
+  moves_df <- if (!is.null(parsed$moves) && length(parsed$moves) > 0) {
+    tibble::as_tibble(parsed$moves)
+  } else {
+    tibble::tibble()
+  }
+
+  list(
+    white = parsed$white %||% 0L,
+    draws = parsed$draws %||% 0L,
+    black = parsed$black %||% 0L,
+    moves = moves_df,
     opening = parsed$opening %||% NULL
   )
 }
