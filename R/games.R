@@ -2,6 +2,14 @@
 #'
 #' Fetches game data for a given user from the Lichess API in NDJSON format.
 #'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/games/user/{username}`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Games/operation/apiGamesUser>
+#'
+#' Rate limits: Anonymous requests are throttled at 20 games/sec. Authenticated
+#' OAuth requests receive 30 games/sec (or 60 games/sec when fetching your own games).
+#'
 #' @param username Lichess username.
 #' @param perf_type Optional game type filter (e.g. `"bullet"`, `"blitz"`, `"rapid"`, `"classical"`).
 #' @param since Download games played since this timestamp or Date (e.g. `"2025-01-01"` or `as.Date(...)`).
@@ -120,6 +128,11 @@ lic_get_games <- function(username,
 #'
 #' Retrieves full details of a specific game by its ID.
 #'
+#' @details
+#' **Lichess API Endpoint:** `GET /game/export/{gameId}`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Games/operation/gamePgn>
+#'
 #' @param game_id Lichess game ID (e.g. `"0tMlsM69"`).
 #' @param moves Logical. Include move notation. Default is `TRUE`.
 #' @param clocks Logical. Include move clock times. Default is `TRUE`.
@@ -188,6 +201,10 @@ lic_get_game <- function(game_id,
 #'
 #' Enriches and standardizes raw game data with user-perspective columns,
 #' readable timestamps, and opponent details.
+#'
+#' @details
+#' This is an **offline data transformation** function (no API network request).
+#' It standardizes raw data returned by [lic_games_user()] or [lic_game()].
 #'
 #' @param data Raw game tibble returned by [lic_games_user()] or [lic_game()].
 #' @param username Target username to calculate user-centric perspective. If `NULL`,
@@ -284,6 +301,11 @@ lic_normalize_games <- function(data, username) {
 #'
 #' Expands game move sequences, clock times, and Stockfish evaluations into a
 #' long-format tidy tibble where each row corresponds to one half-move (ply).
+#'
+#' @details
+#' This is an **offline data transformation** function (no API network request).
+#' It unnests the move string (`moves`), clock array (`clocks`), and evaluation array (`evals`)
+#' from game records into a tidy ply-by-ply dataset.
 #'
 #' @param data A game tibble containing an `id` and a `moves` column.
 #'

@@ -42,6 +42,11 @@ A single-row \link[tibble:tibble]{tibble::tibble} containing game details.
 \description{
 Retrieves full details of a specific game by its ID.
 }
+\details{
+\strong{Lichess API Endpoint:} \code{GET /game/export/{gameId}}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Games/operation/gamePgn}
+}
 \examples{
 \dontrun{
 game <- lic_game("0tMlsM69")

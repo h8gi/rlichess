@@ -7,7 +7,7 @@
 lic_stats_openings(data, min_games = 10)
 }
 \arguments{
-\item{data}{Normalized game data returned by \code{\link[=lic_normalize_games]{lic_normalize_games()}}.}
+\item{data}{Normalized game data returned by \code{\link[=lic_tidy_games]{lic_tidy_games()}}.}
 
 \item{min_games}{Minimum number of games required to include in the summary.}
 }
@@ -18,10 +18,14 @@ losses (\code{losses}), draws (\code{draws}), and win rate (\code{winrate}).
 \description{
 Summarizes game statistics grouped by opening and player color.
 }
+\details{
+This is an \strong{offline data aggregation} function (no API network request).
+It calculates win rates, game counts, and results from normalized game data.
+}
 \examples{
 \dontrun{
-games <- lic_get_games("h8gi", max = 100) |>
-  lic_normalize_games(username = "h8gi")
+games <- lic_games_user("h8gi", max = 100) |>
+  lic_tidy_games(username = "h8gi")
 stats <- lic_stats_openings(games, min_games = 5)
 }
 }

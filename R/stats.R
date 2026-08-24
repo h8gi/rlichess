@@ -2,7 +2,11 @@
 #'
 #' Summarizes game statistics grouped by opening and player color.
 #'
-#' @param data Normalized game data returned by [lic_normalize_games()].
+#' @details
+#' This is an **offline data aggregation** function (no API network request).
+#' It calculates win rates, game counts, and results from normalized game data.
+#'
+#' @param data Normalized game data returned by [lic_tidy_games()].
 #' @param min_games Minimum number of games required to include in the summary.
 #'
 #' @return A [tibble::tibble] with opening names, total games (`n`), wins (`wins`),
@@ -10,8 +14,8 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' games <- lic_get_games("h8gi", max = 100) |>
-#'   lic_normalize_games(username = "h8gi")
+#' games <- lic_games_user("h8gi", max = 100) |>
+#'   lic_tidy_games(username = "h8gi")
 #' stats <- lic_stats_openings(games, min_games = 5)
 #' }
 lic_stats_openings <- function(data, min_games = 10) {

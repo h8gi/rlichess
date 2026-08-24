@@ -19,6 +19,10 @@ A tidy \link[tibble:tibble]{tibble::tibble} with standardized column names and t
 Enriches and standardizes raw game data with user-perspective columns,
 readable timestamps, and opponent details.
 }
+\details{
+This is an \strong{offline data transformation} function (no API network request).
+It standardizes raw data returned by \code{\link[=lic_games_user]{lic_games_user()}} or \code{\link[=lic_game]{lic_game()}}.
+}
 \examples{
 \dontrun{
 raw <- lic_games_user("h8gi", max = 20)

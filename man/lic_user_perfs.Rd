@@ -18,6 +18,11 @@ A \link[tibble:tibble]{tibble::tibble} with columns \code{perf}, \code{games}, \
 Extracts performance categories (e.g. bullet, blitz, rapid, puzzle) and ratings
 for a user as a tidy tibble.
 }
+\details{
+\strong{Lichess API Endpoint:} Extracted from \code{GET /api/user/{username}}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Users/operation/apiUser}
+}
 \examples{
 \dontrun{
 perfs <- lic_user_perfs("h8gi")

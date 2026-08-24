@@ -20,6 +20,11 @@ A list containing performance statistics.
 Retrieves in-depth stats for a specific game type (e.g. bullet, blitz, rapid),
 including win/loss counts, streaks, highest/lowest ratings, and average opponent rating.
 }
+\details{
+\strong{Lichess API Endpoint:} \code{GET /api/user/{username}/perf/{perf}}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Users/operation/userPerf}
+}
 \examples{
 \dontrun{
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")

@@ -38,6 +38,11 @@ A list containing aggregate stats (\code{white}, \code{draws}, \code{black}), ca
 \description{
 Retrieves opening statistics from historical FIDE master-level games (2200+ FIDE).
 }
+\details{
+\strong{Lichess API Endpoint:} \verb{GET https://explorer.lichess.ovh/masters}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerMaster}
+}
 \examples{
 \dontrun{
 masters <- lic_explorer_masters(play = "e4,c5")

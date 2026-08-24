@@ -15,6 +15,11 @@ A list containing puzzle metadata (puzzle ID, rating, plays, FEN, moves, themes)
 \description{
 Retrieves today's featured puzzle from Lichess.
 }
+\details{
+\strong{Lichess API Endpoint:} \code{GET /api/puzzle/daily}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Puzzles/operation/apiPuzzleDaily}
+}
 \examples{
 \dontrun{
 puzzle <- lic_puzzle_daily()

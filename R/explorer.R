@@ -2,6 +2,13 @@
 #'
 #' Retrieves opening statistics (win rates, popular candidate moves) from the Lichess game database.
 #'
+#' @details
+#' **Lichess API Endpoint:** `GET https://explorer.lichess.ovh/lichess`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerLichess>
+#'
+#' Note: As of 2026, Lichess requires OAuth2 / API Token authentication for explorer queries.
+#'
 #' @param fen FEN position string. Default is the starting chess position.
 #' @param play Comma-separated or vector of move sequence in UCI or SAN (e.g. `"e2e4,e7e5"` or `c("e4", "e5")`).
 #' @param variant Chess variant (`"standard"`, `"chess960"`, etc.). Default is `"standard"`.
@@ -91,6 +98,11 @@ lic_opening_explorer <- function(fen = NULL,
 #'
 #' Retrieves opening statistics from historical FIDE master-level games (2200+ FIDE).
 #'
+#' @details
+#' **Lichess API Endpoint:** `GET https://explorer.lichess.ovh/masters`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerMaster>
+#'
 #' @param fen FEN position string.
 #' @param play Move sequence in UCI or SAN.
 #' @param since Year from which to filter games (e.g. 1952).
@@ -162,6 +174,11 @@ lic_masters_explorer <- function(fen = NULL,
 #' Query Player Opening Explorer Database
 #'
 #' Retrieves opening statistics for a specific player's game history.
+#'
+#' @details
+#' **Lichess API Endpoint:** `GET https://explorer.lichess.ovh/player`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Opening-Explorer/operation/openingExplorerPlayer>
 #'
 #' @param username Target player's Lichess username.
 #' @param color Player color perspective (`"white"` or `"black"`). Default is `"white"`.

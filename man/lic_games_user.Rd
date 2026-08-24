@@ -74,6 +74,14 @@ A \link[tibble:tibble]{tibble::tibble} containing raw game records.
 \description{
 Fetches game data for a given user from the Lichess API in NDJSON format.
 }
+\details{
+\strong{Lichess API Endpoint:} \code{GET /api/games/user/{username}}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Games/operation/apiGamesUser}
+
+Rate limits: Anonymous requests are throttled at 20 games/sec. Authenticated
+OAuth requests receive 30 games/sec (or 60 games/sec when fetching your own games).
+}
 \examples{
 \dontrun{
 games <- lic_games_user("h8gi", perf_type = "bullet", max = 50)

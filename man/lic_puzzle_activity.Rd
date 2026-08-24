@@ -18,6 +18,11 @@ A tidy \link[tibble:tibble]{tibble::tibble} of puzzle attempts.
 Retrieves recent puzzle attempts for the authenticated user in NDJSON format.
 Requires authentication token with puzzle read permission.
 }
+\details{
+\strong{Lichess API Endpoint:} \code{GET /api/puzzle/activity}
+
+\strong{Official Documentation:} \url{https://lichess.org/api#tag/Puzzles/operation/apiPuzzleActivity}
+}
 \examples{
 \dontrun{
 puzzles <- lic_puzzle_activity(max = 20)
