@@ -31,6 +31,10 @@ themes).
 
 ``` r
 puzzle <- lic_puzzle_daily()
+#> Error in httr2::req_perform(req): Failed to perform HTTP request.
+#> Caused by error in `curl::curl_fetch_memory()`:
+#> ! Timeout was reached [lichess.org]:
+#> SSL connection timeout
 puzzle$puzzle$rating
-#> [1] 1924
+#> Error: object 'puzzle' not found
 ```

@@ -47,12 +47,8 @@ A 1-row
 
 ``` r
 lic_user("h8gi")
-#> # A tibble: 1 × 18
-#>   id    username title online patron created_at          seen_at            
-#>   <chr> <chr>    <chr> <lgl>  <lgl>  <dttm>              <dttm>             
-#> 1 h8gi  h8gi     NA    FALSE  FALSE  2019-10-22 16:37:29 2026-08-24 14:22:33
-#> # ℹ 11 more variables: bio <chr>, country <chr>, location <chr>,
-#> #   play_time_total_hours <dbl>, play_time_tv_hours <dbl>, count_all <int>,
-#> #   count_rated <int>, count_win <int>, count_loss <int>, count_draw <int>,
-#> #   url <chr>
+#> Error in httr2::req_perform(req): Failed to perform HTTP request.
+#> Caused by error in `curl::curl_fetch_memory()`:
+#> ! Timeout was reached [lichess.org]:
+#> SSL connection timeout
 ```

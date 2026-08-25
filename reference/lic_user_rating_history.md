@@ -47,9 +47,8 @@ otherwise an empty dataset.
 
 ``` r
 lic_user_rating_history("h8gi", perf_type = "bullet")
-#> ℹ Rating history returned empty. Lichess requires an authenticated request (API
-#>   token) to generate rating history on demand.
-#> • Set `LICHESS_API_TOKEN` environment variable or provide `token` argument.
-#> # A tibble: 0 × 4
-#> # ℹ 4 variables: username <chr>, perf <chr>, date <date>, rating <int>
+#> Error in httr2::req_perform(req): Failed to perform HTTP request.
+#> Caused by error in `curl::curl_fetch_memory()`:
+#> ! Timeout was reached [lichess.org]:
+#> SSL connection timeout
 ```

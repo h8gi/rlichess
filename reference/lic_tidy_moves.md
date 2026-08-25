@@ -47,7 +47,17 @@ with columns:
 
 - eval:
 
-  Stockfish evaluation in centipawns or mate (if available)
+  Stockfish evaluation in pawns (Centipawns / 100, if available)
+
+- mate:
+
+  Forced mate in moves (e.g. `+2` for White mate in 2, `-1` for Black
+  mate in 1)
+
+- judgment:
+
+  Computer move assessment (`"Inaccuracy"`, `"Mistake"`, `"Blunder"`, or
+  `NA`)
 
 ## Details
 
@@ -64,12 +74,12 @@ sample_game <- tibble::tibble(
   moves = "e4 e5 Nf3 Nc6 Bb5"
 )
 lic_tidy_moves(sample_game)
-#> # A tibble: 5 × 7
-#>   game_id   ply move_number color san   clock  eval
-#>   <chr>   <int>       <int> <chr> <chr> <dbl> <dbl>
-#> 1 demo123     1           1 white e4       NA    NA
-#> 2 demo123     2           1 black e5       NA    NA
-#> 3 demo123     3           2 white Nf3      NA    NA
-#> 4 demo123     4           2 black Nc6      NA    NA
-#> 5 demo123     5           3 white Bb5      NA    NA
+#> # A tibble: 5 × 9
+#>   game_id   ply move_number color san   clock  eval  mate judgment
+#>   <chr>   <int>       <int> <chr> <chr> <dbl> <dbl> <int> <chr>   
+#> 1 demo123     1           1 white e4       NA    NA    NA NA      
+#> 2 demo123     2           1 black e5       NA    NA    NA NA      
+#> 3 demo123     3           2 white Nf3      NA    NA    NA NA      
+#> 4 demo123     4           2 black Nc6      NA    NA    NA NA      
+#> 5 demo123     5           3 white Bb5      NA    NA    NA NA      
 ```
