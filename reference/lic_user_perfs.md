@@ -44,7 +44,7 @@ lic_user_perfs("h8gi")
 #> 3 rapid             82   2156   152  -108 TRUE 
 #> 4 classical          5   1889   364     0 TRUE 
 #> 5 correspondence     2   2200   403     0 TRUE 
-#> 6 puzzle          6071   2067    67     0 FALSE
+#> 6 puzzle          6071   2067    68     0 FALSE
 #> 7 storm              0     NA    NA     0 FALSE
 #> 8 racer              0     NA    NA     0 FALSE
 #> 9 streak             0     NA    NA     0 FALSE
