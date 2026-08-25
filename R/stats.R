@@ -34,11 +34,24 @@ lic_stats_openings <- function(data, min_games = 10) {
     ))
   }
 
-  opening_col <- if ("opening.name" %in% names(data)) "opening.name" else NA_character_
-  eco_col <- if ("opening.eco" %in% names(data)) "opening.eco" else NA_character_
+  opening_col <- if ("opening_name" %in% names(data)) {
+    "opening_name"
+  } else if ("opening.name" %in% names(data)) {
+    "opening.name"
+  } else {
+    NA_character_
+  }
+
+  eco_col <- if ("opening_eco" %in% names(data)) {
+    "opening_eco"
+  } else if ("opening.eco" %in% names(data)) {
+    "opening.eco"
+  } else {
+    NA_character_
+  }
 
   if (is.na(opening_col)) {
-    cli::cli_abort("Column {.val opening.name} not found in the input data.")
+    cli::cli_abort("Column {.val opening_name} or {.val opening.name} not found in the input data.")
   }
 
   data |>

@@ -250,55 +250,123 @@ lic_tidy_games <- function(data, username = NULL) {
     res$last_move_at <- lic_from_timestamp(res$lastMoveAt)
   }
 
+  # Standardize player names and handle AI opponents
+  w_user <- if ("players.white.user.name" %in% names(res)) {
+    res[["players.white.user.name"]]
+  } else if ("players.white.user.id" %in% names(res)) {
+    res[["players.white.user.id"]]
+  } else {
+    rep(NA_character_, nrow(res))
+  }
+
+  b_user <- if ("players.black.user.name" %in% names(res)) {
+    res[["players.black.user.name"]]
+  } else if ("players.black.user.id" %in% names(res)) {
+    res[["players.black.user.id"]]
+  } else {
+    rep(NA_character_, nrow(res))
+  }
+
+  w_ai <- if ("players.white.aiLevel" %in% names(res)) res[["players.white.aiLevel"]] else rep(NA_integer_, nrow(res))
+  b_ai <- if ("players.black.aiLevel" %in% names(res)) res[["players.black.aiLevel"]] else rep(NA_integer_, nrow(res))
+
+  white_name <- dplyr::case_when(
+    !is.na(w_user) & nzchar(w_user) ~ w_user,
+    !is.na(w_ai) ~ paste0("Stockfish Level ", w_ai),
+    TRUE ~ NA_character_
+  )
+
+  black_name <- dplyr::case_when(
+    !is.na(b_user) & nzchar(b_user) ~ b_user,
+    !is.na(b_ai) ~ paste0("Stockfish Level ", b_ai),
+    TRUE ~ NA_character_
+  )
+
+  res$white_name <- white_name
+  res$black_name <- black_name
+
+  # Standardize opening columns if present
+  if ("opening.name" %in% names(res) && !"opening_name" %in% names(res)) {
+    res$opening_name <- res[["opening.name"]]
+  }
+  if ("opening.eco" %in% names(res) && !"opening_eco" %in% names(res)) {
+    res$opening_eco <- res[["opening.eco"]]
+  }
+
+  # Standardize time control if clock info is present
+  if ("clock.initial" %in% names(res) && "clock.increment" %in% names(res)) {
+    res$time_control <- paste0(res[["clock.initial"]], "+", res[["clock.increment"]])
+  }
+
   if (!is.null(username) && nzchar(username)) {
-    white_col <- if ("players.white.user.name" %in% names(res)) {
-      "players.white.user.name"
-    } else if ("players.white.user.id" %in% names(res)) {
-      "players.white.user.id"
-    } else {
-      NA_character_
-    }
-
-    black_col <- if ("players.black.user.name" %in% names(res)) {
-      "players.black.user.name"
-    } else if ("players.black.user.id" %in% names(res)) {
-      "players.black.user.id"
-    } else {
-      NA_character_
-    }
-
     target_user <- tolower(username)
 
-    white_users <- if (!is.na(white_col)) tolower(dplyr::coalesce(res[[white_col]], "")) else rep("", nrow(res))
-    black_users <- if (!is.na(black_col)) tolower(dplyr::coalesce(res[[black_col]], "")) else rep("", nrow(res))
+    white_ids <- tolower(dplyr::coalesce(w_user, ""))
+    black_ids <- tolower(dplyr::coalesce(b_user, ""))
+
+    is_white <- (white_ids == target_user)
+    is_black <- (black_ids == target_user)
+
+    user_color <- dplyr::case_when(
+      is_white ~ "white",
+      is_black ~ "black",
+      TRUE ~ NA_character_
+    )
 
     winner <- if ("winner" %in% names(res)) dplyr::coalesce(res[["winner"]], "") else rep("", nrow(res))
+    status <- if ("status" %in% names(res)) dplyr::coalesce(res[["status"]], "") else rep("", nrow(res))
 
-    color <- dplyr::if_else(white_users == target_user, "white", "black")
-
-    result <- dplyr::case_when(
+    user_result <- dplyr::case_when(
+      is.na(user_color) ~ NA_character_,
+      status %in% c("aborted", "noStart") ~ "aborted",
+      winner == user_color ~ "win",
       winner == "" ~ "draw",
-      winner == color ~ "win",
       TRUE ~ "loss"
     )
 
-    res$user_color <- color
-    res$user_result <- result
-    res$win <- (result == "win")
+    win <- dplyr::case_when(
+      is.na(user_result) ~ NA,
+      user_result == "win" ~ TRUE,
+      user_result %in% c("loss", "draw") ~ FALSE,
+      TRUE ~ NA
+    )
 
     w_rat <- if ("players.white.rating" %in% names(res)) res[["players.white.rating"]] else rep(NA_integer_, nrow(res))
     b_rat <- if ("players.black.rating" %in% names(res)) res[["players.black.rating"]] else rep(NA_integer_, nrow(res))
 
-    res$user_rating <- dplyr::if_else(color == "white", w_rat, b_rat)
-    res$opponent_rating <- dplyr::if_else(color == "white", b_rat, w_rat)
+    user_rating <- dplyr::case_when(
+      user_color == "white" ~ w_rat,
+      user_color == "black" ~ b_rat,
+      TRUE ~ NA_integer_
+    )
+    opponent_rating <- dplyr::case_when(
+      user_color == "white" ~ b_rat,
+      user_color == "black" ~ w_rat,
+      TRUE ~ NA_integer_
+    )
 
-    w_name <- if (!is.na(white_col)) res[[white_col]] else rep(NA_character_, nrow(res))
-    b_name <- if (!is.na(black_col)) res[[black_col]] else rep(NA_character_, nrow(res))
-    res$opponent_name <- dplyr::if_else(color == "white", b_name, w_name)
+    opponent_name <- dplyr::case_when(
+      user_color == "white" ~ black_name,
+      user_color == "black" ~ white_name,
+      TRUE ~ NA_character_
+    )
 
     w_diff <- if ("players.white.ratingDiff" %in% names(res)) res[["players.white.ratingDiff"]] else rep(NA_integer_, nrow(res))
     b_diff <- if ("players.black.ratingDiff" %in% names(res)) res[["players.black.ratingDiff"]] else rep(NA_integer_, nrow(res))
-    res$user_rating_diff <- dplyr::if_else(color == "white", w_diff, b_diff)
+
+    user_rating_diff <- dplyr::case_when(
+      user_color == "white" ~ w_diff,
+      user_color == "black" ~ b_diff,
+      TRUE ~ NA_integer_
+    )
+
+    res$user_color <- user_color
+    res$user_result <- user_result
+    res$win <- win
+    res$user_rating <- user_rating
+    res$opponent_rating <- opponent_rating
+    res$opponent_name <- opponent_name
+    res$user_rating_diff <- user_rating_diff
   }
 
   tibble::as_tibble(res)
