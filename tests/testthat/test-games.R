@@ -50,7 +50,42 @@ test_that("lic_tidy_moves expands moves into long tibble format", {
   expect_equal(moves_df$color, c("white", "black", "white", "black", "white", "black"))
   expect_equal(moves_df$san, c("e4", "e5", "Nf3", "Nc6", "Bc4", "Bc5"))
   expect_equal(moves_df$clock, c(180, 179.5, 178, 177, 176, 175))
+  expect_true(all(is.na(moves_df$eval)))
+  expect_true(all(is.na(moves_df$mate)))
+  expect_true(all(is.na(moves_df$judgment)))
 })
+
+test_that("lic_tidy_moves parses evaluations, mate scores, and move judgments", {
+  eval_df <- data.frame(
+    cp = c(25, -15, 120, 250, NA, NA),
+    mate = c(NA, NA, NA, NA, 2, 1),
+    judgment.name = c(NA, NA, NA, "Inaccuracy", "Blunder", NA)
+  )
+
+  sample_game_mate <- tibble::tibble(
+    id = "g_mate",
+    moves = "e4 e5 Nf3 Nc6 Bc4 Qf6 Qxf7#",
+    evals = list(eval_df)
+  )
+
+  res <- lic_tidy_moves(sample_game_mate)
+
+  expect_equal(nrow(res), 7)
+  expect_equal(res$eval[1:4], c(0.25, -0.15, 1.20, 2.50))
+  expect_true(is.na(res$eval[5]))
+  expect_true(is.na(res$eval[6]))
+  expect_true(is.na(res$eval[7]))
+
+  expect_true(all(is.na(res$mate[1:4])))
+  expect_equal(res$mate[5], 2L)
+  expect_equal(res$mate[6], 1L)
+  expect_true(is.na(res$mate[7]))
+
+  expect_equal(res$judgment[4], "Inaccuracy")
+  expect_equal(res$judgment[5], "Blunder")
+  expect_true(is.na(res$judgment[6]))
+})
+
 
 test_that("lic_stats_openings aggregates correctly", {
   sample_df <- tibble::tibble(
