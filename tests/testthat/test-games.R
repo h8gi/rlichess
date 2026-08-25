@@ -73,3 +73,88 @@ test_that("lic_stats_openings aggregates correctly", {
   expect_equal(stats$draws, 0)
   expect_equal(stats$winrate, 2 / 3)
 })
+
+test_that("lic_tidy_games handles AI opponents correctly", {
+  # Case 1: User is Black vs AI (White)
+  ai_game_black <- tibble::tibble(
+    id = "ai_g1",
+    players.white.aiLevel = 3L,
+    players.black.user.name = "playerA",
+    players.black.rating = 1600L,
+    winner = "black",
+    status = "mate"
+  )
+
+  res1 <- lic_tidy_games(ai_game_black, username = "playerA")
+  expect_equal(res1$user_color, "black")
+  expect_equal(res1$user_result, "win")
+  expect_equal(res1$win, TRUE)
+  expect_equal(res1$opponent_name, "Stockfish Level 3")
+  expect_true(is.na(res1$opponent_rating))
+
+  # Case 2: User is White vs AI (Black)
+  ai_game_white <- tibble::tibble(
+    id = "ai_g2",
+    players.white.user.name = "playerA",
+    players.white.rating = 1600L,
+    players.black.aiLevel = 5L,
+    winner = "black",
+    status = "mate"
+  )
+
+  res2 <- lic_tidy_games(ai_game_white, username = "playerA")
+  expect_equal(res2$user_color, "white")
+  expect_equal(res2$user_result, "loss")
+  expect_equal(res2$win, FALSE)
+  expect_equal(res2$opponent_name, "Stockfish Level 5")
+  expect_true(is.na(res2$opponent_rating))
+})
+
+test_that("lic_tidy_games handles aborted games and non-participating users", {
+  # Aborted game
+  aborted_df <- tibble::tibble(
+    id = "g_abort",
+    players.white.user.name = "playerA",
+    players.black.user.name = "playerB",
+    status = "aborted"
+  )
+
+  res_abort <- lic_tidy_games(aborted_df, username = "playerA")
+  expect_equal(res_abort$user_color, "white")
+  expect_equal(res_abort$user_result, "aborted")
+  expect_true(is.na(res_abort$win))
+
+  # Non-participating user
+  other_df <- tibble::tibble(
+    id = "g_other",
+    players.white.user.name = "playerA",
+    players.black.user.name = "playerB",
+    winner = "white"
+  )
+
+  res_other <- lic_tidy_games(other_df, username = "playerC")
+  expect_true(is.na(res_other$user_color))
+  expect_true(is.na(res_other$user_result))
+  expect_true(is.na(res_other$win))
+  expect_true(is.na(res_other$opponent_name))
+})
+
+test_that("lic_tidy_games populates standardized columns", {
+  game_df <- tibble::tibble(
+    id = "g_std",
+    players.white.user.name = "playerA",
+    players.black.user.name = "playerB",
+    clock.initial = 180L,
+    clock.increment = 2L,
+    opening.name = "Italian Game",
+    opening.eco = "C50"
+  )
+
+  res <- lic_tidy_games(game_df)
+  expect_equal(res$white_name, "playerA")
+  expect_equal(res$black_name, "playerB")
+  expect_equal(res$time_control, "180+2")
+  expect_equal(res$opening_name, "Italian Game")
+  expect_equal(res$opening_eco, "C50")
+})
+
