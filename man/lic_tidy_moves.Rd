@@ -17,7 +17,9 @@ A \link[tibble:tibble]{tibble::tibble} with columns:
 \item{color}{Color playing the move (\code{"white"} or \code{"black"})}
 \item{san}{Standard Algebraic Notation of the move (e.g. \code{"e4"}, \code{"Nf3"})}
 \item{clock}{Remaining clock time in seconds (if available)}
-\item{eval}{Stockfish evaluation in centipawns or mate (if available)}
+\item{eval}{Stockfish evaluation in pawns (Centipawns / 100, if available)}
+\item{mate}{Forced mate in moves (e.g. \code{+2} for White mate in 2, \code{-1} for Black mate in 1)}
+\item{judgment}{Computer move assessment (\code{"Inaccuracy"}, \code{"Mistake"}, \code{"Blunder"}, or \code{NA})}
 }
 \description{
 Expands game move sequences, clock times, and Stockfish evaluations into a

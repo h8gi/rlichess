@@ -403,7 +403,9 @@ lic_normalize_games <- function(data, username) {
 #'   \item{color}{Color playing the move (`"white"` or `"black"`)}
 #'   \item{san}{Standard Algebraic Notation of the move (e.g. `"e4"`, `"Nf3"`)}
 #'   \item{clock}{Remaining clock time in seconds (if available)}
-#'   \item{eval}{Stockfish evaluation in centipawns or mate (if available)}
+#'   \item{eval}{Stockfish evaluation in pawns (Centipawns / 100, if available)}
+#'   \item{mate}{Forced mate in moves (e.g. `+2` for White mate in 2, `-1` for Black mate in 1)}
+#'   \item{judgment}{Computer move assessment (`"Inaccuracy"`, `"Mistake"`, `"Blunder"`, or `NA`)}
 #' @export
 #' @examples
 #' sample_game <- tibble::tibble(
@@ -420,7 +422,9 @@ lic_tidy_moves <- function(data) {
       color = character(),
       san = character(),
       clock = numeric(),
-      eval = numeric()
+      eval = numeric(),
+      mate = integer(),
+      judgment = character()
     ))
   }
 
@@ -454,19 +458,28 @@ lic_tidy_moves <- function(data) {
       rep(NA_real_, num_plies)
     }
 
-    evals_vec <- if ("evals" %in% names(data) && is.list(data$evals)) {
-      ev <- data$evals[[i]]
-      if (is.data.frame(ev) && "cp" %in% names(ev)) {
-        as.numeric(ev$cp[seq_len(min(nrow(ev), num_plies))]) / 100
-      } else {
-        rep(NA_real_, num_plies)
-      }
-    } else {
-      rep(NA_real_, num_plies)
-    }
+    evals_vec <- rep(NA_real_, num_plies)
+    mate_vec <- rep(NA_integer_, num_plies)
+    judgment_vec <- rep(NA_character_, num_plies)
 
-    if (length(evals_vec) < num_plies) {
-      evals_vec <- c(evals_vec, rep(NA_real_, num_plies - length(evals_vec)))
+    if ("evals" %in% names(data) && is.list(data$evals)) {
+      ev <- data$evals[[i]]
+      if (is.data.frame(ev)) {
+        n_ev <- min(nrow(ev), num_plies)
+        if (n_ev > 0) {
+          if ("cp" %in% names(ev)) {
+            evals_vec[seq_len(n_ev)] <- as.numeric(ev$cp[seq_len(n_ev)]) / 100
+          }
+          if ("mate" %in% names(ev)) {
+            mate_vec[seq_len(n_ev)] <- as.integer(ev$mate[seq_len(n_ev)])
+          }
+          if ("judgment.name" %in% names(ev)) {
+            judgment_vec[seq_len(n_ev)] <- as.character(ev[["judgment.name"]][seq_len(n_ev)])
+          } else if ("judgment" %in% names(ev) && is.data.frame(ev$judgment) && "name" %in% names(ev$judgment)) {
+            judgment_vec[seq_len(n_ev)] <- as.character(ev$judgment$name[seq_len(n_ev)])
+          }
+        }
+      }
     }
 
     rows[[length(rows) + 1]] <- tibble::tibble(
@@ -476,7 +489,9 @@ lic_tidy_moves <- function(data) {
       color = colors,
       san = moves_vec,
       clock = clocks_vec,
-      eval = evals_vec
+      eval = evals_vec,
+      mate = mate_vec,
+      judgment = judgment_vec
     )
   }
 
@@ -488,7 +503,9 @@ lic_tidy_moves <- function(data) {
       color = character(),
       san = character(),
       clock = numeric(),
-      eval = numeric()
+      eval = numeric(),
+      mate = integer(),
+      judgment = character()
     ))
   }
 
