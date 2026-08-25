@@ -13,21 +13,21 @@ lic_stats_openings(data, min_games = 10)
 }
 \value{
 A \link[tibble:tibble]{tibble::tibble} with opening names, total games (\code{n}), wins (\code{wins}),
-losses (\code{losses}), draws (\code{draws}), and win rate (\code{winrate}).
+losses (\code{losses}), draws (\code{draws}), win rate (\code{winrate}), score (\code{score}), and score rate (\code{score_rate}).
 }
 \description{
 Summarizes game statistics grouped by opening and player color.
 }
 \details{
 This is an \strong{offline data aggregation} function (no API network request).
-It calculates win rates, game counts, and results from normalized game data.
+It calculates win rates, chess score rates, game counts, and results from tidy game data.
 }
 \examples{
 sample_games <- tibble::tibble(
   user_color = c("white", "white", "black"),
   opening.name = c("Ruy Lopez", "Ruy Lopez", "Sicilian Defense"),
   opening.eco = c("C60", "C60", "B20"),
-  user_result = c("win", "win", "loss")
+  user_result = c("win", "draw", "loss")
 )
 lic_stats_openings(sample_games, min_games = 1)
 }
