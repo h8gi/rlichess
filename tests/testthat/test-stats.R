@@ -79,6 +79,12 @@ test_that("lic_stats_time groups performances by hour and weekday", {
   both_stats <- lic_stats_time(sample_games, by = "both", tz = "UTC")
   expect_equal(nrow(both_stats), 2)
   expect_named(both_stats, c("wday", "hour", "n", "wins", "losses", "draws", "winrate", "score", "score_rate", "rating_diff_total"))
+
+  # Empty data handling
+  empty_time <- lic_stats_time(tibble::tibble(), by = "wday")
+  expect_equal(nrow(empty_time), 0)
+  expect_s3_class(empty_time$wday, "factor")
+  expect_equal(levels(empty_time$wday), c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"))
 })
 
 test_that("lic_stats_clocks computes move duration and time trouble accurately", {

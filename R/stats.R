@@ -162,12 +162,13 @@ lic_stats_opponents <- function(data, min_games = 1) {
 #' lic_stats_time(sample_games, by = "hour")
 lic_stats_time <- function(data, by = c("hour", "wday", "both"), tz = "UTC") {
   by <- match.arg(by)
+  day_names <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
 
   if (nrow(data) == 0 || !"created_at" %in% names(data)) {
     cols <- switch(by,
       "hour" = list(hour = integer()),
-      "wday" = list(wday = character()),
-      "both" = list(wday = character(), hour = integer())
+      "wday" = list(wday = factor(character(), levels = day_names)),
+      "both" = list(wday = factor(character(), levels = day_names), hour = integer())
     )
     return(tibble::tibble(
       !!!cols,
@@ -190,8 +191,8 @@ lic_stats_time <- function(data, by = c("hour", "wday", "both"), tz = "UTC") {
   if (nrow(df) == 0) {
     cols <- switch(by,
       "hour" = list(hour = integer()),
-      "wday" = list(wday = character()),
-      "both" = list(wday = character(), hour = integer())
+      "wday" = list(wday = factor(character(), levels = day_names)),
+      "both" = list(wday = factor(character(), levels = day_names), hour = integer())
     )
     return(tibble::tibble(
       !!!cols,
@@ -209,7 +210,6 @@ lic_stats_time <- function(data, by = c("hour", "wday", "both"), tz = "UTC") {
   # Extract formatted hour and weekday in the specified tz (locale independent)
   hour_vec <- as.integer(strftime(df$created_at, "%H", tz = tz))
   wday_num <- as.integer(strftime(df$created_at, "%u", tz = tz)) # 1 (Mon) to 7 (Sun)
-  day_names <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
   wday_vec <- day_names[wday_num]
 
   df$hour <- hour_vec
