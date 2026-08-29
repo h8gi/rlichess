@@ -241,3 +241,230 @@ lic_user_perf_stats <- function(username, perf = "bullet", token = lic_token()) 
   resp <- httr2::req_perform(req)
   jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
 }
+
+#' Get Real-time Status of Multiple Lichess Users
+#'
+#' Fetches the online, playing, and streaming status for up to 100 users in real-time.
+#'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/users/status`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Users/operation/apiUsersStatus>
+#'
+#' @param usernames Character vector of Lichess usernames (up to 100).
+#' @param with_game_ids Logical. Whether to include current game ID if playing. Default is `FALSE`.
+#' @param with_signal Logical. Whether to include network latency signal (1 = poor, 4 = great). Default is `FALSE`.
+#' @param token API access token. By default, retrieved via [lic_token()].
+#'
+#' @return A [tibble::tibble] containing user statuses.
+#' @export
+#' @examplesIf interactive()
+#' lic_users_status(c("h8gi", "magnuscarlsen", "hikaru"))
+lic_users_status <- function(usernames,
+                             with_game_ids = FALSE,
+                             with_signal = FALSE,
+                             token = lic_token()) {
+  if (missing(usernames) || !is.character(usernames) || length(usernames) == 0) {
+    cli::cli_abort("{.arg usernames} must be a non-empty character vector.")
+  }
+
+  clean_users <- usernames[nzchar(trimws(usernames))]
+  if (length(clean_users) == 0) {
+    cli::cli_abort("{.arg usernames} must contain at least one valid username.")
+  }
+
+  if (length(clean_users) > 100) {
+    cli::cli_warn("Lichess API supports a maximum of 100 user IDs per status request. Truncating to first 100.")
+    clean_users <- clean_users[seq_len(100)]
+  }
+
+  url <- "https://lichess.org/api/users/status"
+  req <- lic_request(url, token = token) |>
+    httr2::req_headers("Accept" = "application/json")
+
+  query_params <- list(
+    ids = paste(clean_users, collapse = ",")
+  )
+  if (isTRUE(with_game_ids)) {
+    query_params$withGameIds <- "true"
+  }
+  if (isTRUE(with_signal)) {
+    query_params$withSignal <- "true"
+  }
+
+  req <- httr2::req_url_query(req, !!!query_params)
+  resp <- httr2::req_perform(req)
+
+  parsed <- jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = FALSE)
+
+  if (length(parsed) == 0) {
+    return(tibble::tibble(
+      id = character(),
+      name = character(),
+      title = character(),
+      online = logical(),
+      playing = logical(),
+      streaming = logical(),
+      patron = logical(),
+      playing_id = character(),
+      signal = integer()
+    ))
+  }
+
+  rows <- lapply(parsed, function(u) {
+    tibble::tibble(
+      id = u$id %||% NA_character_,
+      name = u$name %||% u$id %||% NA_character_,
+      title = u$title %||% NA_character_,
+      online = isTRUE(u$online),
+      playing = isTRUE(u$playing),
+      streaming = isTRUE(u$streaming),
+      patron = isTRUE(u$patron),
+      playing_id = u$playingId %||% NA_character_,
+      signal = if (!is.null(u$signal)) as.integer(u$signal) else NA_integer_
+    )
+  })
+
+  dplyr::bind_rows(rows)
+}
+
+#' Get Crosstable (Head-to-Head Record) Between Two Users
+#'
+#' Retrieves the total number of games and scores between two players.
+#'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/crosstable/{user1}/{user2}`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Users/operation/apiCrosstableUser1User2>
+#'
+#' @param user1 First Lichess username.
+#' @param user2 Second Lichess username.
+#' @param matchup Logical. If `TRUE` and users are currently playing, includes current match details. Default is `FALSE`.
+#' @param raw Logical. If `TRUE`, returns raw parsed JSON list. Default is `FALSE`.
+#' @param token API access token. By default, retrieved via [lic_token()].
+#'
+#' @return A 1-row [tibble::tibble] (if `raw = FALSE`) or a `list` (if `raw = TRUE`).
+#' @export
+#' @examplesIf interactive()
+#' lic_user_crosstable("magnuscarlsen", "hikaru")
+lic_user_crosstable <- function(user1,
+                                user2,
+                                matchup = FALSE,
+                                raw = FALSE,
+                                token = lic_token()) {
+  if (missing(user1) || !is.character(user1) || length(user1) != 1 || !nzchar(user1)) {
+    cli::cli_abort("{.arg user1} must be a single non-empty character string.")
+  }
+  if (missing(user2) || !is.character(user2) || length(user2) != 1 || !nzchar(user2)) {
+    cli::cli_abort("{.arg user2} must be a single non-empty character string.")
+  }
+
+  url <- paste0("https://lichess.org/api/crosstable/", user1, "/", user2)
+  req <- lic_request(url, token = token) |>
+    httr2::req_headers("Accept" = "application/json")
+
+  if (isTRUE(matchup)) {
+    req <- httr2::req_url_query(req, matchup = "true")
+  }
+
+  resp <- httr2::req_perform(req)
+  parsed <- jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = TRUE)
+
+  if (isTRUE(raw)) {
+    return(parsed)
+  }
+
+  scores <- parsed$users %||% list()
+  u1_id <- tolower(user1)
+  u2_id <- tolower(user2)
+
+  u1_score <- as.numeric(scores[[u1_id]] %||% scores[[names(scores)[[1]]]] %||% 0)
+  u2_score <- as.numeric(scores[[u2_id]] %||% scores[[names(scores)[[2]]]] %||% 0)
+
+  tibble::tibble(
+    user1 = user1,
+    user2 = user2,
+    user1_score = u1_score,
+    user2_score = u2_score,
+    nb_games = as.integer(parsed$nbGames %||% 0L)
+  )
+}
+
+#' Get Lichess Leaderboard / Top Players
+#'
+#' Retrieves top-rated players on the leaderboard for a given game speed or variant.
+#'
+#' @details
+#' **Lichess API Endpoint:** `GET /api/player/top/{count}/{perfType}`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Users/operation/playerTop>
+#'
+#' Supported `perf_type` options include: `"bullet"`, `"blitz"`, `"rapid"`, `"classical"`,
+#' `"ultraBullet"`, `"chess960"`, `"crazyhouse"`, `"antichess"`, `"atomic"`, `"horde"`,
+#' `"kingOfTheHill"`, `"racingKings"`, `"threeCheck"`.
+#'
+#' @param count Number of top players to retrieve (1 to 200). Default is 10.
+#' @param perf_type Performance category or variant name. Default is `"blitz"`.
+#' @param token API access token. By default, retrieved via [lic_token()].
+#'
+#' @return A tidy [tibble::tibble] containing leaderboard rankings and player stats.
+#' @export
+#' @examplesIf interactive()
+#' lic_leaderboard(perf_type = "rapid", count = 10)
+lic_leaderboard <- function(perf_type = "blitz", count = 10, token = lic_token()) {
+  if (is.null(perf_type) || !is.character(perf_type) || length(perf_type) != 1 || !nzchar(perf_type)) {
+    cli::cli_abort("{.arg perf_type} must be a single non-empty character string.")
+  }
+
+  count <- as.integer(count)
+  if (is.na(count) || count < 1 || count > 200) {
+    cli::cli_abort("{.arg count} must be an integer between 1 and 200.")
+  }
+
+  url <- paste0("https://lichess.org/api/player/top/", count, "/", perf_type)
+  req <- lic_request(url, token = token) |>
+    httr2::req_headers("Accept" = "application/vnd.lichess.v3+json")
+
+  resp <- httr2::req_perform(req)
+  parsed <- jsonlite::fromJSON(httr2::resp_body_string(resp), simplifyVector = FALSE)
+
+  users_list <- parsed$users %||% list()
+
+  if (length(users_list) == 0) {
+    return(tibble::tibble(
+      rank = integer(),
+      id = character(),
+      username = character(),
+      title = character(),
+      rating = integer(),
+      progress = integer(),
+      online = logical(),
+      patron = logical(),
+      perf_type = character()
+    ))
+  }
+
+  rows <- lapply(seq_along(users_list), function(idx) {
+    u <- users_list[[idx]]
+    p_info <- u$perfs[[perf_type]] %||% u$perfs[[1]] %||% list()
+    tibble::tibble(
+      rank = as.integer(idx),
+      id = u$id %||% NA_character_,
+      username = u$username %||% u$id %||% NA_character_,
+      title = u$title %||% NA_character_,
+      rating = as.integer(p_info$rating %||% NA_integer_),
+      progress = as.integer(p_info$progress %||% 0L),
+      online = isTRUE(u$online),
+      patron = isTRUE(u$patron),
+      perf_type = perf_type
+    )
+  })
+
+  dplyr::bind_rows(rows)
+}
+
+#' @rdname lic_leaderboard
+#' @export
+lic_top_players <- function(perf_type = "blitz", count = 10, token = lic_token()) {
+  lic_leaderboard(perf_type = perf_type, count = count, token = token)
+}

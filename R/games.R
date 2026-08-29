@@ -210,6 +210,116 @@ lic_get_game <- function(game_id,
   )
 }
 
+#' Download Multiple Lichess Games by IDs
+#'
+#' Fetches game records for multiple game IDs from the Lichess API in NDJSON format.
+#' Up to 300 game IDs can be requested in a single call.
+#'
+#' @details
+#' **Lichess API Endpoint:** `POST /api/games/export/_ids`
+#'
+#' **Official Documentation:** <https://lichess.org/api#tag/Games/operation/gamesExportIds>
+#'
+#' @param game_ids Character vector of Lichess game IDs (up to 300).
+#' @param moves Logical. Whether to include PGN moves string. Default is `TRUE`.
+#' @param clocks Logical. Whether to include clock times for each move. Default is `FALSE`.
+#' @param evals Logical. Whether to include Stockfish evaluations. Default is `FALSE`.
+#' @param opening Logical. Whether to include opening name and ECO code. Default is `TRUE`.
+#' @param token API access token. By default, retrieved via [lic_token()].
+#'
+#' @return A [tibble::tibble] containing game records.
+#' @export
+#' @examplesIf interactive()
+#' games <- lic_games_export_ids(c("0tMlsM69", "q7ZvsdUF"))
+#' games
+lic_games_export_ids <- function(game_ids,
+                                 moves = TRUE,
+                                 clocks = FALSE,
+                                 evals = FALSE,
+                                 opening = TRUE,
+                                 token = lic_token()) {
+  if (missing(game_ids) || !is.character(game_ids) || length(game_ids) == 0) {
+    cli::cli_abort("{.arg game_ids} must be a non-empty character vector.")
+  }
+
+  clean_ids <- vapply(game_ids, function(id) {
+    id_clean <- sub("^.*/", "", trimws(id))
+    substr(id_clean, 1, 8)
+  }, FUN.VALUE = character(1), USE.NAMES = FALSE)
+  clean_ids <- clean_ids[nzchar(clean_ids)]
+
+  if (length(clean_ids) == 0) {
+    cli::cli_abort("{.arg game_ids} must contain at least one valid game ID.")
+  }
+
+  if (length(clean_ids) > 300) {
+    cli::cli_warn("Lichess API supports a maximum of 300 game IDs per request. Truncating to first 300.")
+    clean_ids <- clean_ids[seq_len(300)]
+  }
+
+  url <- "https://lichess.org/api/games/export/_ids"
+
+  req <- lic_request(url, token = token) |>
+    httr2::req_headers("Accept" = "application/x-ndjson") |>
+    httr2::req_body_raw(paste(clean_ids, collapse = ","), type = "text/plain")
+
+  query_params <- list(
+    opening = if (isTRUE(opening)) "true" else "false",
+    moves = if (isTRUE(moves)) "true" else "false",
+    clocks = if (isTRUE(clocks)) "true" else "false",
+    evals = if (isTRUE(evals)) "true" else "false"
+  )
+
+  req <- httr2::req_url_query(req, !!!query_params)
+
+  resp <- tryCatch({
+    httr2::req_perform(req)
+  }, error = function(e) {
+    if (grepl("429", e$message)) {
+      cli::cli_warn(c(
+        "!" = "Lichess game stream rate limit (429) encountered. Returning empty tibble.",
+        "i" = "Wait a moment before retrying or use authenticated requests for higher limits."
+      ))
+      return(NULL)
+    }
+    rlang::abort(e$message, parent = e)
+  })
+
+  if (is.null(resp)) {
+    return(tibble::tibble())
+  }
+
+  body <- httr2::resp_body_string(resp)
+
+  if (!nzchar(trimws(body))) {
+    return(tibble::tibble())
+  }
+
+  con <- textConnection(body)
+  on.exit(close(con), add = TRUE)
+
+  df <- jsonlite::stream_in(con, verbose = FALSE)
+  tibble::as_tibble(jsonlite::flatten(df))
+}
+
+#' @rdname lic_games_export_ids
+#' @export
+lic_get_games_by_ids <- function(game_ids,
+                                 moves = TRUE,
+                                 clocks = FALSE,
+                                 evals = FALSE,
+                                 opening = TRUE,
+                                 token = lic_token()) {
+  lic_games_export_ids(
+    game_ids = game_ids,
+    moves = moves,
+    clocks = clocks,
+    evals = evals,
+    opening = opening,
+    token = token
+  )
+}
+
 #' Tidy Lichess Game Data
 #'
 #' Enriches and standardizes raw game data with user-perspective columns,
