@@ -74,6 +74,12 @@ and tactical metrics.
 
 - [`lic_stats_openings()`](https://h8gi.github.io/rlichess/reference/lic_stats_openings.md)
   : Calculate Opening Statistics
+- [`lic_stats_opponents()`](https://h8gi.github.io/rlichess/reference/lic_stats_opponents.md)
+  : Calculate Head-to-Head Opponent Statistics
+- [`lic_stats_time()`](https://h8gi.github.io/rlichess/reference/lic_stats_time.md)
+  : Calculate Performance Statistics by Time and Day
+- [`lic_stats_clocks()`](https://h8gi.github.io/rlichess/reference/lic_stats_clocks.md)
+  : Calculate Clock Usage and Time Trouble Statistics
 
 ## Package Datasets
 

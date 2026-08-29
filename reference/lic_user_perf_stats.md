@@ -41,10 +41,35 @@ A list containing performance statistics.
 
 ``` r
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")
-#> Error in httr2::req_perform(req): Failed to perform HTTP request.
-#> Caused by error in `curl::curl_fetch_memory()`:
-#> ! Timeout was reached [lichess.org]:
-#> SSL connection timeout
 stats$stat$count
-#> Error: object 'stats' not found
+#> $all
+#> [1] 49291
+#> 
+#> $rated
+#> [1] 49289
+#> 
+#> $win
+#> [1] 24034
+#> 
+#> $loss
+#> [1] 23286
+#> 
+#> $draw
+#> [1] 1971
+#> 
+#> $tour
+#> [1] 230
+#> 
+#> $berserk
+#> [1] 0
+#> 
+#> $opAvg
+#> [1] 2083.29
+#> 
+#> $seconds
+#> [1] 5540624
+#> 
+#> $disconnects
+#> [1] 12
+#> 
 ```
