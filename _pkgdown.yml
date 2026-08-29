@@ -51,6 +51,9 @@ reference:
     desc: "Offline analysis tools to summarize win rates, repertoire performance, and tactical metrics."
     contents:
       - lic_stats_openings
+      - lic_stats_opponents
+      - lic_stats_time
+      - lic_stats_clocks
 
   - title: "Package Datasets"
     desc: "Built-in datasets included with the package."
