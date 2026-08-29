@@ -78,6 +78,11 @@ test_that("lic_users_status validates inputs and returns tidy status tibble", {
     expect_named(st, c("id", "name", "title", "online", "playing", "streaming", "patron", "playing_id", "signal"))
     expect_type(st$online, "logical")
     expect_type(st$playing, "logical")
+
+    # NA handling
+    st_na <- lic_users_status(c("h8gi", NA), token = NULL)
+    expect_s3_class(st_na, "tbl_df")
+    expect_equal(st_na$id, "h8gi")
   }, error = function(e) {
     skip(paste("Lichess API unreachable:", e$message))
   })
@@ -100,6 +105,11 @@ test_that("lic_user_crosstable validates inputs and returns head-to-head score",
     expect_true(is.numeric(ct$user1_score))
     expect_true(is.numeric(ct$user2_score))
     expect_true(is.integer(ct$nb_games))
+
+    # Same user crosstable
+    ct_same <- lic_user_crosstable("Lance5500", "Lance5500", token = NULL)
+    expect_s3_class(ct_same, "tbl_df")
+    expect_equal(nrow(ct_same), 1)
 
     # raw = TRUE
     ct_raw <- lic_user_crosstable("Lance5500", "TryingHard87", raw = TRUE, token = NULL)
@@ -124,6 +134,12 @@ test_that("lic_leaderboard validates inputs and returns top player rankings", {
     expect_true("rating" %in% names(top))
     expect_true("username" %in% names(top))
     expect_equal(top$perf_type, rep("blitz", 5))
+
+    # Normalization check (lowercase/snake_case mapping to CamelCase variants)
+    top_norm <- lic_leaderboard(perf_type = "ultrabullet", count = 3, token = NULL)
+    expect_s3_class(top_norm, "tbl_df")
+    expect_equal(nrow(top_norm), 3)
+    expect_equal(top_norm$perf_type, rep("ultraBullet", 3))
 
     # Alias check
     top_alias <- lic_top_players(perf_type = "bullet", count = 3, token = NULL)

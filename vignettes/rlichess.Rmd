@@ -146,7 +146,7 @@ stats <- lic_user_perf_stats("h8gi", perf = "bullet")
 
 ```r
 # Export full study PGN (or specific chapter)
-pgn <- lic_study_pgn("sK9kZ8vT")
+pgn <- lic_study_pgn("Y1yXP80U")
 ```
 
 ### Opening Explorer Databases

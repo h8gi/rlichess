@@ -19,7 +19,7 @@
 #' @return A character string containing the exported PGN text.
 #' @export
 #' @examplesIf interactive()
-#' pgn <- lic_study_pgn("fXQ9y9rA")
+#' pgn <- lic_study_pgn("Y1yXP80U")
 #' cat(substr(pgn, 1, 300))
 lic_study_pgn <- function(study_id,
                           chapter_id = NULL,
@@ -32,14 +32,21 @@ lic_study_pgn <- function(study_id,
     cli::cli_abort("{.arg study_id} must be a single non-empty character string.")
   }
 
-  clean_study_id <- sub("^.*/", "", trimws(study_id))
+  clean_study_id <- if (grepl("lichess\\.org/study/", study_id)) {
+    sub("^.*lichess\\.org/study/([^/?#]+).*", "\\1", trimws(study_id))
+  } else {
+    sub("^.*/", "", trimws(study_id))
+  }
   clean_study_id <- sub("\\.pgn$", "", clean_study_id)
 
   if (!nzchar(clean_study_id)) {
     cli::cli_abort("{.arg study_id} is invalid.")
   }
 
-  url <- if (!is.null(chapter_id) && nzchar(chapter_id)) {
+  url <- if (!is.null(chapter_id)) {
+    if (!is.character(chapter_id) || length(chapter_id) != 1 || !nzchar(chapter_id)) {
+      cli::cli_abort("{.arg chapter_id} must be a single non-empty character string or NULL.")
+    }
     clean_chapter_id <- sub("^.*/", "", trimws(chapter_id))
     clean_chapter_id <- sub("\\.pgn$", "", clean_chapter_id)
     paste0("https://lichess.org/api/study/", clean_study_id, "/", clean_chapter_id, ".pgn")

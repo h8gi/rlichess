@@ -268,7 +268,8 @@ lic_users_status <- function(usernames,
     cli::cli_abort("{.arg usernames} must be a non-empty character vector.")
   }
 
-  clean_users <- usernames[nzchar(trimws(usernames))]
+  valid_users <- usernames[!is.na(usernames)]
+  clean_users <- valid_users[nzchar(trimws(valid_users))]
   if (length(clean_users) == 0) {
     cli::cli_abort("{.arg usernames} must contain at least one valid username.")
   }
@@ -378,8 +379,8 @@ lic_user_crosstable <- function(user1,
   u1_id <- tolower(user1)
   u2_id <- tolower(user2)
 
-  u1_score <- as.numeric(scores[[u1_id]] %||% scores[[names(scores)[[1]]]] %||% 0)
-  u2_score <- as.numeric(scores[[u2_id]] %||% scores[[names(scores)[[2]]]] %||% 0)
+  u1_score <- as.numeric(scores[[u1_id]] %||% 0)
+  u2_score <- as.numeric(scores[[u2_id]] %||% 0)
 
   tibble::tibble(
     user1 = user1,
@@ -414,6 +415,27 @@ lic_user_crosstable <- function(user1,
 lic_leaderboard <- function(perf_type = "blitz", count = 10, token = lic_token()) {
   if (is.null(perf_type) || !is.character(perf_type) || length(perf_type) != 1 || !nzchar(perf_type)) {
     cli::cli_abort("{.arg perf_type} must be a single non-empty character string.")
+  }
+
+  # Normalize common casing/format variations to official Lichess perfType identifiers
+  perf_lookup <- c(
+    "bullet" = "bullet",
+    "blitz" = "blitz",
+    "rapid" = "rapid",
+    "classical" = "classical",
+    "ultrabullet" = "ultraBullet",
+    "chess960" = "chess960",
+    "crazyhouse" = "crazyhouse",
+    "antichess" = "antichess",
+    "atomic" = "atomic",
+    "horde" = "horde",
+    "kingofthehill" = "kingOfTheHill",
+    "racingkings" = "racingKings",
+    "threecheck" = "threeCheck"
+  )
+  clean_key <- tolower(gsub("[_-]", "", trimws(perf_type)))
+  if (clean_key %in% names(perf_lookup)) {
+    perf_type <- perf_lookup[[clean_key]]
   }
 
   count <- as.integer(count)

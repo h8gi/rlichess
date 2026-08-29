@@ -88,7 +88,7 @@ lic_games_user <- function(username,
     rlang::abort(e$message, parent = e)
   })
 
-  if (is.null(resp)) {
+  if (is.null(resp) || length(resp$body) == 0) {
     return(tibble::tibble())
   }
 
@@ -242,7 +242,8 @@ lic_games_export_ids <- function(game_ids,
     cli::cli_abort("{.arg game_ids} must be a non-empty character vector.")
   }
 
-  clean_ids <- vapply(game_ids, function(id) {
+  valid_ids <- game_ids[!is.na(game_ids)]
+  clean_ids <- vapply(valid_ids, function(id) {
     id_clean <- sub("^.*/", "", trimws(id))
     substr(id_clean, 1, 8)
   }, FUN.VALUE = character(1), USE.NAMES = FALSE)
@@ -285,7 +286,7 @@ lic_games_export_ids <- function(game_ids,
     rlang::abort(e$message, parent = e)
   })
 
-  if (is.null(resp)) {
+  if (is.null(resp) || length(resp$body) == 0) {
     return(tibble::tibble())
   }
 

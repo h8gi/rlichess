@@ -43,7 +43,7 @@ For private or unlisted studies, an authenticated API token with \code{study:rea
 }
 \examples{
 \dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
-pgn <- lic_study_pgn("fXQ9y9rA")
+pgn <- lic_study_pgn("Y1yXP80U")
 cat(substr(pgn, 1, 300))
 \dontshow{\}) # examplesIf}
 }

@@ -216,6 +216,18 @@ test_that("lic_games_export_ids handles validation and fetches multiple games", 
       expect_true(all(c("0tMlsM69", "q7ZvsdUF") %in% res$id))
     }
 
+    # NA handling and single game
+    res_na <- lic_games_export_ids(c("0tMlsM69", NA), token = NULL)
+    expect_s3_class(res_na, "tbl_df")
+    if (nrow(res_na) > 0) {
+      expect_equal(res_na$id, "0tMlsM69")
+    }
+
+    # Empty result on non-existent game ID
+    res_empty <- lic_games_export_ids(c("nonexist"), token = NULL)
+    expect_s3_class(res_empty, "tbl_df")
+    expect_equal(nrow(res_empty), 0)
+
     # Alias check
     res_alias <- lic_get_games_by_ids(c("0tMlsM69"), token = NULL)
     expect_s3_class(res_alias, "tbl_df")
