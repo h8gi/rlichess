@@ -27,7 +27,7 @@
 #'
 #' @return A [tibble::tibble] containing raw game records.
 #' @export
-#' @examples
+#' @examplesIf interactive()
 #' games <- lic_games_user("h8gi", perf_type = "bullet", max = 5)
 #' games
 lic_games_user <- function(username,
@@ -157,7 +157,7 @@ lic_get_games <- function(username,
 #'
 #' @return A single-row [tibble::tibble] containing game details.
 #' @export
-#' @examples
+#' @examplesIf interactive()
 #' lic_game("0tMlsM69")
 lic_game <- function(game_id,
                      moves = TRUE,
