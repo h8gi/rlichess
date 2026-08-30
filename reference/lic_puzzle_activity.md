@@ -36,5 +36,7 @@ puzzle attempts.
 ## Examples
 
 ``` r
+if (FALSE) { # interactive()
 puzzles <- lic_puzzle_activity(max = 20)
+}
 ```

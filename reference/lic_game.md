@@ -67,16 +67,7 @@ containing game details.
 ## Examples
 
 ``` r
+if (FALSE) { # interactive()
 lic_game("0tMlsM69")
-#> # A tibble: 1 × 31
-#>   id        rated  variant speed perf  createdAt lastMoveAt status source winner
-#>   <list>    <list> <list>  <lis> <lis> <list>    <list>     <list> <list> <list>
-#> 1 <chr [1]> <lgl>  <chr>   <chr> <chr> <dbl [1]> <dbl [1]>  <chr>  <chr>  <chr> 
-#> # ℹ 21 more variables: moves <list>, clocks <list>,
-#> #   players.white.rating <list>, players.white.ratingDiff <list>,
-#> #   players.white.user.name <list>, players.white.user.id <list>,
-#> #   players.black.rating <list>, players.black.ratingDiff <list>,
-#> #   players.black.user.name <list>, players.black.user.title <list>,
-#> #   players.black.user.id <list>, opening.eco <list>, opening.name <list>,
-#> #   opening.ply <list>, arenaTour.id <list>, arenaTour.name <list>, …
+}
 ```

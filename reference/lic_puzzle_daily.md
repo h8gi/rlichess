@@ -30,7 +30,8 @@ themes).
 ## Examples
 
 ``` r
+if (FALSE) { # interactive()
 puzzle <- lic_puzzle_daily()
 puzzle$puzzle$rating
-#> [1] 2043
+}
 ```

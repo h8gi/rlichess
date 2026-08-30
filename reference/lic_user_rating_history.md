@@ -46,10 +46,7 @@ otherwise an empty dataset.
 ## Examples
 
 ``` r
+if (FALSE) { # interactive()
 lic_user_rating_history("h8gi", perf_type = "bullet")
-#> ℹ Rating history returned empty. Lichess requires an authenticated request (API
-#>   token) to generate rating history on demand.
-#> • Set `LICHESS_API_TOKEN` environment variable or provide `token` argument.
-#> # A tibble: 0 × 4
-#> # ℹ 4 variables: username <chr>, perf <chr>, date <date>, rating <int>
+}
 ```

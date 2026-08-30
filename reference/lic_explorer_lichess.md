@@ -74,10 +74,8 @@ Note: Lichess requires API Token authentication for explorer queries.
 ## Examples
 
 ``` r
+if (FALSE) { # interactive()
 exp <- lic_explorer_lichess(play = "e4,c5")
 exp$moves
-#> # A tibble: 1 × 6
-#>   uci   san   white draws black averageRating
-#>   <chr> <chr> <int> <int> <int>         <int>
-#> 1 e2e4  e4     1000   300   700          2200
+}
 ```

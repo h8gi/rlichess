@@ -123,15 +123,8 @@ fetching your own games).
 ## Examples
 
 ``` r
+if (FALSE) { # interactive()
 games <- lic_games_user("h8gi", perf_type = "bullet", max = 5)
 games
-#> # A tibble: 2 × 18
-#>   id        rated variant  speed  perf  createdAt lastMoveAt status winner moves
-#>   <chr>     <lgl> <chr>    <chr>  <chr>     <dbl>      <dbl> <chr>  <chr>  <chr>
-#> 1 demoGame1 TRUE  standard bullet bull…   1.73e12    1.73e12 resign white  e4 e…
-#> 2 demoGame2 TRUE  standard bullet bull…   1.73e12    1.73e12 mate   black  d4 d…
-#> # ℹ 8 more variables: players.white.rating <int>,
-#> #   players.white.user.name <chr>, players.white.user.id <chr>,
-#> #   players.black.rating <int>, players.black.user.name <chr>,
-#> #   players.black.user.id <chr>, opening.eco <chr>, opening.name <chr>
+}
 ```
