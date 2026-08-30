@@ -1,0 +1,215 @@
+{
+    "user": {
+        "name": "h8gi"
+    },
+    "perf": {
+        "glicko": {
+            "rating": 2209.43,
+            "deviation": 45.12
+        },
+        "nb": 49288,
+        "progress": 16
+    },
+    "rank": 28632,
+    "percentile": 90.9,
+    "stat": {
+        "highest": {
+            "int": 2343,
+            "at": "2026-07-11T14:14:06.134Z",
+            "gameId": "IOpVZRw7"
+        },
+        "lowest": {
+            "int": 1645,
+            "at": "2020-11-25T12:46:26.334Z",
+            "gameId": "AuPkS7Zk"
+        },
+        "bestWins": {
+            "results": [
+                {
+                    "opRating": 2476,
+                    "opId": {
+                        "name": "zoarprodhan",
+                        "title": "CM",
+                        "id": "zoarprodhan"
+                    },
+                    "at": "2025-08-30T17:56:27.715Z",
+                    "gameId": "0tMlsM69"
+                },
+                {
+                    "opRating": 2463,
+                    "opId": {
+                        "name": "Mark_3333",
+                        "id": "mark_3333"
+                    },
+                    "at": "2026-02-23T09:24:56.967Z",
+                    "gameId": "6ofucrpl"
+                },
+                {
+                    "opRating": 2458,
+                    "opId": {
+                        "name": "mystix666",
+                        "id": "mystix666"
+                    },
+                    "at": "2026-07-12T11:07:29.314Z",
+                    "gameId": "LJV2r2ix"
+                },
+                {
+                    "opRating": 2434,
+                    "opId": {
+                        "name": "koki2017",
+                        "id": "koki2017"
+                    },
+                    "at": "2026-07-11T15:44:21.768Z",
+                    "gameId": "BDNateWe"
+                },
+                {
+                    "opRating": 2428,
+                    "opId": {
+                        "name": "La_Capitella",
+                        "id": "la_capitella"
+                    },
+                    "at": "2026-02-27T15:58:21.445Z",
+                    "gameId": "IJnjKf0h"
+                }
+            ]
+        },
+        "worstLosses": {
+            "results": [
+                {
+                    "opRating": 1337,
+                    "opId": {
+                        "name": "profesorx",
+                        "id": "profesorx"
+                    },
+                    "at": "2020-12-24T22:57:06.453Z",
+                    "gameId": "ezqcI1Dz"
+                },
+                {
+                    "opRating": 1497,
+                    "opId": {
+                        "name": "element98",
+                        "id": "element98"
+                    },
+                    "at": "2021-01-12T10:53:23.543Z",
+                    "gameId": "Sxwo59sf"
+                },
+                {
+                    "opRating": 1565,
+                    "opId": {
+                        "name": "ftyfhjg6598",
+                        "id": "ftyfhjg6598"
+                    },
+                    "at": "2021-01-09T06:49:33.068Z",
+                    "gameId": "jZsBQMfe"
+                },
+                {
+                    "opRating": 1569,
+                    "opId": {
+                        "name": "mendip",
+                        "id": "mendip"
+                    },
+                    "at": "2025-08-24T12:50:43.11Z",
+                    "gameId": "WJ6421eF"
+                },
+                {
+                    "opRating": 1582,
+                    "opId": {
+                        "name": "maurice555",
+                        "id": "maurice555"
+                    },
+                    "at": "2020-12-24T22:07:58.766Z",
+                    "gameId": "YlvuHNFP"
+                }
+            ]
+        },
+        "count": {
+            "all": 49291,
+            "rated": 49289,
+            "win": 24034,
+            "loss": 23286,
+            "draw": 1971,
+            "tour": 230,
+            "berserk": 0,
+            "opAvg": 2083.29,
+            "seconds": 5540624,
+            "disconnects": 12
+        },
+        "resultStreak": {
+            "win": {
+                "cur": {
+                    "v": 1,
+                    "from": {
+                        "at": "2026-08-29T12:44:15.623Z",
+                        "gameId": "AXBibRN8"
+                    },
+                    "to": {
+                        "at": "2026-08-29T12:46:13.296Z",
+                        "gameId": "AXBibRN8"
+                    }
+                },
+                "max": {
+                    "v": 15,
+                    "from": {
+                        "at": "2025-10-04T13:40:20.5Z",
+                        "gameId": "jwdiC8vR"
+                    },
+                    "to": {
+                        "at": "2025-10-04T14:15:13.933Z",
+                        "gameId": "UZ2aa7sr"
+                    }
+                }
+            },
+            "loss": {
+                "cur": {
+                    "v": 0
+                },
+                "max": {
+                    "v": 13,
+                    "from": {
+                        "at": "2024-10-08T14:10:17.07Z",
+                        "gameId": "AuB1xlKs"
+                    },
+                    "to": {
+                        "at": "2024-10-08T14:38:24.588Z",
+                        "gameId": "agi4Xy7p"
+                    }
+                }
+            }
+        },
+        "playStreak": {
+            "nb": {
+                "cur": {
+                    "v": 0
+                },
+                "max": {
+                    "v": 343,
+                    "from": {
+                        "at": "2025-11-23T05:41:11.804Z",
+                        "gameId": "llX3IW8Q"
+                    },
+                    "to": {
+                        "at": "2025-11-23T17:08:49.927Z",
+                        "gameId": "w8dfVBnn"
+                    }
+                }
+            },
+            "time": {
+                "cur": {
+                    "v": 0
+                },
+                "max": {
+                    "v": 37051,
+                    "from": {
+                        "at": "2025-11-23T05:41:11.804Z",
+                        "gameId": "llX3IW8Q"
+                    },
+                    "to": {
+                        "at": "2025-11-23T17:08:49.927Z",
+                        "gameId": "w8dfVBnn"
+                    }
+                }
+            },
+            "lastDate": "2026-08-29T12:46:13.296Z"
+        }
+    }
+}

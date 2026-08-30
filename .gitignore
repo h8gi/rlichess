@@ -140,3 +140,5 @@ rsconnect/
 report_files
 docs
 inst/doc
+/doc/
+/Meta/

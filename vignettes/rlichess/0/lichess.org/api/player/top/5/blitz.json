@@ -1,0 +1,59 @@
+{
+    "users": [
+        {
+            "id": "cutemouse83",
+            "username": "cutemouse83",
+            "perfs": {
+                "blitz": {
+                    "rating": 2982,
+                    "progress": 8
+                }
+            },
+            "title": "GM"
+        },
+        {
+            "id": "aspiringstar",
+            "username": "aspiringstar",
+            "perfs": {
+                "blitz": {
+                    "rating": 2982,
+                    "progress": 4
+                }
+            },
+            "title": "GM"
+        },
+        {
+            "id": "dr_tiger",
+            "username": "Dr_Tiger",
+            "perfs": {
+                "blitz": {
+                    "rating": 2941,
+                    "progress": -7
+                }
+            },
+            "title": "GM"
+        },
+        {
+            "id": "vladimirovich9000",
+            "username": "Vladimirovich9000",
+            "perfs": {
+                "blitz": {
+                    "rating": 2940,
+                    "progress": -22
+                }
+            },
+            "title": "GM"
+        },
+        {
+            "id": "athena-pallada",
+            "username": "athena-pallada",
+            "perfs": {
+                "blitz": {
+                    "rating": 2928,
+                    "progress": 3
+                }
+            },
+            "title": "GM"
+        }
+    ]
+}
