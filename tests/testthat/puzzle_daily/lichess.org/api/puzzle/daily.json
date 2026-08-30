@@ -1,0 +1,49 @@
+{
+    "game": {
+        "id": "PDuN62En",
+        "perf": {
+            "key": "rapid",
+            "name": "Rapid"
+        },
+        "rated": true,
+        "players": [
+            {
+                "name": "abba66",
+                "id": "abba66",
+                "color": "white",
+                "rating": 2058
+            },
+            {
+                "name": "pratyushrathore",
+                "id": "pratyushrathore",
+                "color": "black",
+                "rating": 2060
+            }
+        ],
+        "pgn": "e4 c5 Nf3 Nc6 Bb5 d6 O-O e5 c3 a6 Bxc6+ bxc6 d4 exd4 cxd4 cxd4 Nxd4 c5 Nf5 Bxf5 exf5 Nf6 Bf4 Be7 Re1 O-O Qc2 d5 Nc3 d4 Rad1 Bd6 Bxd6 Qxd6 Ne4 Nxe4 Qxe4 Qd7 f6 g6 Qh4 Kh8 Qh6 Rg8 Rd3 Rae8",
+        "clock": "10+0"
+    },
+    "puzzle": {
+        "id": "Zjt5N",
+        "rating": 2013,
+        "plays": 102817,
+        "solution": [
+            "e1e8",
+            "d7e8",
+            "h6h7",
+            "h8h7",
+            "d3h3"
+        ],
+        "themes": [
+            "endgame",
+            "attraction",
+            "long",
+            "mateIn3",
+            "sacrifice",
+            "kingsideAttack"
+        ],
+        "fen": "4r1rk/3q1p1p/p4PpQ/2p5/3p4/3R4/PP3PPP/4R1K1 w - - 1 1",
+        "lastMove": "a8e8",
+        "initialPly": 45
+    }
+}

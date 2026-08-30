@@ -1,0 +1,40 @@
+{
+    "users": [
+        {
+            "id": "ediz_gurel",
+            "username": "Ediz_Gurel",
+            "perfs": {
+                "bullet": {
+                    "rating": 3413,
+                    "progress": 27
+                }
+            },
+            "title": "GM",
+            "patron": true,
+            "patronColor": 4
+        },
+        {
+            "id": "knightcheckshadow",
+            "username": "KnightCheckShadow",
+            "perfs": {
+                "bullet": {
+                    "rating": 3353,
+                    "progress": 2
+                }
+            }
+        },
+        {
+            "id": "nihalsarin2004",
+            "username": "nihalsarin2004",
+            "perfs": {
+                "bullet": {
+                    "rating": 3320,
+                    "progress": -2
+                }
+            },
+            "title": "GM",
+            "patron": true,
+            "patronColor": 10
+        }
+    ]
+}

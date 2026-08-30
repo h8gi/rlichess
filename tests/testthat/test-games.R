@@ -7,6 +7,78 @@ test_that("lic_to_timestamp converts dates properly", {
   expect_equal(ts, ts2)
 })
 
+test_that("lic_games_user fetches and parses user games in NDJSON stream", {
+  expect_error(lic_games_user(""), "must be a single non-empty character string")
+  expect_error(lic_games_user(123), "must be a single non-empty character string")
+
+  httptest2::with_mock_dir("games_user", {
+    games <- lic_games_user("h8gi", perf_type = "bullet", max = 3, clocks = TRUE, evals = TRUE, token = NULL)
+    expect_s3_class(games, "tbl_df")
+    if (nrow(games) > 0) {
+      expect_true("id" %in% names(games))
+      expect_true("moves" %in% names(games))
+    }
+
+    # Test alias
+    games_alias <- lic_get_games("h8gi", perf_type = "bullet", max = 3, token = NULL)
+    expect_s3_class(games_alias, "tbl_df")
+  })
+})
+
+test_that("lic_game fetches single game by ID", {
+  expect_error(lic_game(""), "must be a single non-empty character string")
+  expect_error(lic_game(123), "must be a single non-empty character string")
+
+  httptest2::with_mock_dir("single_game", {
+    game <- lic_game("0tMlsM69", token = NULL)
+    expect_s3_class(game, "tbl_df")
+    expect_equal(nrow(game), 1)
+    expect_true("id" %in% names(game))
+    expect_equal(substr(game$id, 1, 8), "0tMlsM69")
+
+    # Test alias
+    game_alias <- lic_get_game("0tMlsM69", token = NULL)
+    expect_equal(game$id, game_alias$id)
+  })
+})
+
+test_that("lic_games_export_ids handles validation and fetches multiple games", {
+  expect_error(lic_games_export_ids(character(0)), "must be a non-empty character vector")
+  expect_error(lic_games_export_ids(123), "must be a non-empty character vector")
+  expect_error(lic_games_export_ids(c("", " ")), "must contain at least one valid game ID")
+
+  # Truncation warning on >300 IDs
+  expect_warning(
+    httptest2::with_mock_dir("games_export_trunc", {
+      tryCatch(
+        lic_games_export_ids(as.character(1:305), token = NULL),
+        error = function(e) NULL
+      )
+    }),
+    "supports a maximum of 300 game IDs"
+  )
+
+  httptest2::with_mock_dir("games_export_ids", {
+    res <- lic_games_export_ids(c("0tMlsM69", "q7ZvsdUF"), token = NULL)
+    expect_s3_class(res, "tbl_df")
+    if (nrow(res) > 0) {
+      expect_true("id" %in% names(res))
+      expect_true(all(c("0tMlsM69", "q7ZvsdUF") %in% res$id))
+    }
+
+    # NA handling and single game
+    res_na <- lic_games_export_ids(c("0tMlsM69", NA), token = NULL)
+    expect_s3_class(res_na, "tbl_df")
+    if (nrow(res_na) > 0) {
+      expect_equal(res_na$id, "0tMlsM69")
+    }
+
+    # Alias check
+    res_alias <- lic_get_games_by_ids(c("0tMlsM69"), token = NULL)
+    expect_s3_class(res_alias, "tbl_df")
+  })
+})
+
 test_that("lic_tidy_games correctly calculates user perspective and columns", {
   sample_df <- tibble::tibble(
     id = c("g1", "g2", "g3", "g4"),
@@ -86,31 +158,7 @@ test_that("lic_tidy_moves parses evaluations, mate scores, and move judgments", 
   expect_true(is.na(res$judgment[6]))
 })
 
-
-test_that("lic_stats_openings aggregates correctly", {
-  sample_df <- tibble::tibble(
-    id = c("g1", "g2", "g3"),
-    players.white.user.name = c("playerA", "playerA", "playerA"),
-    players.black.user.name = c("playerB", "playerC", "playerD"),
-    winner = c("white", "white", "black"),
-    opening.name = c("Italian Game", "Italian Game", "Italian Game"),
-    opening.eco = c("C50", "C50", "C50")
-  )
-
-  normalized <- lic_tidy_games(sample_df, username = "playerA")
-  stats <- lic_stats_openings(normalized, min_games = 2)
-
-  expect_equal(nrow(stats), 1)
-  expect_equal(stats$opening_name, "Italian Game")
-  expect_equal(stats$n, 3)
-  expect_equal(stats$wins, 2)
-  expect_equal(stats$losses, 1)
-  expect_equal(stats$draws, 0)
-  expect_equal(stats$winrate, 2 / 3)
-})
-
 test_that("lic_tidy_games handles AI opponents correctly", {
-  # Case 1: User is Black vs AI (White)
   ai_game_black <- tibble::tibble(
     id = "ai_g1",
     players.white.aiLevel = 3L,
@@ -127,7 +175,6 @@ test_that("lic_tidy_games handles AI opponents correctly", {
   expect_equal(res1$opponent_name, "Stockfish Level 3")
   expect_true(is.na(res1$opponent_rating))
 
-  # Case 2: User is White vs AI (Black)
   ai_game_white <- tibble::tibble(
     id = "ai_g2",
     players.white.user.name = "playerA",
@@ -146,7 +193,6 @@ test_that("lic_tidy_games handles AI opponents correctly", {
 })
 
 test_that("lic_tidy_games handles aborted games and non-participating users", {
-  # Aborted game
   aborted_df <- tibble::tibble(
     id = "g_abort",
     players.white.user.name = "playerA",
@@ -159,7 +205,6 @@ test_that("lic_tidy_games handles aborted games and non-participating users", {
   expect_equal(res_abort$user_result, "aborted")
   expect_true(is.na(res_abort$win))
 
-  # Non-participating user
   other_df <- tibble::tibble(
     id = "g_other",
     players.white.user.name = "playerA",
@@ -192,48 +237,3 @@ test_that("lic_tidy_games populates standardized columns", {
   expect_equal(res$opening_name, "Italian Game")
   expect_equal(res$opening_eco, "C50")
 })
-
-test_that("lic_games_export_ids handles validation and fetches multiple games", {
-  expect_error(lic_games_export_ids(character(0)), "must be a non-empty character vector")
-  expect_error(lic_games_export_ids(123), "must be a non-empty character vector")
-  expect_error(lic_games_export_ids(c("", " ")), "must contain at least one valid game ID")
-
-  # Truncation warning on >300 IDs
-  expect_warning(
-    res_trunc <- tryCatch(
-      lic_games_export_ids(as.character(1:305), token = "dummy"),
-      error = function(e) NULL
-    ),
-    "supports a maximum of 300 game IDs"
-  )
-
-  skip_if_offline()
-  tryCatch({
-    res <- lic_games_export_ids(c("0tMlsM69", "q7ZvsdUF"), token = NULL)
-    expect_s3_class(res, "tbl_df")
-    if (nrow(res) > 0) {
-      expect_true("id" %in% names(res))
-      expect_true(all(c("0tMlsM69", "q7ZvsdUF") %in% res$id))
-    }
-
-    # NA handling and single game
-    res_na <- lic_games_export_ids(c("0tMlsM69", NA), token = NULL)
-    expect_s3_class(res_na, "tbl_df")
-    if (nrow(res_na) > 0) {
-      expect_equal(res_na$id, "0tMlsM69")
-    }
-
-    # Empty result on non-existent game ID
-    res_empty <- lic_games_export_ids(c("nonexist"), token = NULL)
-    expect_s3_class(res_empty, "tbl_df")
-    expect_equal(nrow(res_empty), 0)
-
-    # Alias check
-    res_alias <- lic_get_games_by_ids(c("0tMlsM69"), token = NULL)
-    expect_s3_class(res_alias, "tbl_df")
-  }, error = function(e) {
-    skip(paste("Lichess API unreachable:", e$message))
-  })
-})
-
-

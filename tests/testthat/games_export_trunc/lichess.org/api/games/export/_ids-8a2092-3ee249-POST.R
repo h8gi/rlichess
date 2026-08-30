@@ -1,0 +1,12 @@
+structure(list(method = "POST", url = "https://lichess.org/api/games/export/_ids?opening=true&moves=true&clocks=false&evals=false", 
+    status_code = 401L, headers = structure(list(server = "nginx", 
+        date = "Sun, 30 Aug 2026 06:22:27 GMT", `content-type` = "application/json", 
+        `content-length` = "25", vary = "Origin", `x-oauth-scopes` = "", 
+        `x-accepted-oauth-scopes` = "", `access-control-allow-origin` = "*", 
+        `access-control-allow-headers` = "Origin, Authorization, If-Modified-Since, Cache-Control, Content-Type", 
+        `access-control-allow-methods` = "OPTIONS, GET, POST, PUT, DELETE", 
+        `strict-transport-security` = "max-age=63072000; includeSubDomains; preload", 
+        `x-frame-options` = "DENY", `permissions-policy` = "interest-cohort=()"), class = "httr2_headers"), 
+    body = charToRaw("{\"error\":\"No such token\"}"), timing = c(redirect = 0, 
+    namelookup = 0, connect = 0, pretransfer = 0.00017, starttransfer = 0.261356, 
+    total = 0.26144), cache = new.env(parent = emptyenv())), class = "httr2_response")
