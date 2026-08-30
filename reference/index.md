@@ -17,6 +17,9 @@ Direct interfaces to the Lichess Games API (HTTP requests).
 - [`lic_game()`](https://h8gi.github.io/rlichess/reference/lic_game.md)
   [`lic_get_game()`](https://h8gi.github.io/rlichess/reference/lic_game.md)
   : Download a Single Lichess Game
+- [`lic_games_export_ids()`](https://h8gi.github.io/rlichess/reference/lic_games_export_ids.md)
+  [`lic_get_games_by_ids()`](https://h8gi.github.io/rlichess/reference/lic_games_export_ids.md)
+  : Download Multiple Lichess Games by IDs
 
 ## API Clients: Users & Ratings
 
@@ -32,6 +35,20 @@ Direct interfaces to the Lichess Users and Ratings API (HTTP requests).
   : Get Rating History of a Lichess User
 - [`lic_user_perf_stats()`](https://h8gi.github.io/rlichess/reference/lic_user_perf_stats.md)
   : Get Detailed Performance Statistics of a Lichess User
+- [`lic_users_status()`](https://h8gi.github.io/rlichess/reference/lic_users_status.md)
+  : Get Real-time Status of Multiple Lichess Users
+- [`lic_user_crosstable()`](https://h8gi.github.io/rlichess/reference/lic_user_crosstable.md)
+  : Get Crosstable (Head-to-Head Record) Between Two Users
+- [`lic_leaderboard()`](https://h8gi.github.io/rlichess/reference/lic_leaderboard.md)
+  [`lic_top_players()`](https://h8gi.github.io/rlichess/reference/lic_leaderboard.md)
+  : Get Lichess Leaderboard / Top Players
+
+## API Clients: Studies
+
+Direct interfaces to the Lichess Studies API.
+
+- [`lic_study_pgn()`](https://h8gi.github.io/rlichess/reference/lic_study_pgn.md)
+  : Export Study PGN from Lichess
 
 ## API Clients: Opening Explorer
 

@@ -138,19 +138,35 @@ opponent, or computer analysis:</p>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="downloading-a-single-game-by-id">Downloading a Single Game by ID<a class="anchor" aria-label="anchor" href="#downloading-a-single-game-by-id"></a>
+<h3 id="downloading-a-single-game-or-multiple-games-by-ids">Downloading a Single Game or Multiple Games by IDs<a class="anchor" aria-label="anchor" href="#downloading-a-single-game-or-multiple-games-by-ids"></a>
 </h3>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">game</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_game.html">lic_game</a></span><span class="op">(</span><span class="st">"0tMlsM69"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Single game</span></span>
+<span><span class="va">game</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_game.html">lic_game</a></span><span class="op">(</span><span class="st">"0tMlsM69"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Batch export multiple games by IDs (up to 300)</span></span>
+<span><span class="va">batch_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_games_export_ids.html">lic_games_export_ids</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0tMlsM69"</span>, <span class="st">"q7ZvsdUF"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="user-profiles-ratings">User Profiles &amp; Ratings<a class="anchor" aria-label="anchor" href="#user-profiles-ratings"></a>
+<h3 id="user-profiles-status-crosstable-leaderboards">User Profiles, Status, Crosstable &amp; Leaderboards<a class="anchor" aria-label="anchor" href="#user-profiles-status-crosstable-leaderboards"></a>
 </h3>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Core user profile summary as a 1-row tidy tibble</span></span>
 <span><span class="va">user</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user.html">lic_user</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
 <span><span class="va">user</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">username</span>, <span class="va">created_at</span>, <span class="va">play_time_total_hours</span>, <span class="va">count_all</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Check real-time online and playing status for multiple users</span></span>
+<span><span class="va">statuses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_users_status.html">lic_users_status</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"h8gi"</span>, <span class="st">"magnuscarlsen"</span>, <span class="st">"hikaru"</span><span class="op">)</span>, with_game_ids <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">statuses</span></span>
+<span></span>
+<span><span class="co"># Head-to-head match crosstable between two players</span></span>
+<span><span class="va">crosstable</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_crosstable.html">lic_user_crosstable</a></span><span class="op">(</span><span class="st">"Lance5500"</span>, <span class="st">"TryingHard87"</span><span class="op">)</span></span>
+<span><span class="va">crosstable</span></span>
+<span></span>
+<span><span class="co"># Leaderboard / top players ranking</span></span>
+<span><span class="va">top_blitz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_leaderboard.html">lic_leaderboard</a></span><span class="op">(</span>perf_type <span class="op">=</span> <span class="st">"blitz"</span>, count <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">top_blitz</span></span>
 <span></span>
 <span><span class="co"># Performance ratings across all game types (bullet, blitz, rapid, puzzle, etc.)</span></span>
 <span><span class="va">perfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perfs.html">lic_user_perfs</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
@@ -163,11 +179,18 @@ opponent, or computer analysis:</p>
 <span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perf_stats.html">lic_user_perf_stats</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
+<h3 id="study-pgn-export">Study PGN Export<a class="anchor" aria-label="anchor" href="#study-pgn-export"></a>
+</h3>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Export full study PGN (or specific chapter)</span></span>
+<span><span class="va">pgn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_study_pgn.html">lic_study_pgn</a></span><span class="op">(</span><span class="st">"Y1yXP80U"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
 <h3 id="opening-explorer-databases">Opening Explorer Databases<a class="anchor" aria-label="anchor" href="#opening-explorer-databases"></a>
 </h3>
 <p>Query Lichess’s vast opening database (over billions of games) or
 historical FIDE master-level games (2200+ FIDE):</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Query Sicilian Defense (1. e4 c5) in Lichess database</span></span>
 <span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_lichess.html">lic_explorer_lichess</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
 <span><span class="va">exp</span><span class="op">$</span><span class="va">moves</span></span>
@@ -183,7 +206,7 @@ historical FIDE master-level games (2200+ FIDE):</p>
 <div class="section level3">
 <h3 id="daily-tactical-puzzle">Daily Tactical Puzzle<a class="anchor" aria-label="anchor" href="#daily-tactical-puzzle"></a>
 </h3>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">daily</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_puzzle_daily.html">lic_puzzle_daily</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">daily</span><span class="op">$</span><span class="va">puzzle</span><span class="op">$</span><span class="va">rating</span></span></code></pre></div>
 <hr>
@@ -207,7 +230,7 @@ user-centric perspective: - Converts timestamps into standard
 (<code>opponent_name</code>), opponent ratings
 (<code>opponent_rating</code>), and rating differences
 (<code>user_rating_diff</code>).</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_tidy_games.html">lic_tidy_games</a></span><span class="op">(</span><span class="va">raw_games</span>, username <span class="op">=</span> <span class="st">"h8gi"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">games</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -221,7 +244,7 @@ user-centric perspective: - Converts timestamps into standard
 <code><a href="../reference/lic_tidy_moves.html">lic_tidy_moves()</a></code> unpacks game move strings into a
 long-format tibble where <strong>each row corresponds to one half-move
 (ply)</strong>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">moves_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_tidy_moves.html">lic_tidy_moves</a></span><span class="op">(</span><span class="va">games</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">moves_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -238,7 +261,7 @@ long-format tibble where <strong>each row corresponds to one half-move
 <h3 id="opening-win-rates">Opening Win Rates<a class="anchor" aria-label="anchor" href="#opening-win-rates"></a>
 </h3>
 <p>Summarize performance across different opening variations:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">opening_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_stats_openings.html">lic_stats_openings</a></span><span class="op">(</span><span class="va">games</span>, min_games <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">opening_stats</span></span></code></pre></div>
 <hr>
@@ -249,7 +272,7 @@ long-format tibble where <strong>each row corresponds to one half-move
 </h2>
 <p><code>rlichess</code> bundles the official Lichess opening database
 containing 3,378 ECO codes, opening names, and move sequences:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lichess_openings</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lichess_openings</span><span class="op">)</span></span></code></pre></div>
 </div>

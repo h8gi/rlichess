@@ -98,14 +98,18 @@ raw_games <- lic_games_user(
 )
 ```
 
-### Downloading a Single Game by ID
+### Downloading a Single Game or Multiple Games by IDs
 
 ``` r
 
+# Single game
 game <- lic_game("0tMlsM69")
+
+# Batch export multiple games by IDs (up to 300)
+batch_games <- lic_games_export_ids(c("0tMlsM69", "q7ZvsdUF"))
 ```
 
-### User Profiles & Ratings
+### User Profiles, Status, Crosstable & Leaderboards
 
 ``` r
 
@@ -113,6 +117,18 @@ game <- lic_game("0tMlsM69")
 user <- lic_user("h8gi")
 user %>%
   select(username, created_at, play_time_total_hours, count_all)
+
+# Check real-time online and playing status for multiple users
+statuses <- lic_users_status(c("h8gi", "magnuscarlsen", "hikaru"), with_game_ids = TRUE)
+statuses
+
+# Head-to-head match crosstable between two players
+crosstable <- lic_user_crosstable("Lance5500", "TryingHard87")
+crosstable
+
+# Leaderboard / top players ranking
+top_blitz <- lic_leaderboard(perf_type = "blitz", count = 10)
+top_blitz
 
 # Performance ratings across all game types (bullet, blitz, rapid, puzzle, etc.)
 perfs <- lic_user_perfs("h8gi")
@@ -123,6 +139,14 @@ history <- lic_user_rating_history("h8gi", perf_type = "bullet")
 
 # In-depth performance statistics (streaks, best wins, worst losses)
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")
+```
+
+### Study PGN Export
+
+``` r
+
+# Export full study PGN (or specific chapter)
+pgn <- lic_study_pgn("Y1yXP80U")
 ```
 
 ### Opening Explorer Databases
