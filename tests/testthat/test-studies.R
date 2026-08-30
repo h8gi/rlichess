@@ -5,8 +5,7 @@ test_that("lic_study_pgn handles input validation", {
 })
 
 test_that("lic_study_pgn exports study PGN", {
-  skip_if_offline()
-  tryCatch({
+  httptest2::with_mock_dir("study_pgn", {
     # Test with a public study ID
     pgn <- lic_study_pgn("Y1yXP80U", token = NULL)
     expect_type(pgn, "character")
@@ -16,7 +15,5 @@ test_that("lic_study_pgn exports study PGN", {
     pgn_ch <- lic_study_pgn("https://lichess.org/study/Y1yXP80U", chapter_id = "oxgS1aRW", token = NULL)
     expect_type(pgn_ch, "character")
     expect_true(grepl("\\[Event ", pgn_ch))
-  }, error = function(e) {
-    skip(paste("Lichess API unreachable:", e$message))
   })
 })

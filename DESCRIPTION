@@ -20,6 +20,7 @@ Imports:
     tibble (>= 3.2.0)
 Suggests: 
     ggplot2,
+    httptest2,
     knitr,
     rmarkdown,
     testthat (>= 3.0.0)

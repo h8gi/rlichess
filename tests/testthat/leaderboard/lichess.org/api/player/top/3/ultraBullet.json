@@ -1,0 +1,38 @@
+{
+    "users": [
+        {
+            "id": "arkadiy_khromaev",
+            "username": "Arkadiy_Khromaev",
+            "perfs": {
+                "ultraBullet": {
+                    "rating": 2832,
+                    "progress": 15
+                }
+            },
+            "patron": true,
+            "patronColor": 1
+        },
+        {
+            "id": "iamstraw",
+            "username": "iamstraw",
+            "perfs": {
+                "ultraBullet": {
+                    "rating": 2726,
+                    "progress": -17
+                }
+            },
+            "title": "GM"
+        },
+        {
+            "id": "maniacalzerker",
+            "username": "ManiacalZerker",
+            "perfs": {
+                "ultraBullet": {
+                    "rating": 2702,
+                    "progress": 25
+                }
+            },
+            "title": "IM"
+        }
+    ]
+}

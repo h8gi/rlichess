@@ -1,0 +1,12 @@
+structure(list(method = "GET", url = "https://lichess.org/api/puzzle/activity?max=50", 
+    status_code = 401L, headers = structure(list(server = "nginx", 
+        date = "Sun, 30 Aug 2026 06:23:18 GMT", `content-type` = "application/json", 
+        `content-length` = "40", vary = "Origin", `x-oauth-scopes` = "", 
+        `x-accepted-oauth-scopes` = "puzzle:read,web:mobile", 
+        `access-control-allow-origin` = "*", `access-control-allow-headers` = "Origin, Authorization, If-Modified-Since, Cache-Control, Content-Type", 
+        `access-control-allow-methods` = "OPTIONS, GET, POST, PUT, DELETE", 
+        `strict-transport-security` = "max-age=63072000; includeSubDomains; preload", 
+        `x-frame-options` = "DENY", `permissions-policy` = "interest-cohort=()"), class = "httr2_headers"), 
+    body = charToRaw("{\"error\":\"Missing authorization header\"}"), 
+    timing = c(redirect = 0, namelookup = 0, connect = 0, pretransfer = 0.000114, 
+    starttransfer = 0.320502, total = 0.320645), cache = new.env(parent = emptyenv())), class = "httr2_response")
