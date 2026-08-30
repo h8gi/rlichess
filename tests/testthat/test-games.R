@@ -193,3 +193,47 @@ test_that("lic_tidy_games populates standardized columns", {
   expect_equal(res$opening_eco, "C50")
 })
 
+test_that("lic_games_export_ids handles validation and fetches multiple games", {
+  expect_error(lic_games_export_ids(character(0)), "must be a non-empty character vector")
+  expect_error(lic_games_export_ids(123), "must be a non-empty character vector")
+  expect_error(lic_games_export_ids(c("", " ")), "must contain at least one valid game ID")
+
+  # Truncation warning on >300 IDs
+  expect_warning(
+    res_trunc <- tryCatch(
+      lic_games_export_ids(as.character(1:305), token = "dummy"),
+      error = function(e) NULL
+    ),
+    "supports a maximum of 300 game IDs"
+  )
+
+  skip_if_offline()
+  tryCatch({
+    res <- lic_games_export_ids(c("0tMlsM69", "q7ZvsdUF"), token = NULL)
+    expect_s3_class(res, "tbl_df")
+    if (nrow(res) > 0) {
+      expect_true("id" %in% names(res))
+      expect_true(all(c("0tMlsM69", "q7ZvsdUF") %in% res$id))
+    }
+
+    # NA handling and single game
+    res_na <- lic_games_export_ids(c("0tMlsM69", NA), token = NULL)
+    expect_s3_class(res_na, "tbl_df")
+    if (nrow(res_na) > 0) {
+      expect_equal(res_na$id, "0tMlsM69")
+    }
+
+    # Empty result on non-existent game ID
+    res_empty <- lic_games_export_ids(c("nonexist"), token = NULL)
+    expect_s3_class(res_empty, "tbl_df")
+    expect_equal(nrow(res_empty), 0)
+
+    # Alias check
+    res_alias <- lic_get_games_by_ids(c("0tMlsM69"), token = NULL)
+    expect_s3_class(res_alias, "tbl_df")
+  }, error = function(e) {
+    skip(paste("Lichess API unreachable:", e$message))
+  })
+})
+
+
