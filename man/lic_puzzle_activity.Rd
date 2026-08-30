@@ -24,5 +24,7 @@ Requires authentication token with puzzle read permission.
 \strong{Official Documentation:} \url{https://lichess.org/api#tag/Puzzles/operation/apiPuzzleActivity}
 }
 \examples{
+\dontshow{if (interactive()) withAutoprint(\{ # examplesIf}
 puzzles <- lic_puzzle_activity(max = 20)
+\dontshow{\}) # examplesIf}
 }
