@@ -113,7 +113,8 @@ games/second) and enables on-demand rating history generation.</p>
 <p>In R code, <code>rlichess</code> automatically picks it up via
 <code><a href="../reference/lic_token.html">lic_token()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/lic_token.html">lic_token</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/lic_token.html">lic_token</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; NULL</span></span></code></pre></div>
 <hr>
 </div>
 </div>
@@ -127,15 +128,45 @@ games/second) and enables on-demand rating history generation.</p>
 Lichess in NDJSON format. You can filter by date range, time control,
 opponent, or computer analysis:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Download recent bullet games since 2025</span></span>
+<code class="sourceCode R"><span><span class="co"># Download recent bullet games</span></span>
 <span><span class="va">raw_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_games_user.html">lic_games_user</a></span><span class="op">(</span></span>
 <span>  username <span class="op">=</span> <span class="st">"h8gi"</span>,</span>
 <span>  perf_type <span class="op">=</span> <span class="st">"bullet"</span>,</span>
-<span>  since <span class="op">=</span> <span class="st">"2025-01-01"</span>,</span>
-<span>  max <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  max <span class="op">=</span> <span class="fl">20</span>,</span>
 <span>  clocks <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  evals <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="va">raw_games</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 20 × 27</span></span></span>
+<span><span class="co">#&gt;    id       rated variant  speed perf  createdAt lastMoveAt status source winner</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> AXBibRN8 TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   white </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> gORsq16G TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> D5pMHeCg TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 mate   pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> qei6pEuL TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 mate   pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> atG4qVZT TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 outof… pool   white </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2sYDFK0W TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 draw   pool   <span style="color: #BB0000;">NA</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> W3mr5jsG TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 outof… pool   white </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> TC9t8GoA TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   white </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 4po9beqL TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 mate   pool   white </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> BuZlcs98 TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   white </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> FSsSfAlv TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 8oFG02Mj TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> jFoczXbp TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> RqkzZ9U5 TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   white </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> Na6l6uua TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 mate   pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span> ejpvlHRm TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 outof… pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">17</span> nFYLjddF TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 mate   pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">18</span> 7q1PvMRm TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 outof… pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">19</span> O7NHsEUI TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   black </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">20</span> GladFNfD TRUE  standard bull… bull…   1.79<span style="color: #949494;">e</span>12    1.79<span style="color: #949494;">e</span>12 resign pool   white </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 17 more variables: moves &lt;chr&gt;, clocks &lt;list&gt;, players.white.rating &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.white.ratingDiff &lt;int&gt;, players.white.user.name &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.white.user.id &lt;chr&gt;, players.white.user.flair &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.black.rating &lt;int&gt;, players.black.ratingDiff &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.black.user.name &lt;chr&gt;, players.black.user.id &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   opening.eco &lt;chr&gt;, opening.name &lt;chr&gt;, opening.ply &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   clock.initial &lt;int&gt;, clock.increment &lt;int&gt;, clock.totalTime &lt;int&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="downloading-a-single-game-or-multiple-games-by-ids">Downloading a Single Game or Multiple Games by IDs<a class="anchor" aria-label="anchor" href="#downloading-a-single-game-or-multiple-games-by-ids"></a>
@@ -143,9 +174,28 @@ opponent, or computer analysis:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Single game</span></span>
 <span><span class="va">game</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_game.html">lic_game</a></span><span class="op">(</span><span class="st">"0tMlsM69"</span><span class="op">)</span></span>
+<span><span class="va">game</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">speed</span>, <span class="va">rated</span>, <span class="va">winner</span>, <span class="va">status</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
+<span><span class="co">#&gt;   id        speed     rated     winner    status   </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;lgl [1]&gt;</span> <span style="color: #949494;">&lt;chr [1]&gt;</span> <span style="color: #949494;">&lt;chr [1]&gt;</span></span></span>
 <span></span>
 <span><span class="co"># Batch export multiple games by IDs (up to 300)</span></span>
-<span><span class="va">batch_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_games_export_ids.html">lic_games_export_ids</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0tMlsM69"</span>, <span class="st">"q7ZvsdUF"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">batch_games</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_games_export_ids.html">lic_games_export_ids</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"0tMlsM69"</span>, <span class="st">"q7ZvsdUF"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">batch_games</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 29</span></span></span>
+<span><span class="co">#&gt;   id       rated variant  speed  perf  createdAt lastMoveAt status source winner</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 0tMlsM69 TRUE  standard bullet bull…   1.76<span style="color: #949494;">e</span>12    1.76<span style="color: #949494;">e</span>12 outof… arena  white </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> q7ZvsdUF TRUE  standard blitz  blitz   1.51<span style="color: #949494;">e</span>12    1.51<span style="color: #949494;">e</span>12 draw   arena  <span style="color: #BB0000;">NA</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 19 more variables: moves &lt;chr&gt;, players.white.rating &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.white.ratingDiff &lt;int&gt;, players.white.user.name &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.white.user.id &lt;chr&gt;, players.white.user.title &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.black.rating &lt;int&gt;, players.black.ratingDiff &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.black.user.name &lt;chr&gt;, players.black.user.title &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   players.black.user.id &lt;chr&gt;, opening.eco &lt;chr&gt;, opening.name &lt;chr&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   opening.ply &lt;int&gt;, arenaTour.id &lt;chr&gt;, arenaTour.name &lt;chr&gt;, …</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="user-profiles-status-crosstable-leaderboards">User Profiles, Status, Crosstable &amp; Leaderboards<a class="anchor" aria-label="anchor" href="#user-profiles-status-crosstable-leaderboards"></a>
@@ -155,35 +205,120 @@ opponent, or computer analysis:</p>
 <span><span class="va">user</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user.html">lic_user</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
 <span><span class="va">user</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">username</span>, <span class="va">created_at</span>, <span class="va">play_time_total_hours</span>, <span class="va">count_all</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 4</span></span></span>
+<span><span class="co">#&gt;   username created_at          play_time_total_hours count_all</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> h8gi     2019-10-22 <span style="color: #949494;">16:37:29</span>                 <span style="text-decoration: underline;">1</span>749.     <span style="text-decoration: underline;">51</span>238</span></span>
 <span></span>
 <span><span class="co"># Check real-time online and playing status for multiple users</span></span>
 <span><span class="va">statuses</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_users_status.html">lic_users_status</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"h8gi"</span>, <span class="st">"magnuscarlsen"</span>, <span class="st">"hikaru"</span><span class="op">)</span>, with_game_ids <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">statuses</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 9</span></span></span>
+<span><span class="co">#&gt;   id            name     title online playing streaming patron playing_id signal</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> h8gi          h8gi     <span style="color: #BB0000;">NA</span>    TRUE   FALSE   FALSE     FALSE  <span style="color: #BB0000;">NA</span>             <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> magnuscarlsen MagnusC… GM    FALSE  FALSE   FALSE     FALSE  <span style="color: #BB0000;">NA</span>             <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> hikaru        Hikaru   <span style="color: #BB0000;">NA</span>    FALSE  FALSE   FALSE     FALSE  <span style="color: #BB0000;">NA</span>             <span style="color: #BB0000;">NA</span></span></span>
 <span></span>
 <span><span class="co"># Head-to-head match crosstable between two players</span></span>
 <span><span class="va">crosstable</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_crosstable.html">lic_user_crosstable</a></span><span class="op">(</span><span class="st">"Lance5500"</span>, <span class="st">"TryingHard87"</span><span class="op">)</span></span>
 <span><span class="va">crosstable</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
+<span><span class="co">#&gt;   user1     user2        user1_score user2_score nb_games</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Lance5500 TryingHard87         1.5         1.5        3</span></span>
 <span></span>
 <span><span class="co"># Leaderboard / top players ranking</span></span>
-<span><span class="va">top_blitz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_leaderboard.html">lic_leaderboard</a></span><span class="op">(</span>perf_type <span class="op">=</span> <span class="st">"blitz"</span>, count <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="va">top_blitz</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_leaderboard.html">lic_leaderboard</a></span><span class="op">(</span>perf_type <span class="op">=</span> <span class="st">"blitz"</span>, count <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span><span class="va">top_blitz</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 9</span></span></span>
+<span><span class="co">#&gt;    rank id                username title rating progress online patron perf_type</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1 cutemouse83       cutemou… GM      <span style="text-decoration: underline;">2</span>982        8 FALSE  FALSE  blitz    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2 aspiringstar      aspirin… GM      <span style="text-decoration: underline;">2</span>982        4 FALSE  FALSE  blitz    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     3 dr_tiger          Dr_Tiger GM      <span style="text-decoration: underline;">2</span>941       -<span style="color: #BB0000;">7</span> FALSE  FALSE  blitz    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     4 vladimirovich9000 Vladimi… GM      <span style="text-decoration: underline;">2</span>940      -<span style="color: #BB0000;">22</span> FALSE  FALSE  blitz    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span>     5 athena-pallada    athena-… GM      <span style="text-decoration: underline;">2</span>928        3 FALSE  FALSE  blitz</span></span>
 <span></span>
-<span><span class="co"># Performance ratings across all game types (bullet, blitz, rapid, puzzle, etc.)</span></span>
+<span><span class="co"># Performance ratings across all game types</span></span>
 <span><span class="va">perfs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perfs.html">lic_user_perfs</a></span><span class="op">(</span><span class="st">"h8gi"</span><span class="op">)</span></span>
 <span><span class="va">perfs</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 6</span></span></span>
+<span><span class="co">#&gt;   perf           games rating    rd  prog prov </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> bullet         <span style="text-decoration: underline;">49</span>288   <span style="text-decoration: underline;">2</span>209    45    16 FALSE</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> blitz           <span style="text-decoration: underline;">1</span>710   <span style="text-decoration: underline;">2</span>086    52     7 FALSE</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> rapid             82   <span style="text-decoration: underline;">2</span>156   153  -<span style="color: #BB0000;">108</span> TRUE </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> classical          5   <span style="text-decoration: underline;">1</span>889   364     0 TRUE </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> correspondence     2   <span style="text-decoration: underline;">2</span>200   403     0 TRUE </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> puzzle          <span style="text-decoration: underline;">6</span>071   <span style="text-decoration: underline;">2</span>067    68     0 FALSE</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> storm              0     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     0 FALSE</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> racer              0     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     0 FALSE</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> streak             0     <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>     0 FALSE</span></span>
 <span></span>
-<span><span class="co"># Daily rating history (dates and rating values)</span></span>
+<span><span class="co"># Daily rating history</span></span>
 <span><span class="va">history</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_rating_history.html">lic_user_rating_history</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf_type <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Rating history returned empty. Lichess requires an authenticated request (API</span></span>
+<span><span class="co">#&gt;   token) to generate rating history on demand.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Set `LICHESS_API_TOKEN` environment variable or provide `token` argument.</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">history</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 4</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 variables: username &lt;chr&gt;, perf &lt;chr&gt;, date &lt;date&gt;, rating &lt;int&gt;</span></span></span>
 <span></span>
-<span><span class="co"># In-depth performance statistics (streaks, best wins, worst losses)</span></span>
-<span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perf_stats.html">lic_user_perf_stats</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># In-depth performance statistics</span></span>
+<span><span class="va">stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_user_perf_stats.html">lic_user_perf_stats</a></span><span class="op">(</span><span class="st">"h8gi"</span>, perf <span class="op">=</span> <span class="st">"bullet"</span><span class="op">)</span></span>
+<span><span class="va">stats</span><span class="op">$</span><span class="va">stat</span><span class="op">$</span><span class="va">count</span></span>
+<span><span class="co">#&gt; $all</span></span>
+<span><span class="co">#&gt; [1] 49291</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $rated</span></span>
+<span><span class="co">#&gt; [1] 49289</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $win</span></span>
+<span><span class="co">#&gt; [1] 24034</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $loss</span></span>
+<span><span class="co">#&gt; [1] 23286</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $draw</span></span>
+<span><span class="co">#&gt; [1] 1971</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $tour</span></span>
+<span><span class="co">#&gt; [1] 230</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $berserk</span></span>
+<span><span class="co">#&gt; [1] 0</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $opAvg</span></span>
+<span><span class="co">#&gt; [1] 2083.29</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $seconds</span></span>
+<span><span class="co">#&gt; [1] 5540624</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $disconnects</span></span>
+<span><span class="co">#&gt; [1] 12</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="study-pgn-export">Study PGN Export<a class="anchor" aria-label="anchor" href="#study-pgn-export"></a>
 </h3>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Export full study PGN (or specific chapter)</span></span>
-<span><span class="va">pgn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_study_pgn.html">lic_study_pgn</a></span><span class="op">(</span><span class="st">"Y1yXP80U"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">pgn</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_study_pgn.html">lic_study_pgn</a></span><span class="op">(</span><span class="st">"Y1yXP80U"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html" class="external-link">substr</a></span><span class="op">(</span><span class="va">pgn</span>, <span class="fl">1</span>, <span class="fl">300</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [Event "FIDE Candidates Tournament 2026"]</span></span>
+<span><span class="co">#&gt; [Site "lichess.org"]</span></span>
+<span><span class="co">#&gt; [Date "2026.03.29"]</span></span>
+<span><span class="co">#&gt; [Round "1.1"]</span></span>
+<span><span class="co">#&gt; [White "Caruana, Fabiano"]</span></span>
+<span><span class="co">#&gt; [Black "Nakamura, Hikaru"]</span></span>
+<span><span class="co">#&gt; [Result "1-0"]</span></span>
+<span><span class="co">#&gt; [WhiteElo "2795"]</span></span>
+<span><span class="co">#&gt; [WhiteTitle "GM"]</span></span>
+<span><span class="co">#&gt; [WhiteFideId "2020009"]</span></span>
+<span><span class="co">#&gt; [BlackElo "2810"]</span></span>
+<span><span class="co">#&gt; [BlackTitle "GM"]</span></span>
+<span><span class="co">#&gt; [BlackFideId "2016192"]</span></span>
+<span><span class="co">#&gt; [TimeControl "</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="opening-explorer-databases">Opening Explorer Databases<a class="anchor" aria-label="anchor" href="#opening-explorer-databases"></a>
@@ -193,22 +328,36 @@ historical FIDE master-level games (2200+ FIDE):</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Query Sicilian Defense (1. e4 c5) in Lichess database</span></span>
 <span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_lichess.html">lic_explorer_lichess</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Opening Explorer requires an API access token (OAuth2).</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Set `LICHESS_API_TOKEN` environment variable or provide `token` argument.</span></span>
 <span><span class="va">exp</span><span class="op">$</span><span class="va">moves</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 6</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6 variables: uci &lt;chr&gt;, san &lt;chr&gt;, white &lt;int&gt;, draws &lt;int&gt;, black &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   averageRating &lt;int&gt;</span></span></span>
 <span></span>
 <span><span class="co"># Query FIDE master tournament games</span></span>
 <span><span class="va">masters</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_masters.html">lic_explorer_masters</a></span><span class="op">(</span>play <span class="op">=</span> <span class="st">"e4,c5"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Masters Opening Explorer requires an API access token (OAuth2).</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Set `LICHESS_API_TOKEN` environment variable or provide `token` argument.</span></span>
 <span><span class="va">masters</span><span class="op">$</span><span class="va">moves</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 0</span></span></span>
 <span></span>
 <span><span class="co"># Query a specific player's personal opening repertoire</span></span>
 <span><span class="va">player_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_explorer_player.html">lic_explorer_player</a></span><span class="op">(</span><span class="st">"h8gi"</span>, color <span class="op">=</span> <span class="st">"white"</span>, play <span class="op">=</span> <span class="st">"e4"</span><span class="op">)</span></span>
-<span><span class="va">player_exp</span><span class="op">$</span><span class="va">moves</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Player Opening Explorer requires an API access token (OAuth2).</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">•</span> Set `LICHESS_API_TOKEN` environment variable or provide `token` argument.</span></span>
+<span><span class="va">player_exp</span><span class="op">$</span><span class="va">moves</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 0 × 0</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="daily-tactical-puzzle">Daily Tactical Puzzle<a class="anchor" aria-label="anchor" href="#daily-tactical-puzzle"></a>
 </h3>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">daily</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_puzzle_daily.html">lic_puzzle_daily</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="va">daily</span><span class="op">$</span><span class="va">puzzle</span><span class="op">$</span><span class="va">rating</span></span></code></pre></div>
+<span><span class="va">daily</span><span class="op">$</span><span class="va">puzzle</span><span class="op">$</span><span class="va">id</span></span>
+<span><span class="co">#&gt; [1] "Zjt5N"</span></span>
+<span><span class="va">daily</span><span class="op">$</span><span class="va">puzzle</span><span class="op">$</span><span class="va">rating</span></span>
+<span><span class="co">#&gt; [1] 2073</span></span></code></pre></div>
 <hr>
 </div>
 </div>
@@ -235,7 +384,17 @@ user-centric perspective: - Converts timestamps into standard
 <span></span>
 <span><span class="va">games</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">id</span>, <span class="va">created_at</span>, <span class="va">user_color</span>, <span class="va">user_result</span>, <span class="va">user_rating</span>, <span class="va">opponent_name</span>, <span class="va">opening.name</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 7</span></span></span>
+<span><span class="co">#&gt;   id       created_at          user_color user_result user_rating opponent_name</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> AXBibRN8 2026-08-29 <span style="color: #949494;">12:44:15</span> white      win                <span style="text-decoration: underline;">2</span>204 allaneliuthr </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> gORsq16G 2026-08-29 <span style="color: #949494;">12:42:56</span> white      loss               <span style="text-decoration: underline;">2</span>210 Dondoctor    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> D5pMHeCg 2026-08-29 <span style="color: #949494;">12:41:22</span> black      win                <span style="text-decoration: underline;">2</span>203 GrobXenomorph</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> qei6pEuL 2026-08-29 <span style="color: #949494;">12:38:54</span> black      win                <span style="text-decoration: underline;">2</span>197 certificates </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> atG4qVZT 2026-08-29 <span style="color: #949494;">12:35:00</span> white      win                <span style="text-decoration: underline;">2</span>191 KapyLeBro    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> 2sYDFK0W 2026-08-29 <span style="color: #949494;">12:33:07</span> black      draw               <span style="text-decoration: underline;">2</span>190 KapyLeBro    </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: opening.name &lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="unpacking-move-sequences-lic_tidy_moves">Unpacking Move Sequences (<code>lic_tidy_moves</code>)<a class="anchor" aria-label="anchor" href="#unpacking-move-sequences-lic_tidy_moves"></a>
@@ -250,7 +409,20 @@ long-format tibble where <strong>each row corresponds to one half-move
 <span><span class="va">moves_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">game_id</span> <span class="op">==</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/nth.html" class="external-link">first</a></span><span class="op">(</span><span class="va">game_id</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">ply</span>, <span class="va">move_number</span>, <span class="va">color</span>, <span class="va">san</span>, <span class="va">clock</span>, <span class="va">eval</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 6</span></span></span>
+<span><span class="co">#&gt;      ply move_number color san   clock  eval</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     1           1 white d4     60.0    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     2           1 black Nf6    60.0    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     3           2 white Nf3    59.6    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     4           2 black g6     60.0    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     5           3 white g3     59.6    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     6           3 black Bg7    59.7    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     7           4 white Bg2    59.6    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8           4 black O-O    59.4    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9           5 white O-O    59.6    <span style="color: #BB0000;">NA</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10           5 black d6     59.3    <span style="color: #BB0000;">NA</span></span></span></code></pre></div>
 <hr>
 </div>
 </div>
@@ -262,8 +434,24 @@ long-format tibble where <strong>each row corresponds to one half-move
 </h3>
 <p>Summarize performance across different opening variations:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">opening_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_stats_openings.html">lic_stats_openings</a></span><span class="op">(</span><span class="va">games</span>, min_games <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
-<span><span class="va">opening_stats</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">opening_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lic_stats_openings.html">lic_stats_openings</a></span><span class="op">(</span><span class="va">games</span>, min_games <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">opening_stats</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 10</span></span></span>
+<span><span class="co">#&gt;    user_color opening_name    opening_eco     n  wins losses draws winrate score</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> black      Caro-Kann Defe… B15             5     3      2     0   0.6     3  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> white      Englund Gambit… A40             3     1      2     0   0.333   1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> black      Caro-Kann Defe… B10             2     1      1     0   0.5     1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> white      Zukertort Open… A04             2     1      1     0   0.5     1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> black      Bird Opening    A02             1     1      0     0   1       1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> black      Caro-Kann Defe… B12             1     0      0     1   0       0.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> black      Indian Defense… A46             1     0      1     0   0       0  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> white      English Defense A40             1     1      0     0   1       1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> white      Englund Gambit… A40             1     0      1     0   0       0  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> white      Horwitz Defense A40             1     0      1     0   0       0  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> white      Indian Defense… A49             1     1      0     0   1       1  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> white      Ware Opening    A00             1     0      1     0   0       0  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: score_rate &lt;dbl&gt;</span></span></span></code></pre></div>
 <hr>
 </div>
 </div>
@@ -274,7 +462,16 @@ long-format tibble where <strong>each row corresponds to one half-move
 containing 3,378 ECO codes, opening names, and move sequences:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">lichess_openings</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lichess_openings</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lichess_openings</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 3</span></span></span>
+<span><span class="co">#&gt;   eco   name                       pgn                                          </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                      <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> A00   Amar Gambit                1. Nh3 d5 2. g3 e5 3. f4 Bxh3 4. Bxh3 exf4   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> A00   Amar Opening               1. Nh3                                       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> A00   Amar Opening: Gent Gambit  1. Nh3 d5 2. g3 e5 3. f4 Bxh3 4. Bxh3 exf4 5…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> A00   Amar Opening: Paris Gambit 1. Nh3 d5 2. g3 e5 3. f4                     </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> A00   Amsterdam Attack           1. e3 e5 2. c4 d6 3. Nc3 Nc6 4. b3 Nf6       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> A00   Anderssen's Opening        1. a3</span></span></code></pre></div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
