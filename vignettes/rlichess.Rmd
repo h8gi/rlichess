@@ -10,9 +10,10 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
+  comment = "#>"
 )
+library(httptest2)
+start_vignette("rlichess")
 ```
 
 **rlichess** is a modern, tidy R client designed for chess players, analysts, and researchers. It bridges the [Lichess REST & Streaming API](https://lichess.org/api) with the `tidyverse` ecosystem, allowing you to seamlessly fetch games, user statistics, opening databases, and tactical puzzles into tidy tibbles.
@@ -60,7 +61,7 @@ pak::pak("h8gi/rlichess")
 devtools::install_github("h8gi/rlichess")
 ```
 
-```{r setup}
+```{r setup, message = FALSE}
 library(rlichess)
 library(dplyr)
 ```
@@ -90,30 +91,33 @@ lic_token()
 `lic_games_user()` downloads game records directly from Lichess in NDJSON format. You can filter by date range, time control, opponent, or computer analysis:
 
 ```{r}
-# Download recent bullet games since 2025
+# Download recent bullet games
 raw_games <- lic_games_user(
   username = "h8gi",
   perf_type = "bullet",
-  since = "2025-01-01",
-  max = 100,
+  max = 20,
   clocks = TRUE,
   evals = TRUE
 )
+raw_games
 ```
 
 ### Downloading a Single Game or Multiple Games by IDs
 
-```r
+```{r}
 # Single game
 game <- lic_game("0tMlsM69")
+game %>%
+  select(id, speed, rated, winner, status)
 
 # Batch export multiple games by IDs (up to 300)
 batch_games <- lic_games_export_ids(c("0tMlsM69", "q7ZvsdUF"))
+batch_games
 ```
 
 ### User Profiles, Status, Crosstable & Leaderboards
 
-```r
+```{r}
 # Core user profile summary as a 1-row tidy tibble
 user <- lic_user("h8gi")
 user %>%
@@ -128,32 +132,35 @@ crosstable <- lic_user_crosstable("Lance5500", "TryingHard87")
 crosstable
 
 # Leaderboard / top players ranking
-top_blitz <- lic_leaderboard(perf_type = "blitz", count = 10)
+top_blitz <- lic_leaderboard(perf_type = "blitz", count = 5)
 top_blitz
 
-# Performance ratings across all game types (bullet, blitz, rapid, puzzle, etc.)
+# Performance ratings across all game types
 perfs <- lic_user_perfs("h8gi")
 perfs
 
-# Daily rating history (dates and rating values)
+# Daily rating history
 history <- lic_user_rating_history("h8gi", perf_type = "bullet")
+head(history)
 
-# In-depth performance statistics (streaks, best wins, worst losses)
+# In-depth performance statistics
 stats <- lic_user_perf_stats("h8gi", perf = "bullet")
+stats$stat$count
 ```
 
 ### Study PGN Export
 
-```r
+```{r}
 # Export full study PGN (or specific chapter)
 pgn <- lic_study_pgn("Y1yXP80U")
+cat(substr(pgn, 1, 300))
 ```
 
 ### Opening Explorer Databases
 
 Query Lichess's vast opening database (over billions of games) or historical FIDE master-level games (2200+ FIDE):
 
-```r
+```{r}
 # Query Sicilian Defense (1. e4 c5) in Lichess database
 exp <- lic_explorer_lichess(play = "e4,c5")
 exp$moves
@@ -169,8 +176,9 @@ player_exp$moves
 
 ### Daily Tactical Puzzle
 
-```r
+```{r}
 daily <- lic_puzzle_daily()
+daily$puzzle$id
 daily$puzzle$rating
 ```
 
@@ -217,7 +225,7 @@ moves_df %>%
 Summarize performance across different opening variations:
 
 ```{r}
-opening_stats <- lic_stats_openings(games, min_games = 5)
+opening_stats <- lic_stats_openings(games, min_games = 1)
 opening_stats
 ```
 
@@ -230,4 +238,8 @@ opening_stats
 ```{r}
 data(lichess_openings)
 head(lichess_openings)
+```
+
+```{r, include = FALSE}
+end_vignette()
 ```

@@ -1,0 +1,78 @@
+{
+    "id": "h8gi",
+    "username": "h8gi",
+    "perfs": {
+        "bullet": {
+            "games": 49288,
+            "rating": 2209,
+            "rd": 45,
+            "prog": 16
+        },
+        "blitz": {
+            "games": 1710,
+            "rating": 2086,
+            "rd": 52,
+            "prog": 7
+        },
+        "rapid": {
+            "games": 82,
+            "rating": 2156,
+            "rd": 153,
+            "prog": -108,
+            "prov": true
+        },
+        "classical": {
+            "games": 5,
+            "rating": 1889,
+            "rd": 364,
+            "prog": 0,
+            "prov": true
+        },
+        "correspondence": {
+            "games": 2,
+            "rating": 2200,
+            "rd": 403,
+            "prog": 0,
+            "prov": true
+        },
+        "puzzle": {
+            "games": 6071,
+            "rating": 2067,
+            "rd": 68,
+            "prog": 0
+        },
+        "storm": {
+            "runs": 149,
+            "score": 46
+        },
+        "racer": {
+            "runs": 1,
+            "score": 49
+        },
+        "streak": {
+            "runs": 876,
+            "score": 53
+        }
+    },
+    "createdAt": 1571762249409,
+    "profile": {
+        "flag": "JP"
+    },
+    "seenAt": 1788070474371,
+    "playTime": {
+        "total": 6297442,
+        "tv": 928
+    },
+    "url": "https://lichess.org/@/h8gi",
+    "count": {
+        "all": 51238,
+        "rated": 51089,
+        "draw": 2079,
+        "loss": 24168,
+        "win": 24991,
+        "bookmark": 2,
+        "playing": 0,
+        "import": 1,
+        "me": 0
+    }
+}
