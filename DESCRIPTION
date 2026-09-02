@@ -1,6 +1,6 @@
 Package: rlichess
 Title: R Client and Analysis Tools for Lichess
-Version: 0.1.0.9000
+Version: 0.1.0
 Authors@R: 
     person("Hiroki", "Yagi", , "hiro.yagi0245@gmail.com", role = c("aut", "cre"))
 Description: Provides an interface to the Lichess API (<https://lichess.org/api>)
