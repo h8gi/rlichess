@@ -1,9 +1,5 @@
 # Changelog
 
-## rlichess (development version)
-
-- Ongoing improvements and bug fixes.
-
 ## rlichess 0.1.0
 
 Initial CRAN/GitHub release of **rlichess**, a modern, tidyverse-aligned
