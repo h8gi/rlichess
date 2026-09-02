@@ -1,0 +1,62 @@
+# GitHub Release Automation
+# Automatically creates a GitHub Release with changelog extracted from NEWS.md
+# when a version tag (v*.*.*) is pushed.
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: 'release'
+
+      - name: Extract Release Notes from NEWS.md
+        id: notes
+        run: |
+          Rscript -e '
+          tag <- Sys.getenv("GITHUB_REF_NAME", "v0.1.0")
+          ver <- sub("^v", "", tag)
+          lines <- if (file.exists("NEWS.md")) readLines("NEWS.md", warn = FALSE) else character(0)
+          header_pattern <- paste0("^#+ +rlichess +", gsub(".", "\\\\.", ver, fixed = TRUE))
+          start_idx <- which(grepl(header_pattern, lines))
+          
+          if (length(start_idx) == 0) {
+            body <- paste0("Release ", tag)
+          } else {
+            header_level <- regmatches(lines[start_idx[1]], regexpr("^#+", lines[start_idx[1]]))
+            next_headers <- which(grepl(paste0("^", header_level, " "), lines))
+            next_headers <- next_headers[next_headers > start_idx[1]]
+            end_idx <- if (length(next_headers) > 0) next_headers[1] - 1 else length(lines)
+            body <- paste(lines[(start_idx[1] + 1):end_idx], collapse = "\n")
+            body <- trimws(body)
+            if (!nzchar(body)) body <- paste0("Release ", tag)
+          }
+          
+          writeLines(body, "RELEASE_NOTES.md")
+          '
+
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            --title "rlichess ${{ github.ref_name }}" \
+            --notes-file RELEASE_NOTES.md \
+            --draft=false \
+            --prerelease=false
