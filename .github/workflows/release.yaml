@@ -33,7 +33,7 @@ jobs:
           tag <- Sys.getenv("GITHUB_REF_NAME", "v0.1.0")
           ver <- sub("^v", "", tag)
           lines <- if (file.exists("NEWS.md")) readLines("NEWS.md", warn = FALSE) else character(0)
-          header_pattern <- paste0("^#+ +rlichess +", gsub(".", "\\\\.", ver, fixed = TRUE))
+          header_pattern <- paste0("^#+ +rlichess +", gsub(".", "\\.", ver, fixed = TRUE))
           start_idx <- which(grepl(header_pattern, lines))
           
           if (length(start_idx) == 0) {
